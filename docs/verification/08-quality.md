@@ -32,7 +32,19 @@ seconds, including both performance regressions.
 
 ## Known omissions
 
-- The local XCUITest runner cannot expose the application window through the
-  accessibility interface. Therefore no runtime p50/p95 navigation response,
-  Cancel latency, peak memory, or complete 100,000-entry throughput was
-  measured. Those are not represented as passing checks.
+- The direct UI command below built and launched on 2026-09-21, but its first
+  five tests failed waiting for `scan.start`; the run was interrupted after
+  104 seconds because every launch had the same inaccessible-window symptom.
+  It exited 75 with `** TEST INTERRUPTED **`, not a pass.
+
+  ```bash
+  xcodebuild -workspace MacDevClean.xcworkspace -scheme MacDevClean \
+    -destination 'platform=macOS' -derivedDataPath .build/xcode \
+    -only-testing:MacDevCleanUITests test
+  ```
+
+- The normal Debug app did expose its accessibility tree during a limited
+  manual inspection, but this does not reproduce the XCUITest launch context.
+  Therefore no runtime p50/p95 navigation response, Cancel latency, peak
+  memory, or complete 100,000-entry throughput was measured. Those are not
+  represented as passing checks.

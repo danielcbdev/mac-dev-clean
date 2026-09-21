@@ -15,7 +15,8 @@ Record only what actually happened: real commands, real exit status, real dates.
   seconds including setup/teardown; see
   [docs/verification/08-quality.md](verification/08-quality.md).
   `MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh` exited 0 on 2026-09-21;
-  UI tests were not run.
+  a subsequent direct UI attempt built and launched but failed to expose
+  `scan.start` to XCUITest, then was interrupted after repeated failures.
 - **Blockers:** the XCUITest gate is unavailable on this machine. Ten UI tests
   are written and compile but cannot run: the app launches with no window
   visible to the accessibility interface. The committed plan 04 baseline fails
