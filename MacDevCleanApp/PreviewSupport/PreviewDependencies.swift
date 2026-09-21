@@ -24,6 +24,7 @@
         case firstRun = "first-run"
         case mixedResults = "mixed-results"
         case dockerVolume = "docker-volume"
+        case largeFiles = "large-files"
 
         static func parse(_ arguments: [String]) -> PreviewScenario? {
             guard let index = arguments.firstIndex(of: "--scenario"),
@@ -91,6 +92,12 @@
                 .resolvingSymlinksInPath()
                 .appendingPathComponent("macdevclean-ui-\(UUID().uuidString)", isDirectory: true)
             try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+
+            // A folder of big files, for the Large Files feature.
+            try write(
+                bytes: 2_200_000, to: root.appendingPathComponent("media/recording.bin"))
+            try write(bytes: 1_400_000, to: root.appendingPathComponent("media/archive.bin"))
+            try write(bytes: 10, to: root.appendingPathComponent("media/tiny.bin"))
 
             // Two Node projects.
             for (project, bytes) in [("alpha", 2_400_000), ("beta", 900_000)] {

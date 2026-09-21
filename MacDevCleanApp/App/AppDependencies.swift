@@ -13,6 +13,7 @@ import Scanning
 @MainActor
 struct AppDependencies {
     let scanner: any ScanService
+    let largeFileScanner: any LargeFileScanning
     let validator: any CleanupPlanValidating
     let executor: any CleanupExecuting
     let settings: any SettingsRepository
@@ -68,6 +69,8 @@ struct AppDependencies {
         return AppDependencies(
             scanner: CompositeScanService(
                 filesystem: developerScanner, docker: docker, store: store, context: context),
+            largeFileScanner: LargeFileScanner(
+                files: files, context: context, store: store),
             validator: CleanupPlanValidator(
                 store: store, context: context, pathPolicy: policy, files: files,
                 rules: rules, docker: UnavailableDockerClient(), clock: SystemClock()),
@@ -96,6 +99,7 @@ struct AppDependencies {
                 (try? PreviewFixtureWorld.build())
                 ?? URL(fileURLWithPath: NSTemporaryDirectory())
             let projects = home.appendingPathComponent("projects")
+            let media = home.appendingPathComponent("media")
 
             let store = InMemoryCandidateStore()
             let settings = SessionRepositories(
@@ -123,6 +127,8 @@ struct AppDependencies {
                     docker: scenario == .dockerVolume ? docker : nil,
                     store: store,
                     context: context),
+                largeFileScanner: LargeFileScanner(
+                    files: files, context: context, store: store),
                 validator: CleanupPlanValidator(
                     store: store, context: context, pathPolicy: policy, files: files,
                     rules: rules, docker: docker, clock: SystemClock()),
@@ -134,7 +140,8 @@ struct AppDependencies {
                 history: settings,
                 store: store,
                 context: context,
-                picker: PreviewFolderPicker(folders: [projects]),
+                picker: PreviewFolderPicker(
+                    folders: scenario == .largeFiles ? [media] : [projects]),
                 workspace: PreviewWorkspaceOpener(),
                 home: home,
                 // The side effects are fakes, so the flow can be exercised end

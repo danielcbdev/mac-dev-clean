@@ -5,11 +5,11 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 ## Current state
 
-- **Plan:** 05 desktop interface (`docs/superpowers/plans/2026-09-21-05-interface.md`)
-- **Branch:** feat/app-shell
-- **Last completed task:** 05 Task 3 — review, irreversible warning and results
-- **Next step:** merge `feat/app-shell` into `develop`, then start plan 06 on
-  `feat/large-files`
+- **Plan:** 06 Large Files (`docs/superpowers/plans/2026-09-21-06-large-files.md`)
+- **Branch:** feat/large-files
+- **Last completed task:** 06 Task 2 — Large Files interface and shared review
+- **Next step:** merge `feat/large-files` into `develop`, then start plan 07 on
+  `feat/history-and-exclusions`
 - **Blockers:** the XCUITest gate is unavailable on this machine. Ten UI tests
   are written and compile but cannot run: the app launches with no window
   visible to the accessibility interface. The committed plan 04 baseline fails
@@ -38,8 +38,8 @@ pushed. Publication requires separate authorization.
 | 02 scanning | feat/scanning-engine | merged into develop |
 | 03 cleanup | feat/cleanup-safety | merged into develop |
 | 04 Docker | feat/docker-integration | merged into develop |
-| 05 interface | feat/app-shell | in progress |
-| 06 large files | feat/large-files | not started |
+| 05 interface | feat/app-shell | merged into develop |
+| 06 large files | feat/large-files | in progress |
 | 07 persistence | feat/history-and-exclusions | not started |
 | 08 quality | feat/localization-accessibility | not started |
 | 09 distribution | chore/release-pipeline | not started |
@@ -56,6 +56,7 @@ exact command, its exit status, the toolchain, the date and known omissions.
 | 03 cleanup | [03-cleanup.md](verification/03-cleanup.md) | `bash scripts/verify.sh` exit 0, 126 tests, 0 failures |
 | 04 Docker | [04-docker.md](verification/04-docker.md) | `bash scripts/verify.sh` exit 0, 202 tests, 0 failures |
 | 05 interface | [05-interface.md](verification/05-interface.md) | 222 tests run, 0 failures; **10 UI tests NOT RUN** |
+| 06 large files | [06-large-files.md](verification/06-large-files.md) | 242 tests run, 0 failures; **13 UI tests NOT RUN** |
 
 ## Known external blockers
 
