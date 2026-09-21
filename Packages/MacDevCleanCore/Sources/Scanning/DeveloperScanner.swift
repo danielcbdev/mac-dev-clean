@@ -266,6 +266,11 @@ public struct DeveloperScanner: ScanService {
                 let children: [FileEntry]
                 do {
                     children = try await files.children(of: current)
+                } catch is CancellationError {
+                    // A cancelled filesystem operation is not a partial
+                    // measurement failure. Propagate it so no later subtree
+                    // is scheduled after the user has stopped the scan.
+                    throw CancellationError()
                 } catch {
                     sum.noteUnknown()
                     continuation.yield(
@@ -350,7 +355,7 @@ public struct DeveloperScanner: ScanService {
         let continuation: AsyncThrowingStream<ScanEvent, Error>.Continuation
         private var visited = 0
         private var lastReported = 0
-        private var lastReportedAt = Date.distantPast
+        private var lastReportedAt = Date()
 
         init(continuation: AsyncThrowingStream<ScanEvent, Error>.Continuation) {
             self.continuation = continuation
