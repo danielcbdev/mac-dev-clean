@@ -28,6 +28,8 @@ let package = Package(
         .library(name: "Cleanup", targets: ["Cleanup"]),
         .library(name: "DockerIntegration", targets: ["DockerIntegration"]),
         .library(name: "Persistence", targets: ["Persistence"]),
+        // Test consumers only. The application target must never link this.
+        .library(name: "TestSupport", targets: ["TestSupport"]),
     ],
     targets: [
         .target(name: "Domain", swiftSettings: coreSettings),

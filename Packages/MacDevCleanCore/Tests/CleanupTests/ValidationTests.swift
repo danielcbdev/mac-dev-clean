@@ -225,7 +225,8 @@ final class ValidationTests: XCTestCase {
         let plan = try await harness.validate(selection)
 
         XCTAssertEqual(plan.expiresAt, clock.now().addingTimeInterval(cleanupPlanLifetime))
-        XCTAssertEqual(plan.policyRevision, harness.currentSafetyContext().revision)
+        let currentRevision = await harness.currentSafetyContext().revision
+        XCTAssertEqual(plan.policyRevision, currentRevision)
     }
 
     // MARK: - Structured issues
