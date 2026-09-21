@@ -222,7 +222,11 @@ public actor InMemoryJournal: HistoryRepository {
 
     public func recoverInterruptedSessions() async throws {
         for id in order {
-            guard let session = stored[id], session.completedAt == nil else { continue }
+            // Any pending row is unresolved, whether or not the session was
+            // marked complete. A session can finish while one of its records
+            // never made it to disk, and that record is exactly the one nobody
+            // knows the outcome of.
+            guard let session = stored[id] else { continue }
             // A pending row after a restart is never assumed successful.
             let recovered = session.records.map { record in
                 record.outcome == .pending
