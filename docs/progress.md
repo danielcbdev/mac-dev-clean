@@ -5,11 +5,11 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 ## Current state
 
-- **Plan:** 01 foundation (`docs/superpowers/plans/2026-09-21-01-foundation.md`)
-- **Branch:** feat/project-foundation
-- **Last completed task:** 01 Task 3 — reproducible verification and CI
-- **Next step:** merge `feat/project-foundation` into `develop`, then start
-  plan 02 on `feat/scanning-engine`
+- **Plan:** 02 scanning (`docs/superpowers/plans/2026-09-21-02-scanning.md`)
+- **Branch:** feat/scanning-engine
+- **Last completed task:** 02 Task 3 — cancelable scanner and honest measurements
+- **Next step:** merge `feat/scanning-engine` into `develop`, then start
+  plan 03 on `feat/cleanup-safety`
 - **Blockers:** none
 
 ## Repository baseline
@@ -30,8 +30,8 @@ pushed. Publication requires separate authorization.
 
 | Plan | Branch | Status |
 |---|---|---|
-| 01 foundation | feat/project-foundation | in progress |
-| 02 scanning | feat/scanning-engine | not started |
+| 01 foundation | feat/project-foundation | merged into develop |
+| 02 scanning | feat/scanning-engine | in progress |
 | 03 cleanup | feat/cleanup-safety | not started |
 | 04 Docker | feat/docker-integration | not started |
 | 05 interface | feat/app-shell | not started |
@@ -48,6 +48,7 @@ exact command, its exit status, the toolchain, the date and known omissions.
 | Milestone | Evidence | Gate |
 |---|---|---|
 | 01 foundation | [01-foundation.md](verification/01-foundation.md) | `bash scripts/verify.sh` exit 0, 11 tests, 0 failures |
+| 02 scanning | [02-scanning.md](verification/02-scanning.md) | `bash scripts/verify.sh` exit 0, 87 tests, 0 failures |
 
 ## Known external blockers
 

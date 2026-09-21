@@ -46,6 +46,16 @@ let package = Package(
 
         .testTarget(name: "DomainTests", dependencies: ["Domain"], swiftSettings: coreSettings),
         .testTarget(
+            name: "ScanningTests",
+            dependencies: ["Scanning", "Domain", "TestSupport"],
+            swiftSettings: coreSettings
+        ),
+        .testTarget(
+            name: "CleanupRulesTests",
+            dependencies: ["CleanupRules", "Scanning", "Domain", "TestSupport"],
+            swiftSettings: coreSettings
+        ),
+        .testTarget(
             name: "TestSupportTests",
             dependencies: ["TestSupport", "Domain"],
             swiftSettings: coreSettings
