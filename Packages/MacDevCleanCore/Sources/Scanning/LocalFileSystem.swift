@@ -125,7 +125,11 @@ public struct LocalFileSystem: FileSystemClient {
         let isMount = parentDevice.map { $0 != device } ?? false
 
         return FileEntry(
-            url: url,
+            // One canonical spelling. `appendingPathComponent` stats the path
+            // and adds a trailing slash for directories, so the same location
+            // can otherwise arrive with two different URLs that do not compare
+            // equal. Directory-ness is carried by `kind`, not by the URL.
+            url: URL(fileURLWithPath: url.path, isDirectory: false),
             kind: kind,
             identity: identity,
             logicalBytes: info.st_size >= 0 ? UInt64(info.st_size) : nil,
