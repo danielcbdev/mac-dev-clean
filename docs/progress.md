@@ -9,6 +9,10 @@ Record only what actually happened: real commands, real exit status, real dates.
 - **Branch:** feat/localization-accessibility
 - **Last completed task:** 08 Task 2 — accessibility and window resilience
 - **Next step:** 08 Task 3 — performance, privacy and regression gates
+- **Latest partial evidence:** `MACDEVCLEAN_SKIP_UI_TESTS=1 bash
+  scripts/verify.sh` exited 0 on 2026-09-21 after the localization and policy
+  gates were added; UI tests remain not run, and the required 100,000-entry
+  synthetic scan benchmark is still pending.
 - **Blockers:** the XCUITest gate is unavailable on this machine. Ten UI tests
   are written and compile but cannot run: the app launches with no window
   visible to the accessibility interface. The committed plan 04 baseline fails
