@@ -1,0 +1,4 @@
+{"Availability":"N/A","Driver":"local","Group":"N/A","Labels":"","Links":"N/A","Mountpoint":"/var/lib/docker/volumes/fixture-data/_data","Name":"fixture-data","Scope":"local","Size":"N/A","Status":"N/A"}
+{"Availability":"N/A","Driver":"local","Group":"N/A","Labels":"","Links":"N/A","Mountpoint":"/var/lib/docker/volumes/fixture-db/_data","Name":"fixture-db","Scope":"local","Size":"N/A","Status":"N/A"}
+{"Availability":"N/A","Driver":"local","Group":"N/A","Labels":"","Links":"N/A","Mountpoint":"/var/lib/docker/volumes/fixture-orphan/_data","Name":"fixture-orphan","Scope":"local","Size":"N/A","Status":"N/A"}
+{"Availability":"N/A","Driver":"some-cloud-plugin","Group":"N/A","Labels":"","Links":"N/A","Mountpoint":"/plugin/fixture-remote","Name":"fixture-remote","Scope":"global","Size":"N/A","Status":"N/A"}

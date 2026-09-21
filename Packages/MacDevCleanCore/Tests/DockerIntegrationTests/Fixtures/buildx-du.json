@@ -1,0 +1,3 @@
+{"ID":"cache0001","Parents":[],"CreatedAt":"2026-01-01T00:00:00Z","Mutable":false,"Reclaimable":true,"Shared":false,"Size":"4096","Description":"pulled from docker.io/library/fixture","UsageCount":1,"LastUsedAt":"2026-01-02T00:00:00Z","Type":"regular"}
+{"ID":"cache0002","Parents":[],"CreatedAt":"2026-01-01T00:00:00Z","Mutable":false,"Reclaimable":true,"Shared":true,"Size":"8192","Description":"shared base layer","UsageCount":4,"LastUsedAt":"2026-01-02T00:00:00Z","Type":"regular"}
+{"ID":"cache0003","Parents":[],"CreatedAt":"2026-01-01T00:00:00Z","Mutable":true,"Reclaimable":false,"Shared":false,"Size":"1024","Description":"active build mount","UsageCount":1,"LastUsedAt":"2026-01-02T00:00:00Z","Type":"exec.cachemount"}

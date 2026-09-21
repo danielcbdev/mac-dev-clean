@@ -18,6 +18,17 @@ public enum TrashOutcomeError: Error, Sendable, Equatable {
     case movedButResultingLocationUnknown
 }
 
+/// Failures a Docker implementation can report that are not policy decisions.
+public enum DockerOutcomeError: Error, Sendable, Equatable {
+    /// The write did not report back and inspecting afterwards could not settle
+    /// whether it took effect.
+    ///
+    /// A Docker removal cannot be rolled back and must not be retried blindly:
+    /// a retry could remove something recreated in the meantime. The session
+    /// records the outcome as unknown and stops.
+    case indeterminate
+}
+
 /// Observes free space on a volume.
 ///
 /// Free-space deltas are observations, never causal proof. Other processes,
