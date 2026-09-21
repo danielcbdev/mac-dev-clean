@@ -1,0 +1,24 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "MacDevClean" : {
+      "comment" : "The application name. A brand name: it is not translated.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MacDevClean"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MacDevClean"
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
