@@ -38,8 +38,32 @@ public struct ProjectDiscovery: Sendable {
         self.maximumDepth = maximumDepth
     }
 
+    /// A subtree that could not be read, reported rather than swallowed.
+    public struct DiscoveryIssue: Sendable, Equatable {
+        public let code: String
+        public let url: URL
+
+        public init(code: String, url: URL) {
+            self.code = code
+            self.url = url
+        }
+    }
+
+    public struct DiscoveryResult: Sendable {
+        public let projects: [URL]
+        public let issues: [DiscoveryIssue]
+        /// Directory entries looked at, for progress reporting.
+        public let visited: Int
+    }
+
     public func projects(in root: URL) async throws -> [URL] {
+        try await discover(in: root).projects
+    }
+
+    public func discover(in root: URL) async throws -> DiscoveryResult {
         var found: [URL] = []
+        var issues: [DiscoveryIssue] = []
+        var visited = 0
         var pending: [(url: URL, depth: Int)] = [(root, 0)]
 
         while let current = pending.popLast() {
@@ -49,10 +73,14 @@ public struct ProjectDiscovery: Sendable {
             do {
                 children = try await files.children(of: current.url)
             } catch {
-                // An unreadable subtree is not fatal. Everything else the root
-                // contains still counts.
+                // An unreadable subtree is not fatal: everything else the root
+                // contains still counts. It is reported, never hidden.
+                issues.append(
+                    DiscoveryIssue(code: Self.issueCode(for: error), url: current.url)
+                )
                 continue
             }
+            visited += children.count
 
             if children.contains(where: { Self.isManifest($0) }) {
                 found.append(current.url)
@@ -65,7 +93,18 @@ public struct ProjectDiscovery: Sendable {
             }
         }
 
-        return found.sorted { $0.path < $1.path }
+        return DiscoveryResult(
+            projects: found.sorted { $0.path < $1.path },
+            issues: issues,
+            visited: visited
+        )
+    }
+
+    static func issueCode(for error: any Error) -> String {
+        switch error {
+        case PolicyError.permissionDenied: return ScanIssueCode.permissionDenied
+        default: return ScanIssueCode.unreadable
+        }
     }
 
     static func isManifest(_ entry: FileEntry) -> Bool {

@@ -33,6 +33,8 @@ public let maximumEvidenceBytes = 256 * 1024
 public enum ScanIssueCode {
     /// A subtree could not be read. Everything else in the scan still counts.
     public static let permissionDenied = "issue.permissionDenied"
+    /// A subtree could not be read for a reason other than permissions.
+    public static let unreadable = "issue.unreadable"
     /// The item exists but its size could not be measured. It stays visible and
     /// stays out of every total.
     public static let sizeUnavailable = "issue.sizeUnavailable"
