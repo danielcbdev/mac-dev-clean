@@ -1,0 +1,39 @@
+// Not part of any build target. `scripts/check-token-access.sh` type-checks
+// this file against the built modules and requires it to FAIL.
+//
+// If this ever compiles, the safety boundary is gone: code outside the Cleanup
+// target would be able to mint an authorisation the validator never issued, and
+// hand it straight to the executor.
+import Foundation
+
+import Cleanup
+import Domain
+
+func forgeAnAuthorisation() -> ValidatedCleanupPlan {
+    let candidate = CleanupCandidate(
+        id: UUID(),
+        ruleID: "node.modules",
+        location: .file(URL(fileURLWithPath: "/Users/someone/Documents")),
+        category: .node,
+        size: nil,
+        allocatedSize: nil,
+        risk: .low,
+        method: .trash,
+        consequenceKey: "impact.reinstallDependencies"
+    )
+    let evidence = CandidateEvidence(
+        identity: nil,
+        allowedRoot: nil,
+        contextFingerprint: nil,
+        ruleEvidenceDigest: ""
+    )
+
+    // Both of these initialisers are internal to Cleanup.
+    let item = ValidatedCleanupItem(candidate: candidate, evidence: evidence)
+    return ValidatedCleanupPlan(
+        id: UUID(),
+        items: [item],
+        expiresAt: Date.distantFuture,
+        policyRevision: 0
+    )
+}

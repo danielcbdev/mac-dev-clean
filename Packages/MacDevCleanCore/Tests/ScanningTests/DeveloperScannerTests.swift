@@ -57,8 +57,11 @@ final class DeveloperScannerTests: XCTestCase {
         let snapshot = try await harness.scan()
 
         XCTAssertEqual(
-            snapshot.candidates.map { $0.location },
-            [.file(tree.root.appendingPathComponent("work/app/node_modules"))]
+            snapshot.candidates.compactMap { candidate -> String? in
+                guard case .file(let url) = candidate.location else { return nil }
+                return url.standardizedFileURL.path
+            },
+            [tree.root.appendingPathComponent("work/app/node_modules").standardizedFileURL.path]
         )
     }
 
