@@ -3,11 +3,10 @@ import Foundation
 
 /// Settings and history kept in memory for the duration of one launch.
 ///
-/// This is the intermediate arrangement: it lets the shell be exercised end to
-/// end before durable storage exists. Because it is **not** durable, the app
-/// refuses to perform real cleanup while this is the composed journal — a
-/// cleanup whose record would vanish on quit is not something to offer.
-/// Plan 07 replaces it with SwiftData.
+/// Durable storage is `SwiftDataRepositories`. This remains as the fallback for
+/// two cases: the fixture composition used by automation, and a launch where
+/// the real store could not be opened. In the second case cleanup is disabled,
+/// because a cleanup whose record vanishes on quit is not something to offer.
 actor SessionRepositories: SettingsRepository, HistoryRepository {
     private var storedPreferences = AppPreferences()
     private var storedRoots: [ScanRoot] = []

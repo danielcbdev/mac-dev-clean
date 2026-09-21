@@ -61,6 +61,11 @@ let package = Package(
             swiftSettings: coreSettings
         ),
         .testTarget(
+            name: "PersistenceTests",
+            dependencies: ["Persistence", "Domain", "TestSupport"],
+            swiftSettings: coreSettings
+        ),
+        .testTarget(
             name: "DockerIntegrationTests",
             dependencies: ["DockerIntegration", "Domain", "TestSupport"],
             resources: [.copy("Fixtures")],

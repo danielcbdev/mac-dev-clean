@@ -5,11 +5,11 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 ## Current state
 
-- **Plan:** 06 Large Files (`docs/superpowers/plans/2026-09-21-06-large-files.md`)
-- **Branch:** feat/large-files
-- **Last completed task:** 06 Task 2 — Large Files interface and shared review
-- **Next step:** merge `feat/large-files` into `develop`, then start plan 07 on
-  `feat/history-and-exclusions`
+- **Plan:** 07 persistence (`docs/superpowers/plans/2026-09-21-07-persistence.md`)
+- **Branch:** feat/history-and-exclusions
+- **Last completed task:** 07 Task 2 — exclusions, settings and history screens
+- **Next step:** merge `feat/history-and-exclusions` into `develop`, then start
+  plan 08 on `feat/localization-accessibility`
 - **Blockers:** the XCUITest gate is unavailable on this machine. Ten UI tests
   are written and compile but cannot run: the app launches with no window
   visible to the accessibility interface. The committed plan 04 baseline fails
@@ -39,8 +39,8 @@ pushed. Publication requires separate authorization.
 | 03 cleanup | feat/cleanup-safety | merged into develop |
 | 04 Docker | feat/docker-integration | merged into develop |
 | 05 interface | feat/app-shell | merged into develop |
-| 06 large files | feat/large-files | in progress |
-| 07 persistence | feat/history-and-exclusions | not started |
+| 06 large files | feat/large-files | merged into develop |
+| 07 persistence | feat/history-and-exclusions | in progress |
 | 08 quality | feat/localization-accessibility | not started |
 | 09 distribution | chore/release-pipeline | not started |
 
@@ -57,6 +57,7 @@ exact command, its exit status, the toolchain, the date and known omissions.
 | 04 Docker | [04-docker.md](verification/04-docker.md) | `bash scripts/verify.sh` exit 0, 202 tests, 0 failures |
 | 05 interface | [05-interface.md](verification/05-interface.md) | 222 tests run, 0 failures; **10 UI tests NOT RUN** |
 | 06 large files | [06-large-files.md](verification/06-large-files.md) | 242 tests run, 0 failures; **13 UI tests NOT RUN** |
+| 07 persistence | [07-persistence.md](verification/07-persistence.md) | 271 tests run, 0 failures; **17 UI tests NOT RUN** |
 
 ## Known external blockers
 

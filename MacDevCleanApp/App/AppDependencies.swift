@@ -3,6 +3,7 @@ import CleanupRules
 import DockerIntegration
 import Domain
 import Foundation
+import Persistence
 import Scanning
 
 /// The composition root.
@@ -38,6 +39,22 @@ struct AppDependencies {
     /// True when the process was launched by automated UI tests.
     let isUITesting: Bool
 
+    /// Set when durable storage could not be opened. The store on disk is left
+    /// exactly as it is — never deleted, never recreated — cleanup is disabled,
+    /// and the interface says why.
+    let storageFailureCode: String?
+
+    /// Where durable storage lives.
+    static func storeURL() throws -> URL {
+        let support = try FileManager.default.url(
+            for: .applicationSupportDirectory, in: .userDomainMask,
+            appropriateFor: nil, create: true)
+        return
+            support
+            .appendingPathComponent("MacDevClean", isDirectory: true)
+            .appendingPathComponent("store.sqlite")
+    }
+
     static func live(arguments: [String] = CommandLine.arguments) -> AppDependencies {
         let isUITesting = arguments.contains("--ui-testing")
 
@@ -47,10 +64,21 @@ struct AppDependencies {
             }
         #endif
 
-        // Release, and ordinary Debug launches: the real services, with cleanup
-        // held back until its history can be recorded durably.
+        // Release, and ordinary Debug launches: the real services over durable
+        // storage. If that storage cannot be opened, the app still scans and
+        // explains, but it will not act: a cleanup nobody can audit afterwards
+        // is not offered.
         let store = InMemoryCandidateStore()
-        let settings = SessionRepositories()
+        var storageFailureCode: String?
+        let durable: SwiftDataRepositories?
+        do {
+            durable = try SwiftDataRepositories.make(containerURL: try storeURL())
+        } catch {
+            durable = nil
+            storageFailureCode = PolicyError.journalUnavailable.rawValue
+        }
+        let settings: any SettingsRepository & HistoryRepository =
+            durable ?? SessionRepositories()
         let context = AppSafetyContextProvider(settings: settings, store: store)
         let files = LocalFileSystem()
         let catalog = RuleCatalog()
@@ -85,8 +113,11 @@ struct AppDependencies {
             picker: NativeFolderPicker(),
             workspace: NativeWorkspaceOpener(),
             home: URL(fileURLWithPath: NSHomeDirectory()),
-            cleanupEnabled: settings.isDurable,
-            isUITesting: isUITesting
+            // Real side effects are offered only when the record of them will
+            // survive quitting the app.
+            cleanupEnabled: durable != nil,
+            isUITesting: isUITesting,
+            storageFailureCode: storageFailureCode
         )
     }
 
@@ -147,7 +178,8 @@ struct AppDependencies {
                 // The side effects are fakes, so the flow can be exercised end
                 // to end without touching anything real.
                 cleanupEnabled: true,
-                isUITesting: true
+                isUITesting: true,
+                storageFailureCode: nil
             )
         }
     #endif
