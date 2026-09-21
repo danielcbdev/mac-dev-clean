@@ -19,8 +19,13 @@ final class RootCoordinator {
     let scanModel: ScanModel
     let reviewModel: ReviewModel
     let rootSelection: RootSelectionModel
+    let largeFiles: LargeFilesModel
 
     private(set) var roots: [ScanRoot] = []
+    /// Which snapshot and which identifiers the open review refers to. Set by
+    /// `review(scanID:ids:)` so Caches and Large Files share one path.
+    private(set) var activeScanID: UUID?
+    private(set) var activeSelection: Set<UUID> = []
     private(set) var includeGlobalCaches = true
 
     init(dependencies: AppDependencies) {
@@ -32,6 +37,13 @@ final class RootCoordinator {
             settings: dependencies.settings,
             picker: dependencies.picker,
             home: dependencies.home)
+        let context = dependencies.context
+        largeFiles = LargeFilesModel(
+            scanner: dependencies.largeFileScanner,
+            picker: dependencies.picker,
+            workspace: dependencies.workspace,
+            applyRoots: { roots in await context.setLargeFileRoots(roots) }
+        )
     }
 
     // MARK: - Lifecycle
@@ -89,6 +101,19 @@ final class RootCoordinator {
 
     // MARK: - Review
 
+    /// Opens the review for an explicit snapshot and selection.
+    ///
+    /// Shared by Caches and Large Files, so both go through the same
+    /// validation, the same acknowledgments and the same results screen.
+    func review(scanID: UUID, ids: Set<UUID>) {
+        guard !ids.isEmpty else { return }
+        activeScanID = scanID
+        activeSelection = ids
+        reviewModel.contentChanged(to: ids)
+        isReviewing = true
+        state = .reviewing
+    }
+
     func openReview() {
         guard !scanModel.selectedIDs.isEmpty else {
             // Nothing selected yet: send the user where selection happens
@@ -96,9 +121,7 @@ final class RootCoordinator {
             destination = .caches
             return
         }
-        reviewModel.contentChanged(to: scanModel.selectedIDs)
-        isReviewing = true
-        state = .reviewing
+        review(scanID: scanModel.snapshot?.id ?? UUID(), ids: scanModel.selectedIDs)
     }
 
     func closeReview() {
@@ -107,9 +130,9 @@ final class RootCoordinator {
     }
 
     func confirmCleanup() async {
-        guard let scanID = scanModel.snapshot?.id, dependencies.cleanupEnabled else { return }
+        guard let scanID = activeScanID, dependencies.cleanupEnabled else { return }
         state = .cleaning
-        await reviewModel.confirm(scanID: scanID, ids: scanModel.selectedIDs)
+        await reviewModel.confirm(scanID: scanID, ids: activeSelection)
         state = .completed
     }
 
@@ -126,6 +149,15 @@ final class RootCoordinator {
         isReviewing = false
         scanModel.clearSelection()
         state = .idle
+    }
+
+    /// The candidates the open review refers to, resolved from whichever
+    /// snapshot they came from.
+    var reviewedCandidates: [CleanupCandidate] {
+        let fromScan = scanModel.candidates.filter { activeSelection.contains($0.id) }
+        guard fromScan.isEmpty else { return fromScan }
+        return largeFiles.snapshot?.candidates
+            .filter { activeSelection.contains($0.id) } ?? []
     }
 
     func reveal(_ url: URL) { dependencies.workspace.reveal(url) }

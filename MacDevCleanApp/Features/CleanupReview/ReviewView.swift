@@ -13,11 +13,16 @@ struct ReviewView: View {
 
     @State private var showingIrreversibleStep = false
 
+    /// Everything under review, wherever it was selected. Caches fills this
+    /// from the scan snapshot; Large Files fills it from its own.
+    private var reviewed: [CleanupCandidate] {
+        coordinator.reviewedCandidates
+    }
     private var trashItems: [CleanupCandidate] {
-        model.selectedCandidates.filter { $0.method == .trash }
+        reviewed.filter { $0.method == .trash }
     }
     private var dockerItems: [CleanupCandidate] {
-        model.selectedCandidates.filter { $0.method != .trash }
+        reviewed.filter { $0.method != .trash }
     }
 
     var body: some View {
@@ -29,7 +34,7 @@ struct ReviewView: View {
                     coordinator: coordinator,
                     review: review,
                     dockerItems: dockerItems,
-                    highRiskItems: model.selectedCandidates.filter { $0.risk == .high },
+                    highRiskItems: reviewed.filter { $0.risk == .high },
                     onBack: { showingIrreversibleStep = false }
                 )
             } else {
@@ -37,8 +42,8 @@ struct ReviewView: View {
             }
         }
         .navigationTitle(Text("Review cleanup"))
-        .onAppear { review.contentChanged(to: model.selectedIDs) }
-        .onChange(of: model.selectedIDs) { _, new in review.contentChanged(to: new) }
+        .onAppear { review.contentChanged(to: coordinator.activeSelection) }
+        .onChange(of: coordinator.activeSelection) { _, new in review.contentChanged(to: new) }
     }
 
     private var content: some View {
@@ -195,7 +200,7 @@ struct ReviewView: View {
 
             Spacer()
 
-            if !dockerItems.isEmpty || model.hasHighRiskSelection {
+            if !dockerItems.isEmpty || reviewed.contains(where: { $0.risk == .high }) {
                 Button("Review irreversible actions") { showingIrreversibleStep = true }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
