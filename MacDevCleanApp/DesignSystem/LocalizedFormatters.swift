@@ -24,12 +24,12 @@ enum LocalizedFormatters {
     private static func localized(_ key: String, locale: Locale) -> String {
         let identifiers = [
             locale.identifier.replacingOccurrences(of: "_", with: "-"),
-            locale.language.languageCode?.identifier
+            locale.language.languageCode?.identifier,
         ].compactMap { $0 }
 
         for identifier in identifiers {
             if let path = Bundle.main.path(forResource: identifier, ofType: "lproj"),
-               let bundle = Bundle(path: path)
+                let bundle = Bundle(path: path)
             {
                 return bundle.localizedString(forKey: key, value: key, table: nil)
             }

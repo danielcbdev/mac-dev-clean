@@ -48,6 +48,14 @@ xcodebuild -workspace MacDevClean.xcworkspace -scheme MacDevClean \
 echo "==> Cleanup authority boundary"
 bash scripts/check-token-access.sh
 
+echo "==> Localization catalog"
+bash scripts/tests/check-localization-tests.sh
+swift scripts/check-localization.swift
+
+echo "==> Static cleanup and privacy policy"
+bash scripts/tests/check-policy-tests.sh
+bash scripts/check-policy.sh
+
 echo "==> Lint"
 bash scripts/lint.sh
 
