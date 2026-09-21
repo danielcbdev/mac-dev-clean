@@ -1,0 +1,39 @@
+// Not part of any build target. `scripts/check-token-access.sh` type-checks
+// this file against the built modules and requires it to SUCCEED.
+//
+// It is the control for the forged-token check: it proves the public surface of
+// Cleanup really is usable from outside, so a failure over there is about
+// access control rather than about the fixture being broken.
+import Foundation
+
+import Cleanup
+import Domain
+
+func useThePublicSurface(
+    validator: any CleanupPlanValidating,
+    executor: any CleanupExecuting,
+    scanID: UUID,
+    candidateID: UUID
+) async throws {
+    let selection = CleanupSelection(
+        scanID: scanID,
+        candidateIDs: [candidateID],
+        acknowledgedIrreversible: false,
+        acknowledgedHighRisk: false
+    )
+
+    let issues: [ValidationIssue] = await validator.inspect(selection)
+    _ = issues.map(\.code)
+
+    // The only way to obtain a plan: ask the validator for one.
+    let plan = try await validator.validate(selection)
+    _ = plan.id
+    _ = plan.expiresAt
+    _ = plan.items.map(\.candidate.ruleID)
+
+    for await event in executor.execute(plan) {
+        if case let .finished(summary) = event {
+            _ = summary.bytesMovedToTrash
+        }
+    }
+}

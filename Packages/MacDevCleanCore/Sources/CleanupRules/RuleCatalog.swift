@@ -70,7 +70,7 @@ public struct RuleCatalog: Sendable {
                 result.append(
                     RuleMatch(
                         ruleID: "node.modules",
-                        url: project.appendingPathComponent("node_modules"),
+                        url: Self.child(of: project, named: "node_modules"),
                         category: .node,
                         risk: .low,
                         consequenceKey: ConsequenceKey.reinstallDependencies,
@@ -87,7 +87,7 @@ public struct RuleCatalog: Sendable {
                 result.append(
                     RuleMatch(
                         ruleID: "node.turbo",
-                        url: project.appendingPathComponent(".turbo"),
+                        url: Self.child(of: project, named: ".turbo"),
                         category: .node,
                         risk: .low,
                         consequenceKey: ConsequenceKey.rebuildOutput,
@@ -122,7 +122,7 @@ public struct RuleCatalog: Sendable {
                 result.append(
                     RuleMatch(
                         ruleID: ruleID,
-                        url: project.appendingPathComponent(name),
+                        url: Self.child(of: project, named: name),
                         category: category,
                         risk: .low,
                         consequenceKey: consequence,
@@ -163,7 +163,7 @@ public struct RuleCatalog: Sendable {
             return nil
         }
 
-        let dist = project.appendingPathComponent("dist")
+        let dist = Self.child(of: project, named: "dist")
         let repository = project
 
         // Any Git failure is a skip, never an assumption.
@@ -226,7 +226,7 @@ public struct RuleCatalog: Sendable {
         files: any FileSystemClient
     ) async throws -> Data? {
         try? await files.readPrefix(
-            at: project.appendingPathComponent(name),
+            at: child(of: project, named: name),
             limit: maximumEvidenceBytes
         )
     }
@@ -268,12 +268,21 @@ public struct RuleCatalog: Sendable {
         return normalized == "dist" || normalized == "dist/"
     }
 
+    /// One canonical spelling for a child path.
+    ///
+    /// `appendingPathComponent` stats the filesystem and adds a trailing slash
+    /// for an existing directory, so the same location can otherwise be spelled
+    /// two ways that do not compare equal.
+    static func child(of parent: URL, named name: String) -> URL {
+        URL(fileURLWithPath: parent.appendingPathComponent(name).path, isDirectory: false)
+    }
+
     private static func isDirectory(
         _ name: String,
         in project: URL,
         files: any FileSystemClient
     ) async throws -> Bool {
-        guard let entry = try? await files.entry(at: project.appendingPathComponent(name)) else {
+        guard let entry = try? await files.entry(at: child(of: project, named: name)) else {
             return false
         }
         // A symbolic link is never an artifact, whatever it points at.
@@ -285,7 +294,7 @@ public struct RuleCatalog: Sendable {
         in project: URL,
         files: any FileSystemClient
     ) async throws -> Bool {
-        guard let entry = try? await files.entry(at: project.appendingPathComponent(name)) else {
+        guard let entry = try? await files.entry(at: child(of: project, named: name)) else {
             return false
         }
         return entry.kind == .file && !entry.isCloudPlaceholder

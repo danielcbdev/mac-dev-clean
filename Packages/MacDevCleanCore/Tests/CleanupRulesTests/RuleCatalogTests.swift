@@ -72,7 +72,10 @@ final class RuleCatalogTests: XCTestCase {
         )
 
         let match = try XCTUnwrap(matches.first { $0.ruleID == "node.modules" })
-        XCTAssertEqual(match.url, tree.root.appendingPathComponent("node_modules"))
+        XCTAssertEqual(
+            match.url.standardizedFileURL.path,
+            tree.root.appendingPathComponent("node_modules").standardizedFileURL.path
+        )
         XCTAssertEqual(match.category, .node)
         XCTAssertEqual(match.risk, .low)
         XCTAssertEqual(match.allowedRoot, tree.root)

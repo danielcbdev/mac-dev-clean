@@ -51,6 +51,14 @@ let package = Package(
             swiftSettings: coreSettings
         ),
         .testTarget(
+            name: "CleanupTests",
+            dependencies: ["Cleanup", "Domain", "TestSupport"],
+            // Type-checked by scripts/check-token-access.sh against the built
+            // modules, deliberately not compiled as part of any target.
+            exclude: ["CompileFailures"],
+            swiftSettings: coreSettings
+        ),
+        .testTarget(
             name: "CleanupRulesTests",
             dependencies: ["CleanupRules", "Scanning", "Domain", "TestSupport"],
             swiftSettings: coreSettings

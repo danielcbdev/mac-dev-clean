@@ -9,6 +9,24 @@ public protocol TrashClient: Sendable {
     func moveToTrash(_ url: URL) async throws -> URL
 }
 
+/// Failures a Trash implementation can report that are not policy decisions.
+public enum TrashOutcomeError: Error, Sendable, Equatable {
+    /// The move succeeded but the Trash did not report where the item landed.
+    ///
+    /// The item **has moved**. This is never a reason to move it again; the
+    /// outcome is recorded as indeterminate and the session stops scheduling.
+    case movedButResultingLocationUnknown
+}
+
+/// Observes free space on a volume.
+///
+/// Free-space deltas are observations, never causal proof. Other processes,
+/// APFS clones, snapshots, hard links and Docker's virtual machine all move
+/// this number. It is reported alongside bytes moved, never as the same thing.
+public protocol FreeSpaceObserving: Sendable {
+    func availableBytes(on url: URL) async -> Int64?
+}
+
 /// Durable record of a cleanup session, written around each side effect.
 ///
 /// A journal failure *before* a side effect aborts execution. If recording

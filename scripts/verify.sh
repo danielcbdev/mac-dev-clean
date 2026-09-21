@@ -27,6 +27,9 @@ xcodebuild -workspace MacDevClean.xcworkspace -scheme MacDevClean \
     -configuration Release -destination 'platform=macOS' \
     -derivedDataPath .build/release build CODE_SIGNING_ALLOWED=NO
 
+echo "==> Cleanup authority boundary"
+bash scripts/check-token-access.sh
+
 echo "==> Lint"
 bash scripts/lint.sh
 
