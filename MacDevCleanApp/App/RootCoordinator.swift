@@ -20,6 +20,9 @@ final class RootCoordinator {
     let reviewModel: ReviewModel
     let rootSelection: RootSelectionModel
     let largeFiles: LargeFilesModel
+    let history: HistoryModel
+    let exclusionsModel: ExclusionsModel
+    let settings: SettingsModel
 
     private(set) var roots: [ScanRoot] = []
     /// Which snapshot and which identifiers the open review refers to. Set by
@@ -38,6 +41,16 @@ final class RootCoordinator {
             picker: dependencies.picker,
             home: dependencies.home)
         let context = dependencies.context
+        history = HistoryModel(
+            repository: dependencies.history, workspace: dependencies.workspace)
+        exclusionsModel = ExclusionsModel(
+            repository: dependencies.settings,
+            invalidate: { await context.invalidateAfterSettingsChange() },
+            picker: dependencies.picker)
+        settings = SettingsModel(
+            repository: dependencies.settings,
+            invalidate: { await context.invalidateAfterSettingsChange() },
+            picker: dependencies.picker)
         largeFiles = LargeFilesModel(
             scanner: dependencies.largeFileScanner,
             picker: dependencies.picker,
@@ -145,7 +158,8 @@ final class RootCoordinator {
         guard !current.contains(exclusion) else { return }
         current.append(exclusion)
         try? await dependencies.settings.saveExclusions(current)
-        await dependencies.context.invalidate()
+        await dependencies.context.invalidateAfterSettingsChange()
+        await exclusionsModel.load()
         isReviewing = false
         scanModel.clearSelection()
         state = .idle

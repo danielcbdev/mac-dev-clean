@@ -97,38 +97,13 @@ struct ContentView: View {
                         """
                 )
             case .history:
-                UpcomingFeatureView(
-                    destination: .history,
-                    symbol: "clock",
-                    title: "History is not kept yet",
-                    message:
-                        """
-                        MacDevClean will record what it removed once it can store that \
-                        somewhere that survives quitting the app. Nothing is being hidden: \
-                        nothing is being recorded.
-                        """
-                )
+                HistoryView(model: coordinator.history)
             case .exclusions:
-                UpcomingFeatureView(
-                    destination: .exclusions,
-                    symbol: "hand.raised",
-                    title: "Exclusions are not managed here yet",
-                    message:
-                        """
-                        You can already skip an item from its context menu in Caches. A screen \
-                        for reviewing and editing every exclusion comes next.
-                        """
-                )
+                ExclusionsView(model: coordinator.exclusionsModel)
             case .settings:
-                UpcomingFeatureView(
-                    destination: .settings,
-                    symbol: "gearshape",
-                    title: "Settings is not built yet",
-                    message:
-                        """
-                        Project folders, language, appearance and history retention will live \
-                        here.
-                        """
+                SettingsView(
+                    model: coordinator.settings,
+                    cleanupEnabled: coordinator.dependencies.cleanupEnabled
                 )
             }
         }

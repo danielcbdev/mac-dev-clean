@@ -54,6 +54,14 @@ actor AppSafetyContextProvider: SafetyContextProviding {
         await store.invalidate()
     }
 
+    /// Called after roots or exclusions change in Settings or Exclusions.
+    ///
+    /// A cleanup already running re-reads the context before each item, so it
+    /// sees the new revision and refuses anything the change invalidated.
+    func invalidateAfterSettingsChange() async {
+        await invalidate()
+    }
+
     func setLargeFileRoots(_ roots: [URL]) async {
         largeFileRoots = roots
         await invalidate()
