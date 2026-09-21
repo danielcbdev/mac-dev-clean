@@ -30,6 +30,9 @@ public final class MutableTestClock: ClockProviding, @unchecked Sendable {
 public actor RecordingTrash: TrashClient {
     private var requests: [URL] = []
     private var failures: [String: any Error] = [:]
+    private var pauseAfterCalls = Int.max
+    private var released = false
+    private var waiters: [CheckedContinuation<Void, Never>] = []
 
     public init() {}
 
@@ -39,7 +42,26 @@ public actor RecordingTrash: TrashClient {
         failures[url.standardizedFileURL.path] = error
     }
 
+    /// Blocks once this many moves have been requested, so a test can hold the
+    /// executor mid-run and observe what it does next instead of racing it.
+    public func pause(after calls: Int) {
+        pauseAfterCalls = calls
+    }
+
+    public func release() {
+        released = true
+        let pending = waiters
+        waiters.removeAll()
+        for waiter in pending { waiter.resume() }
+    }
+
+    private func pauseIfNeeded() async {
+        guard !released, requests.count >= pauseAfterCalls else { return }
+        await withCheckedContinuation { waiters.append($0) }
+    }
+
     public func moveToTrash(_ url: URL) async throws -> URL {
+        await pauseIfNeeded()
         if let failure = failures[url.standardizedFileURL.path] {
             throw failure
         }
