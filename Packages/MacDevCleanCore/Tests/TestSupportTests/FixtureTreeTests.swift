@@ -1,6 +1,5 @@
-import XCTest
-
 import TestSupport
+import XCTest
 
 final class FixtureTreeTests: XCTestCase {
     func testRejectsParentTraversalAndWritesNothingOutsideItsRoot() throws {
@@ -35,7 +34,8 @@ final class FixtureTreeTests: XCTestCase {
         let url = try tree.file("project/node_modules/big.bin", bytes: 4096)
 
         XCTAssertTrue(url.path.hasPrefix(tree.root.path))
-        let size = try FileManager.default
+        let size =
+            try FileManager.default
             .attributesOfItem(atPath: url.path)[.size] as? Int
         XCTAssertEqual(size, 4096)
     }
@@ -47,7 +47,8 @@ final class FixtureTreeTests: XCTestCase {
         let target = try tree.directory("real")
         let link = try tree.symlink("link", to: target)
 
-        let kind = try FileManager.default
+        let kind =
+            try FileManager.default
             .attributesOfItem(atPath: link.path)[.type] as? FileAttributeType
         XCTAssertEqual(kind, .typeSymbolicLink)
     }

@@ -1,6 +1,5 @@
-import XCTest
-
 import Domain
+import XCTest
 
 final class DefaultsTests: XCTestCase {
     func testNoAutomaticScanOrDeletion() {
