@@ -196,6 +196,7 @@ struct ReviewView: View {
     private var footer: some View {
         HStack(spacing: 16) {
             Button("Back") { coordinator.closeReview() }
+                .keyboardShortcut(.escape, modifiers: [])
                 .accessibilityIdentifier("cleanup.back")
 
             Spacer()

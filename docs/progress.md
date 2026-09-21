@@ -7,9 +7,8 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 - **Plan:** 08 quality (`docs/superpowers/plans/2026-09-21-08-quality.md`)
 - **Branch:** feat/localization-accessibility
-- **Last completed task:** 08 Task 1 — localization completeness and honest
-  interface copy
-- **Next step:** 08 Task 2 — accessibility and window resilience
+- **Last completed task:** 08 Task 2 — accessibility and window resilience
+- **Next step:** 08 Task 3 — performance, privacy and regression gates
 - **Blockers:** the XCUITest gate is unavailable on this machine. Ten UI tests
   are written and compile but cannot run: the app launches with no window
   visible to the accessibility interface. The committed plan 04 baseline fails

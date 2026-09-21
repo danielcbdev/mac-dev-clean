@@ -5,6 +5,7 @@ import SwiftUI
 struct OverviewView: View {
     @Bindable var coordinator: RootCoordinator
     @Bindable var model: ScanModel
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ScrollView {
@@ -30,6 +31,7 @@ struct OverviewView: View {
             }
             .padding(Layout.contentInset)
         }
+        .animation(reduceMotion ? nil : .easeOut(duration: 0.2), value: model.isScanning)
         .navigationTitle(Text("Overview"))
     }
 
