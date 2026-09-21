@@ -5,11 +5,11 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 ## Current state
 
-- **Plan:** 03 cleanup safety (`docs/superpowers/plans/2026-09-21-03-cleanup.md`)
-- **Branch:** feat/cleanup-safety
-- **Last completed task:** 03 Task 3 — journal reliability and truthful accounting
-- **Next step:** merge `feat/cleanup-safety` into `develop`, then start
-  plan 04 on `feat/docker-integration`
+- **Plan:** 04 Docker integration (`docs/superpowers/plans/2026-09-21-04-docker.md`)
+- **Branch:** feat/docker-integration
+- **Last completed task:** 04 Task 3 — exact-target commands and write revalidation
+- **Next step:** merge `feat/docker-integration` into `develop`, then start
+  plan 05 on `feat/app-shell`
 - **Blockers:** none
 
 ## Repository baseline
@@ -32,8 +32,8 @@ pushed. Publication requires separate authorization.
 |---|---|---|
 | 01 foundation | feat/project-foundation | merged into develop |
 | 02 scanning | feat/scanning-engine | merged into develop |
-| 03 cleanup | feat/cleanup-safety | in progress |
-| 04 Docker | feat/docker-integration | not started |
+| 03 cleanup | feat/cleanup-safety | merged into develop |
+| 04 Docker | feat/docker-integration | in progress |
 | 05 interface | feat/app-shell | not started |
 | 06 large files | feat/large-files | not started |
 | 07 persistence | feat/history-and-exclusions | not started |
@@ -50,6 +50,7 @@ exact command, its exit status, the toolchain, the date and known omissions.
 | 01 foundation | [01-foundation.md](verification/01-foundation.md) | `bash scripts/verify.sh` exit 0, 11 tests, 0 failures |
 | 02 scanning | [02-scanning.md](verification/02-scanning.md) | `bash scripts/verify.sh` exit 0, 87 tests, 0 failures |
 | 03 cleanup | [03-cleanup.md](verification/03-cleanup.md) | `bash scripts/verify.sh` exit 0, 126 tests, 0 failures |
+| 04 Docker | [04-docker.md](verification/04-docker.md) | `bash scripts/verify.sh` exit 0, 202 tests, 0 failures |
 
 ## Known external blockers
 

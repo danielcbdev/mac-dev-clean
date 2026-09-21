@@ -272,6 +272,18 @@ private actor Runner {
                     errorCode: nil,
                     finishedAt: now
                 )
+            } catch DockerOutcomeError.indeterminate {
+                // The write did not report back and inspecting afterwards could
+                // not settle it. A Docker removal cannot be rolled back and is
+                // never retried blindly.
+                return CleanupRecord(
+                    id: candidate.id,
+                    candidate: candidate,
+                    outcome: .indeterminate,
+                    resultingTrashURL: nil,
+                    errorCode: "dockerIndeterminate",
+                    finishedAt: now
+                )
             } catch let error as PolicyError {
                 // A Docker write interrupted part way cannot be rolled back and
                 // is not claimed to have been.
