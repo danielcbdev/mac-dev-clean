@@ -66,6 +66,21 @@ Moving to Trash does not free space. Report bytes moved to Trash, Docker
 reported reclaim and observed free-space delta separately, and never present a
 sum moved as space freed. Never claim a general performance improvement.
 
+## Verification
+
+```bash
+bash scripts/verify.sh
+```
+
+It runs the package tests, the Debug app and UI tests, an unsigned Release
+build, `scripts/lint.sh` and `git diff --check`, and exits 0 only if every check
+passed. The Debug test action is signed ad hoc on purpose; see
+`docs/adr/0002-toolchain.md`.
+
+Record the real command, exit status, toolchain, date and known omissions in
+`docs/verification/<milestone>.md`. A check that did not run is recorded as not
+run, never as a pass.
+
 ## Prohibited in commits
 
 Secrets, signing credentials, `.p12`/`.p8` files, keychains, personal absolute

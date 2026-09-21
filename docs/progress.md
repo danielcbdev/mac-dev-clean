@@ -7,8 +7,9 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 - **Plan:** 01 foundation (`docs/superpowers/plans/2026-09-21-01-foundation.md`)
 - **Branch:** feat/project-foundation
-- **Last completed task:** 01 Task 1 — agent policy and repository bootstrap
-- **Next step:** 01 Task 2 — launchable app and isolated package
+- **Last completed task:** 01 Task 3 — reproducible verification and CI
+- **Next step:** merge `feat/project-foundation` into `develop`, then start
+  plan 02 on `feat/scanning-engine`
 - **Blockers:** none
 
 ## Repository baseline
@@ -20,7 +21,7 @@ it was preserved rather than reinitialized, as plan 01 Task 1 requires.
 |---|---|---|
 | `8b3b588` | 2026-09-21 | initial commit (planning bundle) |
 | `7ec895d` | 2026-09-21 | Update binary files (.DS_Store housekeeping) |
-| _see below_ | 2026-09-21 | docs: establish MacDevClean specification and engineering policy |
+| `30e0ffe` | 2026-09-21 | docs: establish MacDevClean specification and engineering policy |
 
 A remote named `origin` already existed when work started. Nothing has been
 pushed. Publication requires separate authorization.
@@ -43,6 +44,10 @@ pushed. Publication requires separate authorization.
 
 Per-milestone evidence lives in `docs/verification/`. Each file records the
 exact command, its exit status, the toolchain, the date and known omissions.
+
+| Milestone | Evidence | Gate |
+|---|---|---|
+| 01 foundation | [01-foundation.md](verification/01-foundation.md) | `bash scripts/verify.sh` exit 0, 11 tests, 0 failures |
 
 ## Known external blockers
 
