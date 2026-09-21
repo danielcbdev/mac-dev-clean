@@ -5,11 +5,11 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 ## Current state
 
-- **Plan:** 07 persistence (`docs/superpowers/plans/2026-09-21-07-persistence.md`)
-- **Branch:** feat/history-and-exclusions
-- **Last completed task:** 07 Task 2 — exclusions, settings and history screens
-- **Next step:** merge `feat/history-and-exclusions` into `develop`, then start
-  plan 08 on `feat/localization-accessibility`
+- **Plan:** 08 quality (`docs/superpowers/plans/2026-09-21-08-quality.md`)
+- **Branch:** feat/localization-accessibility
+- **Last completed task:** 08 Task 1 — localization completeness and honest
+  interface copy
+- **Next step:** 08 Task 2 — accessibility and window resilience
 - **Blockers:** the XCUITest gate is unavailable on this machine. Ten UI tests
   are written and compile but cannot run: the app launches with no window
   visible to the accessibility interface. The committed plan 04 baseline fails
@@ -40,8 +40,8 @@ pushed. Publication requires separate authorization.
 | 04 Docker | feat/docker-integration | merged into develop |
 | 05 interface | feat/app-shell | merged into develop |
 | 06 large files | feat/large-files | merged into develop |
-| 07 persistence | feat/history-and-exclusions | in progress |
-| 08 quality | feat/localization-accessibility | not started |
+| 07 persistence | feat/history-and-exclusions | merged into develop |
+| 08 quality | feat/localization-accessibility | in progress |
 | 09 distribution | chore/release-pipeline | not started |
 
 ## Test evidence

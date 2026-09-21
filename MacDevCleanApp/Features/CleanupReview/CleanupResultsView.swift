@@ -26,7 +26,7 @@ struct CleanupResultsView: View {
                             .accessibilityIdentifier("results.bytesMoved")
 
                             Text(
-                                "Moved to Trash. Empty the Trash in Finder to reclaim space."
+                                "Moved to Trash. Empty Trash in Finder to reclaim space."
                             )
                             .font(.callout)
                             .foregroundStyle(.secondary)

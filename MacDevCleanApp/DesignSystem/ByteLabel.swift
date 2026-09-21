@@ -8,18 +8,18 @@ import SwiftUI
 struct ByteLabel: View {
     let bytes: UInt64?
     var style: Font = .body
+    @Environment(\.locale) private var locale
 
     var body: some View {
-        Text(Self.text(bytes))
+        Text(LocalizedFormatters.bytes(bytes, locale: locale))
             .font(style)
             .monospacedDigit()
             .foregroundStyle(bytes == nil ? .secondary : .primary)
-            .accessibilityLabel(Self.accessibleText(bytes))
+            .accessibilityLabel(LocalizedFormatters.bytes(bytes, locale: locale))
     }
 
     static func text(_ bytes: UInt64?) -> String {
-        guard let bytes else { return String(localized: "Size unavailable") }
-        return format(bytes)
+        LocalizedFormatters.bytes(bytes, locale: .autoupdatingCurrent)
     }
 
     static func accessibleText(_ bytes: UInt64?) -> String {
@@ -29,6 +29,6 @@ struct ByteLabel: View {
 
     /// Locale-aware, via Foundation. Never a hand-rolled divide-by-1024.
     static func format(_ bytes: UInt64) -> String {
-        bytes.formatted(.byteCount(style: .file))
+        LocalizedFormatters.bytes(bytes, locale: .autoupdatingCurrent)
     }
 }

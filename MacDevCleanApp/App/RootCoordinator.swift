@@ -31,6 +31,8 @@ final class RootCoordinator {
     private(set) var activeSelection: Set<UUID> = []
     private(set) var includeGlobalCaches = true
 
+    var interfaceLocale: Locale { settings.preferences.language.interfaceLocale }
+
     init(dependencies: AppDependencies) {
         self.dependencies = dependencies
         scanModel = ScanModel(scanner: dependencies.scanner)
@@ -62,6 +64,7 @@ final class RootCoordinator {
     // MARK: - Lifecycle
 
     func load() async {
+        await settings.load()
         roots = (try? await dependencies.settings.roots()) ?? []
         if roots.isEmpty {
             state = .onboarding

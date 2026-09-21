@@ -1,0 +1,11 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "Review cleanup": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Review cleanup" } }
+      }
+    }
+  },
+  "version": "1.0"
+}
