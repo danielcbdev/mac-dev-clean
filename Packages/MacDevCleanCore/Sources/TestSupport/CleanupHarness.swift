@@ -13,21 +13,21 @@ import Scanning
 ///
 /// Fixtures live in a temporary directory this harness owns and removes. No
 /// test reaches a real cache, the real Trash or a live daemon.
-public final class CleanupHarness {
-    public let tree: FixtureTree
-    public let store: InMemoryCandidateStore
-    public let trash: RecordingTrash
-    public let docker: RecordingDocker
-    public let journal: InMemoryJournal
-    public let freeSpace: StubFreeSpace
-    public let scanID = UUID()
+public actor CleanupHarness {
+    public nonisolated let tree: FixtureTree
+    public nonisolated let store: InMemoryCandidateStore
+    public nonisolated let trash: RecordingTrash
+    public nonisolated let docker: RecordingDocker
+    public nonisolated let journal: InMemoryJournal
+    public nonisolated let freeSpace: StubFreeSpace
+    public nonisolated let scanID = UUID()
 
-    private let files = LocalFileSystem()
-    private let git = FakeGitStatus()
-    private let catalog = RuleCatalog()
-    private let memoryContext: MemoryContext
-    private let validator: CleanupPlanValidator
-    private let executor: CleanupExecutor
+    private nonisolated let files = LocalFileSystem()
+    private nonisolated let git = FakeGitStatus()
+    private nonisolated let catalog = RuleCatalog()
+    private nonisolated let memoryContext: MemoryContext
+    private nonisolated let validator: CleanupPlanValidator
+    private nonisolated let executor: CleanupExecutor
 
     private var registered: [CleanupCandidate] = []
     private var evidence: [UUID: CandidateEvidence] = [:]
@@ -92,8 +92,14 @@ public final class CleanupHarness {
     }
 
     deinit {
+        // The harness owns its fixture tree and removes it with itself.
         try? tree.close()
     }
+
+    /// The real validator and executor, for a consumer that wants to drive the
+    /// genuine boundary rather than a stub of it.
+    public nonisolated var planValidator: any CleanupPlanValidating { validator }
+    public nonisolated var planExecutor: any CleanupExecuting { executor }
 
     // MARK: - Flow
 
@@ -126,7 +132,7 @@ public final class CleanupHarness {
         // `stream(for:)` and assert on it directly.
     }
 
-    public func stream(for plan: ValidatedCleanupPlan) -> AsyncStream<CleanupEvent> {
+    public nonisolated func stream(for plan: ValidatedCleanupPlan) -> AsyncStream<CleanupEvent> {
         executor.execute(plan)
     }
 

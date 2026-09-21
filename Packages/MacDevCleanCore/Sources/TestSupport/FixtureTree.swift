@@ -16,12 +16,17 @@ public enum FixtureTreeError: Error, Equatable {
 ///
 /// `removeItem` here is deliberate and confined to test support: it deletes
 /// only this tree's own temporary root. Production cleanup uses the Trash.
-public final class FixtureTree {
+public final class FixtureTree: @unchecked Sendable {
     private static let prefix = "macdevclean-fixture-"
 
     /// The owned temporary directory. Everything this tree creates is inside it.
     public let root: URL
 
+    /// The only mutable state, and it is read and written under the lock.
+    /// That is what makes the `@unchecked Sendable` above sound rather than a
+    /// suppression: a fixture is routinely handed between isolation domains in
+    /// a concurrency test.
+    private let lock = NSLock()
     private var isClosed = false
 
     public init() throws {
@@ -92,11 +97,18 @@ public final class FixtureTree {
 
     /// Removes the owned temporary root. Calling it twice is harmless.
     public func close() throws {
-        guard !isClosed else { return }
+        lock.lock()
+        let alreadyClosed = isClosed
+        if !alreadyClosed { isClosed = true }
+        lock.unlock()
+        guard !alreadyClosed else { return }
+
         guard isOwnedTemporaryRoot(root) else {
+            lock.lock()
+            isClosed = false
+            lock.unlock()
             throw FixtureTreeError.notAnOwnedTemporaryRoot
         }
-        isClosed = true
         try FileManager.default.removeItem(at: root)
     }
 
