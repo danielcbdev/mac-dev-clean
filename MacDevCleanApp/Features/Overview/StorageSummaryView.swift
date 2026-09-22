@@ -18,14 +18,18 @@ struct StorageSummaryView: View {
     let summaries: [ScanModel.CategorySummary]
     let knownBytes: UInt64
     let unknownCount: Int
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
     private var total: Double { max(Double(knownBytes), 1) }
 
     var body: some View {
         VStack(spacing: 14) {
             ZStack {
-                Circle()
-                    .stroke(.quaternary, lineWidth: Layout.ringStroke)
+                if reduceTransparency {
+                    Circle().stroke(.secondary, lineWidth: Layout.ringStroke)
+                } else {
+                    Circle().stroke(.quaternary, lineWidth: Layout.ringStroke)
+                }
 
                 ForEach(Array(segments.enumerated()), id: \.offset) { index, segment in
                     Circle()

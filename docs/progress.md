@@ -5,16 +5,24 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 ## Current state
 
-- **Plan:** 07 persistence (`docs/superpowers/plans/2026-09-21-07-persistence.md`)
-- **Branch:** feat/history-and-exclusions
-- **Last completed task:** 07 Task 2 — exclusions, settings and history screens
-- **Next step:** merge `feat/history-and-exclusions` into `develop`, then start
-  plan 08 on `feat/localization-accessibility`
-- **Blockers:** the XCUITest gate is unavailable on this machine. Ten UI tests
-  are written and compile but cannot run: the app launches with no window
+- **Plan:** 09 distribution (`docs/superpowers/plans/2026-09-21-09-distribution.md`)
+- **Branch:** chore/release-pipeline
+- **Last completed task:** 08 Task 3 — performance, privacy and regression gates
+- **Next step:** 09 Task 1 — local universal app and DMG
+- **Latest evidence:** `MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh`
+  exited 0 on 2026-09-21 with 277 tests run and 0 failures. The run before it
+  failed: `scripts/check-policy.sh` depended on ripgrep, which is not installed
+  here, so all five of its rules were passing vacuously. It now uses POSIX
+  `grep` and every rule has a fixture that must be rejected. See
+  [docs/verification/08-quality.md](verification/08-quality.md).
+- **Blockers:** the XCUITest gate is unavailable on this machine. Twenty-one UI
+  tests are written and compile but cannot run: the app launches with no window
   visible to the accessibility interface. The committed plan 04 baseline fails
   identically, so this is environmental. See
-  [docs/verification/05-interface.md](verification/05-interface.md).
+  [docs/verification/05-interface.md](verification/05-interface.md). Because of
+  it, no live performance measurement, screenshot or VoiceOver pass exists;
+  [docs/testing/manual-release-checks.md](testing/manual-release-checks.md)
+  lists everything that still needs a person, real hardware or credentials.
 
 ## Repository baseline
 
@@ -40,9 +48,9 @@ pushed. Publication requires separate authorization.
 | 04 Docker | feat/docker-integration | merged into develop |
 | 05 interface | feat/app-shell | merged into develop |
 | 06 large files | feat/large-files | merged into develop |
-| 07 persistence | feat/history-and-exclusions | in progress |
-| 08 quality | feat/localization-accessibility | not started |
-| 09 distribution | chore/release-pipeline | not started |
+| 07 persistence | feat/history-and-exclusions | merged into develop |
+| 08 quality | feat/localization-accessibility | merged into develop |
+| 09 distribution | chore/release-pipeline | in progress |
 
 ## Test evidence
 
@@ -58,6 +66,7 @@ exact command, its exit status, the toolchain, the date and known omissions.
 | 05 interface | [05-interface.md](verification/05-interface.md) | 222 tests run, 0 failures; **10 UI tests NOT RUN** |
 | 06 large files | [06-large-files.md](verification/06-large-files.md) | 242 tests run, 0 failures; **13 UI tests NOT RUN** |
 | 07 persistence | [07-persistence.md](verification/07-persistence.md) | 271 tests run, 0 failures; **17 UI tests NOT RUN** |
+| 08 quality | [08-quality.md](verification/08-quality.md) | `bash scripts/verify.sh` exit 0, 277 tests run, 0 failures; **21 UI tests NOT RUN** |
 
 ## Known external blockers
 

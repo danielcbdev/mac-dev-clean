@@ -26,6 +26,7 @@ struct ContentView: View {
                 )
             }
         }
+        .environment(\.locale, coordinator.interfaceLocale)
         .task { await coordinator.load() }
     }
 
