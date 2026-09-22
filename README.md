@@ -171,10 +171,7 @@ notarization produces no artifact — but it **has never run against Apple**.
 - **No independent review.** Nobody else has reviewed this work.
 - **Migration has never been exercised**, because there is only one schema
   version.
-- **No licence has been chosen.** That is the owner's decision and was left
-  open deliberately, so this repository ships no `LICENSE` file. Until one is
-  chosen, default copyright applies and nobody else has permission to use,
-  copy or redistribute it.
+- **Licensed under MIT.** See `LICENSE`.
 
 Full evidence, per milestone, with commands and exit statuses:
 [docs/verification/](docs/verification/). What still needs a person, real

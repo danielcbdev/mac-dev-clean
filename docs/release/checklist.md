@@ -99,14 +99,13 @@ None performed. [docs/testing/accessibility.md](../testing/accessibility.md).
 
 ## 11. Authorization
 
-- [ ] The owner has chosen a licence. **Not chosen.** This is the owner's
-      decision and was deliberately left open; the repository ships no
-      `LICENSE` file.
-- [ ] The owner has authorized: creating a remote repository, pushing, signing
-      with their credentials, publishing a release and creating a tap. **None
-      of these has been authorized.**
-- [ ] The bundle identifier belongs to a domain the owner controls.
-      `dev.macdevclean.app` is a development placeholder.
+- [x] The owner has chosen a licence: MIT, recorded in `LICENSE`.
+- [x] The owner has authorized publishing an unsigned GitHub Release.
+- [ ] The owner has **not** authorized signing with their credentials or
+      creating a Homebrew tap. Those remain unauthorized until asked for
+      separately.
+- [x] The bundle identifier belongs to a domain the owner controls:
+      `br.com.dcbeng.macdevclean`.
 
 ## 12. Only then
 

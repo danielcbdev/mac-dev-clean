@@ -59,7 +59,7 @@ older build survives a relaunch and can make a fixed build look broken. Before
 reporting anything, start from clean geometry:
 
 ```bash
-defaults delete dev.macdevclean.app
+defaults delete br.com.dcbeng.macdevclean
 ```
 
 That removes only window position and split sizes. It touches no history, no

@@ -25,10 +25,9 @@ None of this is configured today. See
 The first three are configuration rather than secrets, and they have no
 defaults on purpose: a guessed owner publishes to the wrong place.
 
-The bundle identifier is currently `dev.macdevclean.app`, which is a
-placeholder for local development. **A real release must use a reverse-DNS
-identifier on a domain the owner controls**, or notarization belongs to
-somebody else's namespace.
+The bundle identifier is `br.com.dcbeng.macdevclean`, a reverse-DNS
+identifier on a domain the owner controls. `MACDEVCLEAN_BUNDLE_ID` must match
+it, or notarization belongs to somebody else's namespace.
 
 ## Where they are attached
 

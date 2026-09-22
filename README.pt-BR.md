@@ -180,10 +180,7 @@ contra a Apple**.
 - **Sem revisão independente.** Ninguém mais revisou este trabalho.
 - **A migração de esquema nunca foi exercitada**, porque existe apenas uma
   versão de esquema.
-- **Nenhuma licença foi escolhida.** Essa decisão é do proprietário e foi
-  deixada em aberto de propósito, então este repositório não inclui um arquivo
-  `LICENSE`. Até que uma seja escolhida, vale o direito autoral padrão e
-  ninguém mais tem permissão de usar, copiar ou redistribuir.
+- **Licenciado sob MIT.** Veja `LICENSE`.
 
 Evidências completas, por marco, com comandos e códigos de saída:
 [docs/verification/](docs/verification/). O que ainda exige uma pessoa, hardware
