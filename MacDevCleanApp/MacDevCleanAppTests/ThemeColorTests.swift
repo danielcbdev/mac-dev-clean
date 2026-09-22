@@ -14,7 +14,9 @@ final class ThemeColorTests: XCTestCase {
 
     private static let tokens: [Token] = [
         Token(name: "background", color: Theme.background, light: 0xFFFFFF, dark: 0x1C1C1E),
-        Token(name: "sidebarBackground", color: Theme.sidebarBackground, light: 0xEDEDF0, dark: 0x252528),
+        Token(
+            name: "sidebarBackground", color: Theme.sidebarBackground, light: 0xEDEDF0,
+            dark: 0x252528),
         Token(name: "cardBackground", color: Theme.cardBackground, light: 0xF7F7F9, dark: 0x232326),
         Token(name: "separator", color: Theme.separator, light: 0xE3E3E7, dark: 0x3A3A3E),
         Token(name: "textPrimary", color: Theme.textPrimary, light: 0x1D1D1F, dark: 0xF2F2F5),
@@ -25,20 +27,29 @@ final class ThemeColorTests: XCTestCase {
         Token(name: "accentText", color: Theme.accentText, light: 0x0F5FD6, dark: 0x7DB8FF),
         Token(name: "accentSoft", color: Theme.accentSoft, light: 0xE8F0FE, dark: 0x16263D),
         Token(name: "success", color: Theme.success, light: 0x16733A, dark: 0x5BD08A),
-        Token(name: "successBackground", color: Theme.successBackground, light: 0xE4F3E9, dark: 0x123324),
+        Token(
+            name: "successBackground", color: Theme.successBackground, light: 0xE4F3E9,
+            dark: 0x123324),
         Token(name: "warning", color: Theme.warning, light: 0x8A5300, dark: 0xF2B04A),
-        Token(name: "warningBackground", color: Theme.warningBackground, light: 0xFBEFDC, dark: 0x3A2A10),
+        Token(
+            name: "warningBackground", color: Theme.warningBackground, light: 0xFBEFDC,
+            dark: 0x3A2A10),
         Token(name: "danger", color: Theme.danger, light: 0xB02419, dark: 0xFF7B6E),
-        Token(name: "dangerBackground", color: Theme.dangerBackground, light: 0xFBE9E7, dark: 0x3B1C18),
+        Token(
+            name: "dangerBackground", color: Theme.dangerBackground, light: 0xFBE9E7, dark: 0x3B1C18
+        ),
         Token(name: "control", color: Theme.control, light: 0xFFFFFF, dark: 0x3A3A3E),
-        Token(name: "controlSecondary", color: Theme.controlSecondary, light: 0xF2F2F4, dark: 0x2E2E32),
+        Token(
+            name: "controlSecondary", color: Theme.controlSecondary, light: 0xF2F2F4, dark: 0x2E2E32
+        ),
         Token(name: "neutral", color: Theme.neutral, light: 0xEFEFF2, dark: 0x303034),
     ]
 
     func testEveryTokenMatchesTheSpecHexInBothAppearances() {
         for token in Self.tokens {
             assertHex(token.color, hex: token.light, appearance: .aqua, name: "\(token.name) light")
-            assertHex(token.color, hex: token.dark, appearance: .darkAqua, name: "\(token.name) dark")
+            assertHex(
+                token.color, hex: token.dark, appearance: .darkAqua, name: "\(token.name) dark")
         }
     }
 
