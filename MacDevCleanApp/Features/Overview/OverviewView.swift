@@ -87,10 +87,8 @@ struct OverviewView: View {
                         Label("Review cleanup", systemImage: "arrow.right")
                             .labelStyle(.titleAndIcon)
                             .frame(maxWidth: .infinity)
-                            .padding(.vertical, 4)
                     }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
+                    .buttonStyle(.macDevPrimary)
                     .disabled(model.snapshot == nil)
                     .accessibilityIdentifier("cleanup.reviewFromOverview")
 

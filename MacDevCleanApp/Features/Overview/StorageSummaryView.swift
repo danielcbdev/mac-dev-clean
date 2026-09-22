@@ -27,9 +27,9 @@ struct StorageSummaryView: View {
         VStack(spacing: 14) {
             ZStack {
                 if reduceTransparency {
-                    Circle().stroke(.secondary, lineWidth: Layout.ringStroke)
+                    Circle().stroke(Theme.textTertiary, lineWidth: Layout.ringStroke)
                 } else {
-                    Circle().stroke(.quaternary, lineWidth: Layout.ringStroke)
+                    Circle().stroke(Theme.neutral, lineWidth: Layout.ringStroke)
                 }
 
                 ForEach(Array(segments.enumerated()), id: \.offset) { index, segment in
@@ -46,13 +46,13 @@ struct StorageSummaryView: View {
 
                 VStack(spacing: 2) {
                     Text(ByteLabel.format(knownBytes))
-                        .font(.system(size: 38, weight: .semibold))
-                        .monospacedDigit()
+                        .appFont(Typography.metric)
+                        .foregroundStyle(Theme.textPrimary)
                         .minimumScaleFactor(0.5)
                         .lineLimit(1)
                     Text("Potential cleanup")
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
+                        .appFont(Typography.caption)
+                        .foregroundStyle(Theme.textSecondary)
                 }
                 .padding(Layout.ringStroke * 2)
             }
