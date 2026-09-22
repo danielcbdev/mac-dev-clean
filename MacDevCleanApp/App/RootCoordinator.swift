@@ -2,6 +2,18 @@ import Domain
 import Foundation
 import Observation
 
+/// Why a scan cannot start.
+///
+/// A control that cannot act must not look like one that can. The reason is
+/// modelled rather than implied, so the interface can disable the control,
+/// say why, and offer whatever resolves it.
+enum ScanUnavailableReason: Equatable {
+    /// No folders have been added, so there is nothing to look through.
+    case noRoots
+    /// A scan is already running.
+    case alreadyScanning
+}
+
 /// Owns navigation, the feature models and the services behind them.
 ///
 /// Views talk to this and to their own model. They do not build services, and
@@ -83,7 +95,20 @@ final class RootCoordinator {
 
     // MARK: - Scanning
 
-    var canScan: Bool { !roots.isEmpty && !scanModel.isScanning }
+    var canScan: Bool { scanUnavailableReason == nil }
+
+    /// Why a scan cannot start, or `nil` when it can.
+    ///
+    /// `startScan()` used to open with `guard canScan else { return }` and
+    /// return in silence, while the control that called it stayed enabled. The
+    /// user pressed a button and the application did not answer. The refusal
+    /// is a value now, so the interface can disable the control, say why, and
+    /// offer whatever resolves it.
+    var scanUnavailableReason: ScanUnavailableReason? {
+        if scanModel.isScanning { return .alreadyScanning }
+        if roots.isEmpty { return .noRoots }
+        return nil
+    }
 
     func startScan() {
         guard canScan else { return }

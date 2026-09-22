@@ -515,6 +515,40 @@
         }
       }
     },
+    "A scan found things here. Nothing matches the filters you set, and clearing them brings the results back.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A scan found things here. Nothing matches the filters you set, and clearing them brings the results back."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma verificação encontrou coisas aqui. Nada corresponde aos filtros que você definiu, e limpá-los traz os resultados de volta."
+          }
+        }
+      }
+    },
+    "A scan is already running.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A scan is already running."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma verificação já está em andamento."
+          }
+        }
+      }
+    },
     "About": {
       "extractionState": "manual",
       "localizations": {
@@ -579,6 +613,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Adicionar uma pasta…"
+          }
+        }
+      }
+    },
+    "Add folders in Settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add folders in Settings"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar pastas em Ajustes"
           }
         }
       }
@@ -1021,6 +1072,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "A limpeza está indisponível porque o MacDevClean não consegue registrar o que fez. A verificação e as explicações continuam funcionando."
+          }
+        }
+      }
+    },
+    "Clear filters": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear filters"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpar filtros"
           }
         }
       }
@@ -2337,6 +2405,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "O MacDevClean não encontrou artefatos removíveis nas pastas que você adicionou."
+          }
+        }
+      }
+    },
+    "MacDevClean has no folders to look through yet. Add one and the scan can run.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MacDevClean has no folders to look through yet. Add one and the scan can run."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O MacDevClean ainda não tem pastas para examinar. Adicione uma e a verificação poderá rodar."
           }
         }
       }
@@ -3771,6 +3856,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "O site gerado desaparece até você construí-lo de novo. Faça um novo deploy se você o servia a partir daqui."
+          }
+        }
+      }
+    },
+    "The filters hide every result": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The filters hide every result"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Os filtros escondem todos os resultados"
           }
         }
       }
