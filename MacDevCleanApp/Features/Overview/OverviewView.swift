@@ -39,47 +39,20 @@ struct OverviewView: View {
     // MARK: - Header
 
     private var header: some View {
-        HStack(alignment: .top, spacing: Layout.cardGap) {
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Clean with confidence")
-                    .font(.system(size: 34, weight: .semibold))
-                    .accessibilityIdentifier("app.title")
-                Text(
-                    """
-                    Find developer caches and build artifacts, understand what removing each \
-                    one costs you, then decide.
-                    """
-                )
-                .font(.title3)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-            }
-
-            Spacer(minLength: Layout.cardGap)
-
-            trustIndicator
-                .frame(maxWidth: 300)
-        }
-    }
-
-    /// The reference's "Safe cleanup — only removes cache files" badge, made
-    /// accurate: this app moves things to the Trash, which is recoverable but
-    /// not a guarantee, and Docker removals are not recoverable at all.
-    private var trustIndicator: some View {
-        Card {
-            HStack(spacing: 10) {
-                Image(systemName: "arrow.up.trash")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.green)
-                    .accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Trash first").font(.headline)
-                    Text("Files go to the Trash, never straight to deletion")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Clean with confidence")
+                .appFont(Typography.hero)
+                .foregroundStyle(Theme.textPrimary)
+                .accessibilityIdentifier("app.title")
+            Text(
+                """
+                Find developer caches and build artifacts, understand what removing each \
+                one costs you, then decide.
+                """
+            )
+            .font(.title3)
+            .foregroundStyle(Theme.textSecondary)
+            .fixedSize(horizontal: false, vertical: true)
         }
     }
 
