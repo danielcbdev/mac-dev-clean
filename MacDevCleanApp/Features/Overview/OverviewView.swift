@@ -26,7 +26,7 @@ struct OverviewView: View {
                     ViewThatFits(in: .horizontal) {
                         HStack(alignment: .top, spacing: Layout.cardGap) {
                             summaryColumn.frame(maxWidth: .infinity)
-                            categoriesColumn.frame(maxWidth: .infinity)
+                            categoriesColumn.frame(width: 520)
                         }
                         VStack(spacing: Layout.cardGap) {
                             summaryColumn

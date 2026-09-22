@@ -13,7 +13,7 @@ struct ScanningStateView: View {
     var body: some View {
         VStack(spacing: Layout.space16) {
             VStack(alignment: .leading, spacing: Layout.space16) {
-                Text("Scanning project folders")
+                Text("Scanning")
                     .appFont(Typography.title)
                     .foregroundStyle(Theme.textPrimary)
 
@@ -22,7 +22,7 @@ struct ScanningStateView: View {
                     .accessibilityIdentifier("scan.progress")
                     .accessibilityLabel("Scanning")
 
-                Text("\(visited) entries so far.")
+                Text("Looking through your folders. \(visited) entries so far.")
                     .appFont(Typography.caption)
                     .foregroundStyle(Theme.textSecondary)
                     .monospacedDigit()

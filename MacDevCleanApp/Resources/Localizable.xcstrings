@@ -2586,6 +2586,23 @@
         }
       }
     },
+    "MacDevClean only reads the project folders you chose in Settings. A scan measures sizes and explains what each item costs.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MacDevClean only reads the project folders you chose in Settings. A scan measures sizes and explains what each item costs."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O MacDevClean lê apenas as pastas de projetos que você escolheu em Ajustes. Uma verificação mede tamanhos e explica o que cada item custa."
+          }
+        }
+      }
+    },
     "MacDevClean only scans folders you add here. It never looks anywhere else, and it scans nothing until you say so.": {
       "extractionState": "manual",
       "localizations": {
@@ -2827,6 +2844,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Nada encontrado"
+          }
+        }
+      }
+    },
+    "Nothing has been scanned yet": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing has been scanned yet"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nada foi verificado ainda"
           }
         }
       }
@@ -3573,6 +3607,23 @@
         }
       }
     },
+    "Scanning doesn't select or remove anything.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scanning doesn't select or remove anything."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verificar não seleciona nem remove nada."
+          }
+        }
+      }
+    },
     "Select %@": {
       "extractionState": "manual",
       "localizations": {
@@ -3926,6 +3977,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Interrompido"
+          }
+        }
+      }
+    },
+    "Stopping keeps what's already been measured and removes nothing.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stopping keeps what's already been measured and removes nothing."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parar mantém o que já foi medido e não remove nada."
           }
         }
       }

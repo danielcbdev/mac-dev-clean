@@ -55,8 +55,16 @@ struct ContentView: View {
     private var sidebar: some View {
         List(Destination.sidebarItems, id: \.self, selection: $coordinator.destination) {
             destination in
+            let isActive = destination == coordinator.destination
             Label(destination.title, systemImage: destination.symbol)
+                .foregroundStyle(isActive ? Theme.accentText : Theme.textSecondary)
+                .fontWeight(isActive ? .semibold : .regular)
                 .accessibilityIdentifier(destination.accessibilityID)
+                .listRowBackground(
+                    RoundedRectangle(cornerRadius: Layout.controlRadius)
+                        .fill(isActive ? Theme.accentSoft : Color.clear)
+                        .padding(.vertical, 2)
+                )
         }
         .listStyle(.sidebar)
         .scrollContentBackground(.hidden)

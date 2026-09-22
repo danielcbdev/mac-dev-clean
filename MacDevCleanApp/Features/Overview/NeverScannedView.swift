@@ -33,7 +33,7 @@ struct NeverScannedView: View {
             .frame(maxWidth: 460)
 
             HStack(spacing: 10) {
-                Button("Scan now", action: startScan)
+                Button("Start scan", action: startScan)
                     .buttonStyle(.macDevPrimary)
                     .accessibilityIdentifier("scan.start")
                 Button("Choose folders…", action: chooseFolders)
