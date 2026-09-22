@@ -8,9 +8,11 @@ Record only what actually happened: real commands, real exit status, real dates.
 - **Plan:** 09 distribution (`docs/superpowers/plans/2026-09-21-09-distribution.md`)
 - **Branch:** chore/release-pipeline
 - **Last completed task:** 09 Task 3 — cask, documentation and release evidence
-- **Next step:** nothing further can be done locally. What remains needs the
-  owner's authorization or hardware that was not available:
-  [docs/release/checklist.md](release/checklist.md).
+- **Next step:** nothing further can be done locally. `release/1.0.0` exists as
+  a release candidate branch, pointing at the same commit as `develop`, and
+  waits there. What remains needs the owner's authorization or hardware that
+  was not available: [docs/release/checklist.md](release/checklist.md).
+  **`v1.0.0` was not created**, because most of that checklist is unchecked.
 - **Latest evidence:** `MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh`
   exited 0 on 2026-09-21 with 278 XCTest cases, 0 failures, plus 66 release
   contract assertions. An unsigned universal app and disk image were built and
