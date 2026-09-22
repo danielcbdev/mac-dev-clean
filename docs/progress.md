@@ -7,22 +7,23 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 - **Plan:** 09 distribution (`docs/superpowers/plans/2026-09-21-09-distribution.md`)
 - **Branch:** chore/release-pipeline
-- **Last completed task:** 08 Task 3 — performance, privacy and regression gates
-- **Next step:** 09 Task 1 — local universal app and DMG
+- **Last completed task:** 09 Task 3 — cask, documentation and release evidence
+- **Next step:** nothing further can be done locally. What remains needs the
+  owner's authorization or hardware that was not available:
+  [docs/release/checklist.md](release/checklist.md).
 - **Latest evidence:** `MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh`
-  exited 0 on 2026-09-21 with 277 tests run and 0 failures. The run before it
-  failed: `scripts/check-policy.sh` depended on ripgrep, which is not installed
-  here, so all five of its rules were passing vacuously. It now uses POSIX
-  `grep` and every rule has a fixture that must be rejected. See
-  [docs/verification/08-quality.md](verification/08-quality.md).
+  exited 0 on 2026-09-21 with 278 XCTest cases, 0 failures, plus 66 release
+  contract assertions. An unsigned universal app and disk image were built and
+  measured; see [docs/verification/09-distribution.md](verification/09-distribution.md).
 - **Blockers:** the XCUITest gate is unavailable on this machine. Twenty-one UI
   tests are written and compile but cannot run: the app launches with no window
-  visible to the accessibility interface. The committed plan 04 baseline fails
-  identically, so this is environmental. See
-  [docs/verification/05-interface.md](verification/05-interface.md). Because of
-  it, no live performance measurement, screenshot or VoiceOver pass exists;
-  [docs/testing/manual-release-checks.md](testing/manual-release-checks.md)
-  lists everything that still needs a person, real hardware or credentials.
+  visible to the accessibility interface, and the committed plan 04 baseline
+  fails identically, so this is environmental. See
+  [docs/verification/05-interface.md](verification/05-interface.md). No signing
+  credentials, no remote publication authority, no macOS 14 machine and no
+  Intel hardware. Everything still needing a person, real hardware or
+  credentials is listed in
+  [docs/testing/manual-release-checks.md](testing/manual-release-checks.md).
 
 ## Repository baseline
 
@@ -50,7 +51,7 @@ pushed. Publication requires separate authorization.
 | 06 large files | feat/large-files | merged into develop |
 | 07 persistence | feat/history-and-exclusions | merged into develop |
 | 08 quality | feat/localization-accessibility | merged into develop |
-| 09 distribution | chore/release-pipeline | in progress |
+| 09 distribution | chore/release-pipeline | merged into develop |
 
 ## Test evidence
 
@@ -66,13 +67,23 @@ exact command, its exit status, the toolchain, the date and known omissions.
 | 05 interface | [05-interface.md](verification/05-interface.md) | 222 tests run, 0 failures; **10 UI tests NOT RUN** |
 | 06 large files | [06-large-files.md](verification/06-large-files.md) | 242 tests run, 0 failures; **13 UI tests NOT RUN** |
 | 07 persistence | [07-persistence.md](verification/07-persistence.md) | 271 tests run, 0 failures; **17 UI tests NOT RUN** |
-| 08 quality | [08-quality.md](verification/08-quality.md) | `bash scripts/verify.sh` exit 0, 277 tests run, 0 failures; **21 UI tests NOT RUN** |
+| 08 quality | [08-quality.md](verification/08-quality.md) | `bash scripts/verify.sh` exit 0, 278 tests run, 0 failures; **21 UI tests NOT RUN** |
+| 09 distribution | [09-distribution.md](verification/09-distribution.md) | `bash scripts/verify.sh` exit 0, 278 tests run, 0 failures, 66 contract assertions; **21 UI tests NOT RUN** |
 
 ## Known external blockers
 
-- Remote CI has never been observed. `origin` exists but no push is authorized,
-  so the GitHub Actions workflow is unverified against a real runner.
-- The XCUITest gate is unavailable on this machine, so the interface has not
-  been verified at runtime beyond its model tests.
-- Signing, notarization and Homebrew publication need an Apple account,
-  certificates, secrets and explicit authorization. None are configured.
+Each of these needs something this machine or this session does not have. None
+is a defect in the code, and none is recorded as done.
+
+| Blocker | What it needs |
+|---|---|
+| The XCUITest gate | A logged-in macOS session where an app launched by XCUITest exposes its window to the accessibility interface |
+| Screenshots, VoiceOver, appearance checks | The same, plus screen-recording permission |
+| Live performance measurement | The same |
+| Remote CI | Authorization to push. `origin` exists; nothing has been pushed |
+| Signing and notarization | An Apple Developer membership, a Developer ID certificate and an App Store Connect key. None is configured |
+| Homebrew tap | A published release URL and checksum, and authorization to create the tap repository |
+| macOS 14 support | A macOS 14 machine. Only macOS 27.0 was available |
+| Intel support | An Intel Mac. Only Apple Silicon was available |
+| A licence | The owner's decision. Deliberately not made on their behalf |
+| `v1.0.0` | Every gate in [docs/release/checklist.md](release/checklist.md). Most are unchecked, so the tag was not created |

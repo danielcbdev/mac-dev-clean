@@ -1,0 +1,175 @@
+name: Release
+
+# Publication is deliberate. There is no trigger here that a pull request can
+# reach: no `pull_request`, and no `pull_request_target`. Untrusted code from a
+# fork can never run in a job that holds credentials.
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version, major.minor.patch"
+        required: true
+        type: string
+  push:
+    tags:
+      - "v*.*.*"
+
+# Read-only by default. Exactly one job below raises this, and only to publish.
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  XCODE_APP: /Applications/Xcode_26.6.app
+
+jobs:
+  test:
+    name: Full gate
+    runs-on: macos-26
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      # actions/checkout v7.0.1, pinned to its immutable commit SHA. The same
+      # revision CI uses. Re-verify it before a real release.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Select the pinned Xcode toolchain
+        run: |
+          set -euo pipefail
+          if [ ! -d "$XCODE_APP" ]; then
+            echo "::error::Pinned toolchain $XCODE_APP is not installed on this runner."
+            exit 1
+          fi
+          sudo xcode-select -s "$XCODE_APP/Contents/Developer"
+          xcodebuild -version
+
+      - name: Verify
+        run: bash scripts/verify.sh
+
+  sign:
+    name: Sign and notarize
+    needs: test
+    runs-on: macos-26
+    timeout-minutes: 60
+    # A protected environment. Credentials are attached to it, and it requires
+    # a reviewer, so no push and no dispatch can reach them unattended.
+    environment: release
+    permissions:
+      contents: read
+    env:
+      MACDEVCLEAN_RELEASE_OWNER: ${{ vars.MACDEVCLEAN_RELEASE_OWNER }}
+      MACDEVCLEAN_RELEASE_REPO: ${{ vars.MACDEVCLEAN_RELEASE_REPO }}
+      MACDEVCLEAN_BUNDLE_ID: ${{ vars.MACDEVCLEAN_BUNDLE_ID }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      APPLE_CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_CERTIFICATE_P12_BASE64 }}
+      APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+      APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+      APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
+      APPLE_API_PRIVATE_KEY: ${{ secrets.APPLE_API_PRIVATE_KEY }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Select the pinned Xcode toolchain
+        run: |
+          set -euo pipefail
+          sudo xcode-select -s "$XCODE_APP/Contents/Developer"
+          xcodebuild -version
+
+      - name: Resolve the version
+        id: version
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "push" ]; then
+            version="${GITHUB_REF_NAME#v}"
+          else
+            version="${{ inputs.version }}"
+          fi
+          if ! printf '%s' "$version" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::Not a semantic version: $version"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Preflight
+        run: bash scripts/release-preflight.sh --mode public
+
+      - name: Build
+        run: bash scripts/build-local.sh --version "${{ steps.version.outputs.version }}" --output dist/release
+
+      - name: Verify the unsigned bundle
+        run: bash scripts/verify-artifact.sh --app dist/release/MacDevClean.app --mode unsigned
+
+      - name: Sign, notarize and staple
+        run: |
+          set -euo pipefail
+          bash scripts/sign-notarize.sh \
+            --app dist/release/MacDevClean.app \
+            --output "dist/MacDevClean-${{ steps.version.outputs.version }}.dmg"
+
+      - name: Checksum
+        run: |
+          set -euo pipefail
+          cd dist
+          shasum -a 256 "MacDevClean-${{ steps.version.outputs.version }}.dmg" \
+            > "MacDevClean-${{ steps.version.outputs.version }}.dmg.sha256"
+          cat "MacDevClean-${{ steps.version.outputs.version }}.dmg.sha256"
+
+      # actions/upload-artifact v5.0.0, pinned. The same revision CI uses.
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: release-artifacts
+          path: |
+            dist/*.dmg
+            dist/*.dmg.sha256
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish
+    needs: sign
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: release
+    # The only elevated permission in this workflow, in the only job that
+    # publishes. It runs after signing, notarization and stapling all passed:
+    # a failed release stays failed and is never replaced by an unsigned upload.
+    permissions:
+      contents: write
+      # Reading this run's own artifacts. The artifacts are fetched with the
+      # preinstalled gh CLI rather than a third-party action, because a pinned
+      # action SHA is only worth anything if someone verified it, and one more
+      # unverified third party in the job that holds write access is not worth
+      # the convenience.
+      actions: read
+    steps:
+      - name: Download the signed artifacts from this run
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          gh run download "${{ github.run_id }}" \
+            --repo "${{ github.repository }}" \
+            --name release-artifacts \
+            --dir dist
+          ls -la dist
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          if [ "${{ github.event_name }}" != "push" ]; then
+            echo "::notice::Dispatch run. Artifacts are attached to the run; no release is created."
+            exit 0
+          fi
+          gh release create "$tag" dist/*.dmg dist/*.dmg.sha256 \
+            --repo "${{ github.repository }}" \
+            --target "${{ github.sha }}" \
+            --title "MacDevClean ${tag#v}" \
+            --generate-notes
