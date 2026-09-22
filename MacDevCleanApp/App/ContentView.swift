@@ -59,25 +59,29 @@ struct ContentView: View {
                 .accessibilityIdentifier(destination.accessibilityID)
         }
         .listStyle(.sidebar)
+        .scrollContentBackground(.hidden)
+        .background(Theme.sidebarBackground)
         .safeAreaInset(edge: .top, spacing: 0) {
             VStack(alignment: .leading, spacing: 4) {
                 Text("MacDevClean")
-                    .font(.title2.weight(.semibold))
+                    .appFont(Typography.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Theme.textPrimary)
                 Text("Understand it before you remove it.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .appFont(Typography.caption)
+                    .foregroundStyle(Theme.textTertiary)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 12)
-            .padding(.top, 12)
-            .padding(.bottom, 8)
+            .padding(.horizontal, Layout.space12)
+            .padding(.top, Layout.space12)
+            .padding(.bottom, Layout.space8)
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             Label("Nothing is removed until you confirm.", systemImage: "hand.raised")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .padding(12)
+                .appFont(Typography.caption)
+                .foregroundStyle(Theme.textTertiary)
+                .padding(Layout.space12)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
