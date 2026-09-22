@@ -136,7 +136,9 @@ struct OverviewView: View {
         Card {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Text("Cache categories").font(.title3.weight(.semibold))
+                    Text("Cache categories")
+                        .appFont(Typography.title)
+                        .foregroundStyle(Theme.textPrimary)
                     Spacer()
                     Text(
                         LocalizedFormatters.text(
@@ -147,8 +149,8 @@ struct OverviewView: View {
                             LocalizedFormatters.bytes(
                                 model.knownFilesystemBytes, locale: locale))
                     )
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .appFont(Typography.caption)
+                    .foregroundStyle(Theme.textTertiary)
                     .monospacedDigit()
                 }
                 .padding(.bottom, 8)
@@ -163,7 +165,9 @@ struct OverviewView: View {
                     )
                 } else {
                     ForEach(model.filesystemSummaries) { summary in
-                        Divider().opacity(summary.id == model.filesystemSummaries.first?.id ? 0 : 1)
+                        Divider()
+                            .overlay(Theme.separator)
+                            .opacity(summary.id == model.filesystemSummaries.first?.id ? 0 : 1)
                         CategoryRow(summary: summary) {
                             coordinator.scanModel.ecosystemFilter = summary.category
                             coordinator.destination = .caches

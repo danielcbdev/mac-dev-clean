@@ -15,22 +15,24 @@ struct CategoryRow: View {
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: CategoryNaming.symbol(summary.category))
-                    .font(.system(size: 17, weight: .semibold))
+                    .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(.white)
-                    .frame(width: Layout.symbolTile, height: Layout.symbolTile)
+                    .frame(width: 26, height: 26)
                     .background(
                         StorageSummaryView.color(for: summary.category),
-                        in: .rect(cornerRadius: 10)
+                        in: .rect(cornerRadius: 7)
                     )
                     .accessibilityHidden(true)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(CategoryNaming.title(summary.category))
-                        .font(.body.weight(.medium))
+                        .appFont(Typography.body)
+                        .fontWeight(.medium)
+                        .foregroundStyle(Theme.textPrimary)
                         .fixedSize(horizontal: false, vertical: true)
                     Text(CategoryNaming.detail(summary.category))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .appFont(Typography.caption)
+                        .foregroundStyle(Theme.textTertiary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
 
@@ -38,12 +40,13 @@ struct CategoryRow: View {
 
                 VStack(alignment: .trailing, spacing: 2) {
                     ByteLabel(bytes: summary.knownBytes, style: .body.weight(.medium))
+                        .foregroundStyle(Theme.textPrimary)
                     RiskBadge(risk: summary.highestRisk)
                 }
 
                 Image(systemName: "chevron.right")
                     .font(.caption.weight(.semibold))
-                    .foregroundStyle(.tertiary)
+                    .foregroundStyle(Theme.textTertiary)
                     .accessibilityHidden(true)
             }
             .padding(.vertical, 10)
