@@ -170,13 +170,16 @@ struct CachesView: View {
             ProgressView()
                 .controlSize(.large)
                 .accessibilityHidden(true)
-            Text("Scanning").font(.headline)
+            Text("Scanning")
+                .appFont(Typography.title)
+                .foregroundStyle(Theme.textPrimary)
             CountText("Looking through your folders. %lld entries so far.", model.visited)
-                .font(.callout)
-                .foregroundStyle(.secondary)
+                .appFont(Typography.caption)
+                .foregroundStyle(Theme.textSecondary)
                 .monospacedDigit()
                 .accessibilityIdentifier("caches.scanProgress")
             Button("Stop scanning") { coordinator.cancelScan() }
+                .buttonStyle(.macDevSecondary)
                 .accessibilityIdentifier("caches.cancelScan")
         }
         .frame(maxWidth: .infinity)
@@ -199,15 +202,15 @@ struct CachesView: View {
 
             if !model.hasScanned {
                 Button("Start scan") { coordinator.startScan() }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.macDevPrimary)
                     .disabled(coordinator.scanUnavailableReason != nil)
                     .accessibilityIdentifier("caches.startScan")
 
                 if let reason = coordinator.scanUnavailableReason {
                     VStack(spacing: 6) {
                         Text(Self.explanation(for: reason))
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
+                            .appFont(Typography.body)
+                            .foregroundStyle(Theme.textSecondary)
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
                             .accessibilityIdentifier("caches.scanUnavailable")
@@ -216,6 +219,7 @@ struct CachesView: View {
                             Button("Add folders in Settings") {
                                 coordinator.destination = .settings
                             }
+                            .buttonStyle(.macDevSecondary)
                             .accessibilityIdentifier("caches.addFolders")
                         }
                     }
