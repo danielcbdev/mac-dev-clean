@@ -10,27 +10,35 @@ struct OverviewView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: Layout.cardGap) {
-                header
+            if !model.hasScanned && !model.isScanning {
+                NeverScannedView(
+                    startScan: { coordinator.startScan() },
+                    chooseFolders: { coordinator.destination = .settings }
+                )
+                .padding(Layout.contentInset)
+            } else {
+                VStack(alignment: .leading, spacing: Layout.cardGap) {
+                    header
 
-                ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .top, spacing: Layout.cardGap) {
-                        summaryColumn.frame(maxWidth: .infinity)
-                        categoriesColumn.frame(maxWidth: .infinity)
+                    ViewThatFits(in: .horizontal) {
+                        HStack(alignment: .top, spacing: Layout.cardGap) {
+                            summaryColumn.frame(maxWidth: .infinity)
+                            categoriesColumn.frame(maxWidth: .infinity)
+                        }
+                        VStack(spacing: Layout.cardGap) {
+                            summaryColumn
+                            categoriesColumn
+                        }
                     }
-                    VStack(spacing: Layout.cardGap) {
-                        summaryColumn
-                        categoriesColumn
+
+                    if !model.dockerSummaries.isEmpty {
+                        dockerCard
                     }
-                }
 
-                if !model.dockerSummaries.isEmpty {
-                    dockerCard
+                    informationCards
                 }
-
-                informationCards
+                .padding(Layout.contentInset)
             }
-            .padding(Layout.contentInset)
         }
         .animation(reduceMotion ? nil : .easeOut(duration: 0.2), value: model.isScanning)
         .navigationTitle(Text("Overview"))
