@@ -293,6 +293,165 @@ check "a Developer ID signature passes signed verification" \
     verify_artifact "$bin/lipo-universal" "$bin/codesign-developer-id" \
     --app "$good" --mode signed
 
+# --- release-preflight -------------------------------------------------------
+
+echo "==> release-preflight.sh"
+
+# env -i, so the test says nothing about whatever the developer happens to have
+# exported. A public release must fail in an empty environment.
+preflight_public_output="$(env -i \
+    PATH="$PATH" HOME="$HOME" \
+    bash "$root/scripts/release-preflight.sh" --mode public 2>&1 || true)"
+
+refute "a public release with no configuration is refused" \
+    env -i PATH="$PATH" HOME="$HOME" \
+    bash "$root/scripts/release-preflight.sh" --mode public
+
+for name in MACDEVCLEAN_RELEASE_OWNER APPLE_TEAM_ID APPLE_CERTIFICATE_P12_BASE64 \
+    APPLE_API_PRIVATE_KEY
+do
+    check "the refusal names $name" \
+        grep -q "$name" <<< "$preflight_public_output"
+done
+
+check "an unsigned build needs no configuration" \
+    env -i PATH="$PATH" HOME="$HOME" \
+    bash "$root/scripts/release-preflight.sh" --mode unsigned
+
+# A secret value must never reach the output, even when it is present.
+leaky="$(APPLE_CERTIFICATE_PASSWORD='hunter2-not-a-real-password' \
+    MACDEVCLEAN_RELEASE_OWNER=test-owner MACDEVCLEAN_RELEASE_REPO=test-repo \
+    MACDEVCLEAN_BUNDLE_ID=example.test.app APPLE_TEAM_ID=ABCDE12345 \
+    APPLE_CERTIFICATE_P12_BASE64=Zm9v APPLE_API_KEY_ID=KEYID \
+    APPLE_API_ISSUER_ID=ISSUER APPLE_API_PRIVATE_KEY=key \
+    bash "$root/scripts/release-preflight.sh" --mode public 2>&1 || true)"
+refute "no secret value appears in the output" \
+    grep -q "hunter2-not-a-real-password" <<< "$leaky"
+
+refute "an owner carrying a path traversal is refused" \
+    env MACDEVCLEAN_RELEASE_OWNER='../../etc' MACDEVCLEAN_RELEASE_REPO=test-repo \
+    MACDEVCLEAN_BUNDLE_ID=example.test.app APPLE_TEAM_ID=ABCDE12345 \
+    APPLE_CERTIFICATE_P12_BASE64=Zm9v APPLE_CERTIFICATE_PASSWORD=x \
+    APPLE_API_KEY_ID=KEYID APPLE_API_ISSUER_ID=ISSUER APPLE_API_PRIVATE_KEY=key \
+    bash "$root/scripts/release-preflight.sh" --mode public
+
+# --- sign-notarize -----------------------------------------------------------
+
+echo "==> sign-notarize.sh"
+
+cat > "$bin/security-fake" <<'FAKE'
+#!/bin/bash
+case "$1" in
+    list-keychains) echo '"/Users/fixture/Library/Keychains/login.keychain-db"' ;;
+    find-identity)
+        echo '  1) ABCDEF "Developer ID Application: Example Owner (ABCDE12345)"'
+        ;;
+    *) ;;
+esac
+exit 0
+FAKE
+
+cat > "$bin/notarytool-accepted" <<'FAKE'
+#!/bin/bash
+printf '{"id":"00000000-0000-0000-0000-000000000000","status":"Accepted"}'
+FAKE
+
+cat > "$bin/notarytool-invalid" <<'FAKE'
+#!/bin/bash
+printf '{"id":"00000000-0000-0000-0000-000000000000","status":"Invalid"}'
+FAKE
+
+cat > "$bin/codesign-failing" <<'FAKE'
+#!/bin/bash
+echo "errSecInternalComponent" >&2
+exit 1
+FAKE
+
+cat > "$bin/true-fake" <<'FAKE'
+#!/bin/bash
+exit 0
+FAKE
+
+cat > "$bin/ditto-real" <<'FAKE'
+#!/bin/bash
+exec /usr/bin/ditto "$@"
+FAKE
+
+chmod +x "$bin"/*
+
+sign_notarize() {
+    local codesign_tool="$1"
+    local notary_tool="$2"
+    shift 2
+    env \
+        MACDEVCLEAN_RELEASE_OWNER=test-owner \
+        MACDEVCLEAN_RELEASE_REPO=test-repo \
+        MACDEVCLEAN_BUNDLE_ID=example.test.app \
+        APPLE_TEAM_ID=ABCDE12345 \
+        APPLE_CERTIFICATE_P12_BASE64="$(printf 'not-a-certificate' | base64)" \
+        APPLE_CERTIFICATE_PASSWORD=not-a-password \
+        APPLE_API_KEY_ID=KEYID \
+        APPLE_API_ISSUER_ID=ISSUER \
+        APPLE_API_PRIVATE_KEY=not-a-key \
+        MACDEVCLEAN_SECURITY="$bin/security-fake" \
+        MACDEVCLEAN_CODESIGN="$codesign_tool" \
+        MACDEVCLEAN_NOTARYTOOL="$notary_tool" \
+        MACDEVCLEAN_STAPLER="$bin/true-fake" \
+        MACDEVCLEAN_SPCTL="$bin/true-fake" \
+        MACDEVCLEAN_HDIUTIL="$bin/hdiutil-success" \
+        MACDEVCLEAN_DITTO="$bin/ditto-real" \
+        MACDEVCLEAN_LIPO="$bin/lipo-universal" \
+        bash "$root/scripts/sign-notarize.sh" "$@"
+}
+
+signable="$fixture_root/signable/MacDevClean.app"
+make_app "$signable"
+
+refute "a public release with no credentials never signs" \
+    env -i PATH="$PATH" HOME="$HOME" \
+    bash "$root/scripts/sign-notarize.sh" \
+    --app "$signable" --output "$fixture_root/no-credentials.dmg"
+refute "and produces no artifact" test -e "$fixture_root/no-credentials.dmg"
+
+refute "a signing failure stops the release" \
+    sign_notarize "$bin/codesign-failing" "$bin/notarytool-accepted" \
+    --app "$signable" --output "$fixture_root/signing-failed.dmg"
+refute "and produces no artifact" test -e "$fixture_root/signing-failed.dmg"
+
+refute "a rejected notarization stops the release" \
+    sign_notarize "$bin/codesign-developer-id" "$bin/notarytool-invalid" \
+    --app "$signable" --output "$fixture_root/notarization-rejected.dmg"
+refute "and produces no artifact" test -e "$fixture_root/notarization-rejected.dmg"
+
+check "an accepted notarization produces a stapled image" \
+    sign_notarize "$bin/codesign-developer-id" "$bin/notarytool-accepted" \
+    --app "$signable" --output "$fixture_root/accepted.dmg"
+check "the image exists" test -f "$fixture_root/accepted.dmg"
+
+# --- release workflow --------------------------------------------------------
+
+echo "==> .github/workflows/release.yml"
+
+workflow="$root/.github/workflows/release.yml"
+check "the release workflow exists" test -f "$workflow"
+if [ -f "$workflow" ]; then
+    # Comments are stripped first: a comment explaining why a trigger is
+    # absent must not read as the trigger being present.
+    triggers="$(grep -vE '^[[:space:]]*#' "$workflow")"
+    refute "it never runs on pull_request_target" \
+        grep -q "pull_request_target" <<< "$triggers"
+    refute "no pull request trigger reaches it at all" \
+        grep -qE "^[[:space:]]+pull_request" <<< "$triggers"
+    check "credentials live behind a protected environment" \
+        grep -q "environment:" "$workflow"
+    check "it declares read-only permissions by default" \
+        grep -q "contents: read" "$workflow"
+    check "publishing is the only job that can write" \
+        grep -q "contents: write" "$workflow"
+    check "action revisions are pinned to a commit" \
+        grep -qE "uses: .*@[0-9a-f]{40}" "$workflow"
+fi
+
 # --- result ------------------------------------------------------------------
 
 if [ "$failures" -ne 0 ]; then
