@@ -2113,23 +2113,6 @@
         }
       }
     },
-    "Large Files is not built yet": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Large Files is not built yet"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arquivos grandes ainda não foi construído"
-          }
-        }
-      }
-    },
     "Large file size": {
       "extractionState": "manual",
       "localizations": {
@@ -4128,23 +4111,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Esta sessão não foi concluída"
-          }
-        }
-      }
-    },
-    "This will let you pick a folder and look at what is big inside it. It analyses only folders you choose, and nothing is ever preselected.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This will let you pick a folder and look at what is big inside it. It analyses only folders you choose, and nothing is ever preselected."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Isto vai permitir escolher uma pasta e ver o que é grande dentro dela. Analisa apenas as pastas que você escolher, e nada vem pré-selecionado."
           }
         }
       }
