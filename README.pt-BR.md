@@ -33,8 +33,9 @@ Isso importa mais do que a lista de recursos.
 - **Operações do Docker não são recuperáveis.** Elas são rotuladas como tal,
   confirmadas separadamente e restritas a recursos revisados por identificador.
 - **Sem telemetria, sem rede, sem exceção de sandbox, sem helper privilegiado,
-  sem agente em segundo plano, sem item de início de sessão.** O aplicativo não
-  tem nenhum código de rede.
+  sem agente em segundo plano, sem item de início de sessão.** Nenhuma fonte de
+  produção usa API de rede, o portão falha se alguma aparecer, e o `otool -L`
+  no binário compilado não lista nenhuma biblioteca de rede.
 
 ## O que ele detecta
 

@@ -98,6 +98,34 @@ uppercase digest are each refused. A final assertion checks that
 **`Casks/macdevclean.rb` is not committed**, because it must be generated from a
 real release.
 
+## The offline claim is now checkable
+
+Earlier milestones recorded that the product is offline but noted the check was
+implicit: nothing imported a networking API, and nothing asserted that. Two
+facts now back it.
+
+- `scripts/check-policy.sh` fails if production Swift uses `Network`,
+  `CFNetwork`, `NetworkExtension`, `URLSession`, `NSURLConnection` or
+  `CFSocket`, and `scripts/tests/fixtures/policy-networking` must be rejected.
+- `otool -L` on the built universal binary lists no networking library:
+
+  ```text
+  $ otool -L dist/local/MacDevClean.app/Contents/MacOS/MacDevClean | grep -i network
+  (no output)
+  ```
+
+Neither proves the application makes no connection at runtime — only a traced
+run would — but a networking call can no longer be added without failing the
+gate.
+
+## The performance job
+
+`.github/workflows/performance.yml` runs `ScanPerformanceTests` on manual
+dispatch only, records the runner's CPU, core count, memory and toolchain
+alongside the results, and uploads both. It asserts no wall-clock threshold: a
+number from a hosted runner is not comparable with a number from a developer's
+machine. **It has never run**, because no push has been authorized.
+
 ## What was deliberately not done
 
 - **The application was not launched.** The Release composition would write

@@ -31,7 +31,9 @@ This matters more than the feature list.
 - **Docker operations are not recoverable.** They are labelled as such, confirmed
   separately, and restricted to resources reviewed by identifier.
 - **No telemetry, no network, no sandbox exception, no privileged helper, no
-  background agent, no login item.** The app has no networking code of any kind.
+  background agent, no login item.** No production source uses a networking
+  API, the gate fails if one appears, and `otool -L` on the built binary lists
+  no networking library.
 
 ## What it detects
 

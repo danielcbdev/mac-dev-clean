@@ -59,5 +59,9 @@ fail_if_found "production code must not contain a private home path" \
     '"/Users/'
 fail_if_found "production code must not import telemetry SDKs" \
     '^import (Amplitude|Mixpanel|Segment|Telemetry)'
+# The product is offline. This makes that claim checkable instead of implicit:
+# a networking API cannot appear in production code without failing the gate.
+fail_if_found "production code must not use a networking API" \
+    '(^import (Network|CFNetwork|NetworkExtension)|URLSession|NSURLConnection|CFSocket)'
 
 echo "Policy check passed"
