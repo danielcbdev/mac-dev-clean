@@ -5,31 +5,43 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 ## Current state
 
-- **Plan:** redesign foundation
-  (`docs/superpowers/plans/2026-09-22-00-redesign-foundation.md`)
+- **Plan:** redesign Overview screen
+  (`docs/superpowers/plans/2026-09-22-01-redesign-overview.md`)
 - **Branch:** `feature/new-design` (the owner authorized reusing this branch
   directly, rather than cutting a new `feat/*` branch, for this plan)
-- **Last completed task:** redesign-foundation Task 7 — all 6 tasks done,
-  verification recorded
-- **Next step:** per-screen redesign plans (Overview, Caches, History,
-  Settings), each translating one or more of the spec's 13 screens
-  (`docs/references/redesign/design-tokens.md`) into SwiftUI using the tokens
-  this plan added
-- **What this plan added:** `Theme` (22 color tokens, light/dark, from the
-  approved Claude Design spec), `Typography` (5 type styles), a spacing/radius
-  scale on `Layout`, `RiskBadge` restyled as a tinted pill, and
-  `PrimaryButtonStyle`/`SecondaryButtonStyle`/`DestructiveButtonStyle`. Screen
-  layouts (sidebar, cards, rings, tables) are not yet redesigned — this plan
-  was foundation-only.
-- **A locale bug found and fixed along the way:** the new `RiskBadgeTests`
-  exposed that `RiskBadge.title` used `String(localized:)`, which resolves
-  the process's preferred localization rather than an explicit locale — the
-  same bug `LocalizedFormatters.text(_:locale:)` was already written to work
-  around elsewhere in this codebase. `RiskBadge.title` now routes through it.
+- **Last completed task:** redesign-overview Task 8 — all 7 tasks done, plus
+  two corrections the owner found on manual review (below), verification
+  recorded
+- **Next step:** redesign the Caches screen (spec screens `1c`, `1d`, `1k`,
+  `1l`), then History and Settings — same tokens, same per-screen-plan
+  process as this one
+- **What the Overview plan added:** restyled sidebar chrome (background,
+  wordmark, footer, selected/unselected item highlight), the Overview header,
+  the potential-cleanup ring and its primary button, the categories card and
+  row, the Docker card, the three info cards, and two new full-screen states
+  (`NeverScannedView`, `ScanningStateView`) — all using the foundation plan's
+  `Theme`/`Typography`/`Layout`/button-style tokens.
+- **Two defects the owner found on manual review, both fixed:** (1)
+  `NeverScannedView`/`ScanningStateView` introduced English copy with no
+  `Localizable.xcstrings` entry, so it showed in English regardless of the
+  selected language — fixed by adding the 4 genuinely new catalog entries
+  (en + pt-BR) and reusing existing keys elsewhere rather than duplicating
+  them. (2) the "with results" layout didn't match the spec — the sidebar's
+  selected-item highlight was never implemented (only container chrome was),
+  and the results grid was an equal 50/50 split instead of the spec's
+  `minmax(0,1fr) 520px` (ring flexible, categories fixed at 520pt). Both
+  fixed and re-verified.
+- **A locale bug found and fixed in the foundation plan:** the new
+  `RiskBadgeTests` exposed that `RiskBadge.title` used `String(localized:)`,
+  which resolves the process's preferred localization rather than an
+  explicit locale — the same bug `LocalizedFormatters.text(_:locale:)` was
+  already written to work around elsewhere in this codebase. `RiskBadge.title`
+  now routes through it.
 - **Latest evidence:** `MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh`
-  exited 0 on 2026-09-22, Xcode 27.0 (Build 27A266a), Swift 6.4. Swift package
-  tests: 21 cases, 0 failures. App unit tests: 83 cases, 0 failures (16 of
-  them new: `ColorSupportTests`, `ThemeColorTests`, `TypographyTests`,
+  exited 0 on 2026-09-22, Xcode 27.0 (Build 27A266a), Swift 6.4, after the
+  two corrections above. Swift package tests: 21 cases, 0 failures. App unit
+  tests: 83 cases, 0 failures (same 16 added by the foundation plan —
+  `ColorSupportTests`, `ThemeColorTests`, `TypographyTests`,
   `LayoutScaleTests`, `RiskBadgeTests`, `ButtonStyleTests`). UI tests: not
   run (same known blocker as milestone 10, below). Release build (unsigned):
   succeeded. Lint: no findings.
@@ -84,7 +96,8 @@ authorization and are not done.
 | 08 quality | feat/localization-accessibility | merged into develop |
 | 09 distribution | chore/release-pipeline | merged into develop |
 | 10 defect remediation | fix/interface-defects | merged into develop — all six defects fixed |
-| redesign foundation | feature/new-design | in progress — design tokens landed, screens not yet redesigned |
+| redesign foundation | feature/new-design | complete (commits landed directly on this branch) — design tokens |
+| redesign overview screen | feature/new-design | complete (commits landed directly on this branch) — sidebar and Overview's 4 states |
 
 ## Test evidence
 
