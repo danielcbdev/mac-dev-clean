@@ -27,16 +27,18 @@ struct CandidateRow: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(ScanModel.displayName(candidate))
-                    .font(.body)
+                    .appFont(Typography.body)
+                    .foregroundStyle(Theme.textPrimary)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(ConsequenceCopy.text(for: candidate.consequenceKey))
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .appFont(Typography.caption)
+                    .foregroundStyle(Theme.textTertiary)
                     .fixedSize(horizontal: false, vertical: true)
                 if candidate.method != .trash {
                     Text("Cannot be undone")
-                        .font(.caption.weight(.semibold))
-                        .foregroundStyle(.red)
+                        .appFont(Typography.caption)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(Theme.danger)
                 }
             }
 
@@ -44,6 +46,7 @@ struct CandidateRow: View {
 
             VStack(alignment: .trailing, spacing: 2) {
                 ByteLabel(bytes: candidate.size, style: .callout)
+                    .foregroundStyle(Theme.textPrimary)
                 RiskBadge(risk: candidate.risk)
             }
         }
