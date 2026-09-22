@@ -19,6 +19,7 @@ struct StorageSummaryView: View {
     let knownBytes: UInt64
     let unknownCount: Int
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+    @Environment(\.locale) private var locale
 
     private var total: Double { max(Double(knownBytes), 1) }
 
@@ -102,13 +103,23 @@ struct StorageSummaryView: View {
     }
 
     private var accessibleSummary: String {
-        var parts = [ByteLabel.format(knownBytes) + " of potential cleanup"]
+        var parts = [
+            LocalizedFormatters.text(
+                "%@ of potential cleanup", locale: locale,
+                LocalizedFormatters.bytes(knownBytes, locale: locale))
+        ]
         parts.append(
             contentsOf: summaries.prefix(5).map {
-                "\(CategoryNaming.title($0.category)): \(ByteLabel.format($0.knownBytes))"
+                LocalizedFormatters.text(
+                    "%1$@: %2$@", locale: locale,
+                    CategoryNaming.title($0.category),
+                    LocalizedFormatters.bytes($0.knownBytes, locale: locale))
             })
         if unknownCount > 0 {
-            parts.append("\(unknownCount) items of unknown size, excluded from the total")
+            parts.append(
+                LocalizedFormatters.count(
+                    "%lld item of unknown size, excluded from the total",
+                    unknownCount, locale: locale))
         }
         return parts.joined(separator: ". ")
     }

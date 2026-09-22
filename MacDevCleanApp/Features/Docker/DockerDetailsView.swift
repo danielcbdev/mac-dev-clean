@@ -7,15 +7,21 @@ struct DockerDetailsView: View {
     let estimatedBytes: UInt64
     let unknownCount: Int
 
+    @Environment(\.locale) private var locale
+
     var body: some View {
         Card {
             VStack(alignment: .leading, spacing: 10) {
                 Label("Docker resources", systemImage: "shippingbox.fill")
                     .font(.title3.weight(.semibold))
 
-                Text("About " + ByteLabel.format(estimatedBytes))
-                    .font(.title2)
-                    .monospacedDigit()
+                Text(
+                    LocalizedFormatters.text(
+                        "About %@", locale: locale,
+                        LocalizedFormatters.bytes(estimatedBytes, locale: locale))
+                )
+                .font(.title2)
+                .monospacedDigit()
 
                 Text(
                     """

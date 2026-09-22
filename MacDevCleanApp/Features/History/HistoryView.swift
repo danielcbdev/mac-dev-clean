@@ -4,6 +4,9 @@ import SwiftUI
 /// What MacDevClean has done.
 struct HistoryView: View {
     @Bindable var model: HistoryModel
+
+    @Environment(\.locale) private var locale
+
     @State private var expanded: Set<UUID> = []
 
     var body: some View {
@@ -81,9 +84,14 @@ struct HistoryView: View {
                     Spacer()
                     if let summary = session.summary {
                         VStack(alignment: .trailing, spacing: 2) {
-                            Text(ByteLabel.format(summary.bytesMovedToTrash) + " moved")
-                                .font(.callout)
-                                .monospacedDigit()
+                            Text(
+                                LocalizedFormatters.text(
+                                    "%@ moved", locale: locale,
+                                    LocalizedFormatters.bytes(
+                                        summary.bytesMovedToTrash, locale: locale))
+                            )
+                            .font(.callout)
+                            .monospacedDigit()
                             Text("Moved, not freed")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
