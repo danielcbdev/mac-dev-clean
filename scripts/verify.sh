@@ -52,6 +52,9 @@ echo "==> Localization catalog"
 bash scripts/tests/check-localization-tests.sh
 swift scripts/check-localization.swift
 
+echo "==> Release script contracts"
+bash scripts/tests/release-contract-tests.sh
+
 echo "==> Static cleanup and privacy policy"
 bash scripts/tests/check-policy-tests.sh
 bash scripts/check-policy.sh
