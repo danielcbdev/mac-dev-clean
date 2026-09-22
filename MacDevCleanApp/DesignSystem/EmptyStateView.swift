@@ -13,9 +13,11 @@ struct EmptyStateView: View {
         VStack(spacing: 12) {
             Image(systemName: symbol)
                 .font(.system(size: 34, weight: .light))
-                .foregroundStyle(.secondary)
+                .foregroundStyle(Theme.textTertiary)
                 .accessibilityHidden(true)
-            Text(title).font(.headline)
+            Text(title)
+                .appFont(Typography.title)
+                .foregroundStyle(Theme.textPrimary)
             // No `fixedSize(horizontal: false, vertical: true)` here, and that
             // omission is the fix for the defect the owner reported as "the
             // sidebar disappears".
@@ -36,12 +38,12 @@ struct EmptyStateView: View {
             // and a VStack in a vertically free container lets it grow.
             // See docs/verification/10-defects.md.
             Text(message)
-                .font(.callout)
-                .foregroundStyle(.secondary)
+                .appFont(Typography.body)
+                .foregroundStyle(Theme.textSecondary)
                 .multilineTextAlignment(.center)
             if let actionTitle, let action {
                 Button(actionTitle, action: action)
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.macDevPrimary)
             }
         }
         .frame(maxWidth: 420)
