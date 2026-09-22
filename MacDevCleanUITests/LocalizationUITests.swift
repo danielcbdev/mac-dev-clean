@@ -28,6 +28,7 @@ final class LocalizationUITests: XCTestCase {
             "-AppleLanguages", "(\(language))", "-AppleLocale", locale,
         ]
         app.launch()
+        app.activate()
         return app
     }
 }

@@ -26,6 +26,13 @@ XCUITest can observe the app window:
 - Increase Contrast and Reduce Transparency keep the storage ring legible.
 - Reduce Motion suppresses the Overview state-transition animation.
 
+Two of those behaviours are fixed in code and can be read there, though neither
+is a runtime observation: Escape is bound to the review's **Back** button in
+`MacDevCleanApp/Features/CleanupReview/ReviewView.swift`, never to a cleanup
+action, and the Overview passes `nil` animation when
+`accessibilityReduceMotion` is set, in
+`MacDevCleanApp/Features/Overview/OverviewView.swift`.
+
 No screenshots were captured in this environment, so none are claimed as
 evidence. The implementation uses semantic colors, scrollable screen content,
 and an opaque ring fallback when Reduce Transparency is enabled.
