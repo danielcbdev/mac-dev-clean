@@ -35,14 +35,46 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AA0000000000000000000101 /* App */ = {isa = PBXFileSystemSynchronizedRootGroup; path = App; sourceTree = "<group>"; };
-		AA0000000000000000000102 /* Resources */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Resources; sourceTree = "<group>"; };
-		AA0000000000000000000103 /* MacDevCleanAppTests */ = {isa = PBXFileSystemSynchronizedRootGroup; path = MacDevCleanAppTests; sourceTree = "<group>"; };
-		AA0000000000000000000105 /* Features */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Features; sourceTree = "<group>"; };
-		AA0000000000000000000106 /* DesignSystem */ = {isa = PBXFileSystemSynchronizedRootGroup; path = DesignSystem; sourceTree = "<group>"; };
-		AA0000000000000000000107 /* Platform */ = {isa = PBXFileSystemSynchronizedRootGroup; path = Platform; sourceTree = "<group>"; };
-		AA0000000000000000000108 /* PreviewSupport */ = {isa = PBXFileSystemSynchronizedRootGroup; path = PreviewSupport; sourceTree = "<group>"; };
-		AA0000000000000000000104 /* MacDevCleanUITests */ = {isa = PBXFileSystemSynchronizedRootGroup; path = MacDevCleanUITests; sourceTree = "<group>"; };
+		AA0000000000000000000101 /* App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = App;
+			sourceTree = "<group>";
+		};
+		AA0000000000000000000102 /* Resources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		AA0000000000000000000103 /* MacDevCleanAppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MacDevCleanAppTests;
+			sourceTree = "<group>";
+		};
+		AA0000000000000000000104 /* MacDevCleanUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MacDevCleanUITests;
+			sourceTree = "<group>";
+		};
+		AA0000000000000000000105 /* Features */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Features;
+			sourceTree = "<group>";
+		};
+		AA0000000000000000000106 /* DesignSystem */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		AA0000000000000000000107 /* Platform */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		AA0000000000000000000108 /* PreviewSupport */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = PreviewSupport;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,11 +154,11 @@
 			);
 			fileSystemSynchronizedGroups = (
 				AA0000000000000000000101 /* App */,
+				AA0000000000000000000102 /* Resources */,
 				AA0000000000000000000105 /* Features */,
 				AA0000000000000000000106 /* DesignSystem */,
 				AA0000000000000000000107 /* Platform */,
 				AA0000000000000000000108 /* PreviewSupport */,
-				AA0000000000000000000102 /* Resources */,
 			);
 			name = MacDevClean;
 			packageProductDependencies = (
@@ -350,21 +382,24 @@
 		AA0000000000000000000513 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright \U00a9 2026 Daniel Carvalho.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Daniel Carvalho.";
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.macdevclean.app;
 				PRODUCT_NAME = MacDevClean;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
@@ -373,21 +408,24 @@
 		AA0000000000000000000514 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright \U00a9 2026 Daniel Carvalho.";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Daniel Carvalho.";
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = dev.macdevclean.app;
 				PRODUCT_NAME = MacDevClean;
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SWIFT_DEFAULT_ACTOR_ISOLATION = nonisolated;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 			};

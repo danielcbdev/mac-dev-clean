@@ -56,23 +56,24 @@ struct ContentView: View {
         List(Destination.sidebarItems, id: \.self, selection: $coordinator.destination) {
             destination in
             let isActive = destination == coordinator.destination
-            Label(destination.title, systemImage: destination.symbol)
-                // macOS forces a selected List row's SF Symbol to render
-                // white regardless of `.foregroundStyle`, unless the symbol
-                // is explicitly told not to adopt that automatic tint.
-                .symbolRenderingMode(.monochrome)
-                // The active item reads as bold body text, not a tinted
-                // link: `textPrimary`, not the accent color — black on
-                // light, white on dark, matching how the rest of the
-                // sidebar's own text already resolves per appearance.
-                .foregroundStyle(isActive ? Theme.textPrimary : Theme.textSecondary)
-                .fontWeight(isActive ? .bold : .regular)
-                .accessibilityIdentifier(destination.accessibilityID)
-                .listRowBackground(
-                    RoundedRectangle(cornerRadius: Layout.controlRadius)
-                        .fill(isActive ? Theme.accentSoft : Color.clear)
-                        .padding(.vertical, 2)
-                )
+            // macOS forces a selected sidebar row's SF Symbol to white,
+            // ignoring `.foregroundStyle`/`.symbolRenderingMode` applied to
+            // a `Label` as a whole. Styling the icon `Image` directly,
+            // separately from the text, is what actually survives that.
+            Label {
+                Text(destination.title)
+                    .foregroundStyle(isActive ? Theme.textPrimary : Theme.textSecondary)
+                    .fontWeight(isActive ? .bold : .regular)
+            } icon: {
+                Image(systemName: destination.symbol)
+                    .foregroundStyle(isActive ? Theme.textPrimary : Theme.textSecondary)
+            }
+            .accessibilityIdentifier(destination.accessibilityID)
+            .listRowBackground(
+                RoundedRectangle(cornerRadius: Layout.controlRadius)
+                    .fill(isActive ? Theme.accentSoft : Color.clear)
+                    .padding(.vertical, 2)
+            )
         }
         .listStyle(.sidebar)
         .scrollContentBackground(.hidden)
