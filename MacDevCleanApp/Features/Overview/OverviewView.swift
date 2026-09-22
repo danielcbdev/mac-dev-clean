@@ -185,7 +185,8 @@ struct OverviewView: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Label("Docker resources", systemImage: "shippingbox.fill")
-                        .font(.title3.weight(.semibold))
+                        .appFont(Typography.title)
+                        .foregroundStyle(Theme.textPrimary)
                     Spacer()
                     Text(
                         LocalizedFormatters.text(
@@ -193,8 +194,8 @@ struct OverviewView: View {
                             LocalizedFormatters.bytes(
                                 model.estimatedDockerBytes, locale: locale))
                     )
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .appFont(Typography.caption)
+                    .foregroundStyle(Theme.textSecondary)
                     .monospacedDigit()
                 }
                 Text(
@@ -204,14 +205,15 @@ struct OverviewView: View {
                     cannot be undone.
                     """
                 )
-                .font(.callout)
-                .foregroundStyle(.secondary)
+                .appFont(Typography.body)
+                .foregroundStyle(Theme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
 
                 Button("Show Docker details") {
                     coordinator.scanModel.ecosystemFilter = .docker
                     coordinator.destination = .caches
                 }
+                .buttonStyle(.macDevSecondary)
                 .accessibilityIdentifier("docker.details")
             }
         }
