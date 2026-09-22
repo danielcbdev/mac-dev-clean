@@ -55,29 +55,50 @@ struct ContentView: View {
     private var sidebar: some View {
         List(Destination.sidebarItems, id: \.self, selection: $coordinator.destination) {
             destination in
-            Label(destination.title, systemImage: destination.symbol)
-                .accessibilityIdentifier(destination.accessibilityID)
+            let isActive = destination == coordinator.destination
+            // macOS forces a selected sidebar row's SF Symbol to white,
+            // ignoring `.foregroundStyle`/`.symbolRenderingMode` applied to
+            // a `Label` as a whole. Styling the icon `Image` directly,
+            // separately from the text, is what actually survives that.
+            Label {
+                Text(destination.title)
+                    .foregroundStyle(isActive ? Theme.textPrimary : Theme.textSecondary)
+                    .fontWeight(isActive ? .bold : .regular)
+            } icon: {
+                Image(systemName: destination.symbol)
+                    .foregroundStyle(isActive ? Theme.textPrimary : Theme.textSecondary)
+            }
+            .accessibilityIdentifier(destination.accessibilityID)
+            .listRowBackground(
+                RoundedRectangle(cornerRadius: Layout.controlRadius)
+                    .fill(isActive ? Theme.accentSoft : Color.clear)
+                    .padding(.vertical, 2)
+            )
         }
         .listStyle(.sidebar)
+        .scrollContentBackground(.hidden)
+        .background(Theme.sidebarBackground)
         .safeAreaInset(edge: .top, spacing: 0) {
             VStack(alignment: .leading, spacing: 4) {
                 Text("MacDevClean")
-                    .font(.title2.weight(.semibold))
+                    .appFont(Typography.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(Theme.textPrimary)
                 Text("Understand it before you remove it.")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .appFont(Typography.caption)
+                    .foregroundStyle(Theme.textTertiary)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.horizontal, 12)
-            .padding(.top, 12)
-            .padding(.bottom, 8)
+            .padding(.horizontal, Layout.space12)
+            .padding(.top, Layout.space12)
+            .padding(.bottom, Layout.space8)
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {
             Label("Nothing is removed until you confirm.", systemImage: "hand.raised")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .padding(12)
+                .appFont(Typography.caption)
+                .foregroundStyle(Theme.textTertiary)
+                .padding(Layout.space12)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }

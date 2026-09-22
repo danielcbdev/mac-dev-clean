@@ -10,27 +10,38 @@ struct OverviewView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: Layout.cardGap) {
-                header
+            if !model.hasScanned && !model.isScanning {
+                NeverScannedView(
+                    startScan: { coordinator.startScan() },
+                    chooseFolders: { coordinator.destination = .settings }
+                )
+                .padding(Layout.contentInset)
+            } else if model.isScanning {
+                ScanningStateView(visited: model.visited, cancel: { coordinator.cancelScan() })
+                    .padding(Layout.contentInset)
+            } else {
+                VStack(alignment: .leading, spacing: Layout.cardGap) {
+                    header
 
-                ViewThatFits(in: .horizontal) {
-                    HStack(alignment: .top, spacing: Layout.cardGap) {
-                        summaryColumn.frame(maxWidth: .infinity)
-                        categoriesColumn.frame(maxWidth: .infinity)
+                    ViewThatFits(in: .horizontal) {
+                        HStack(alignment: .top, spacing: Layout.cardGap) {
+                            summaryColumn.frame(maxWidth: .infinity)
+                            categoriesColumn.frame(width: 520)
+                        }
+                        VStack(spacing: Layout.cardGap) {
+                            summaryColumn
+                            categoriesColumn
+                        }
                     }
-                    VStack(spacing: Layout.cardGap) {
-                        summaryColumn
-                        categoriesColumn
+
+                    if !model.dockerSummaries.isEmpty {
+                        dockerCard
                     }
-                }
 
-                if !model.dockerSummaries.isEmpty {
-                    dockerCard
+                    informationCards
                 }
-
-                informationCards
+                .padding(Layout.contentInset)
             }
-            .padding(Layout.contentInset)
         }
         .animation(reduceMotion ? nil : .easeOut(duration: 0.2), value: model.isScanning)
         .navigationTitle(Text("Overview"))
@@ -39,47 +50,20 @@ struct OverviewView: View {
     // MARK: - Header
 
     private var header: some View {
-        HStack(alignment: .top, spacing: Layout.cardGap) {
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Clean with confidence")
-                    .font(.system(size: 34, weight: .semibold))
-                    .accessibilityIdentifier("app.title")
-                Text(
-                    """
-                    Find developer caches and build artifacts, understand what removing each \
-                    one costs you, then decide.
-                    """
-                )
-                .font(.title3)
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-            }
-
-            Spacer(minLength: Layout.cardGap)
-
-            trustIndicator
-                .frame(maxWidth: 300)
-        }
-    }
-
-    /// The reference's "Safe cleanup — only removes cache files" badge, made
-    /// accurate: this app moves things to the Trash, which is recoverable but
-    /// not a guarantee, and Docker removals are not recoverable at all.
-    private var trustIndicator: some View {
-        Card {
-            HStack(spacing: 10) {
-                Image(systemName: "arrow.up.trash")
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundStyle(.green)
-                    .accessibilityHidden(true)
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Trash first").font(.headline)
-                    Text("Files go to the Trash, never straight to deletion")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Clean with confidence")
+                .appFont(Typography.hero)
+                .foregroundStyle(Theme.textPrimary)
+                .accessibilityIdentifier("app.title")
+            Text(
+                """
+                Find developer caches and build artifacts, understand what removing each \
+                one costs you, then decide.
+                """
+            )
+            .font(.title3)
+            .foregroundStyle(Theme.textSecondary)
+            .fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -94,46 +78,29 @@ struct OverviewView: View {
                     unknownCount: model.unknownFilesystemCount
                 )
 
-                if model.isScanning {
-                    VStack(spacing: 8) {
-                        ProgressView()
-                            .progressViewStyle(.linear)
-                            .accessibilityIdentifier("scan.progress")
-                            .accessibilityLabel("Scanning")
-                        Text("Looking through your folders. \(model.visited) entries so far.")
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
-                            .monospacedDigit()
-                        Button("Stop scanning") { coordinator.cancelScan() }
-                            .accessibilityIdentifier("scan.cancel")
-                    }
-                } else {
-                    Button {
-                        coordinator.openReview()
-                    } label: {
-                        Label("Review cleanup", systemImage: "arrow.right")
-                            .labelStyle(.titleAndIcon)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 4)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-                    .disabled(model.snapshot == nil)
-                    .accessibilityIdentifier("cleanup.reviewFromOverview")
-
-                    Button(model.hasScanned ? "Scan again" : "Start scan") {
-                        coordinator.startScan()
-                    }
-                    .disabled(!coordinator.canScan)
-                    .accessibilityIdentifier("scan.start")
-
-                    Text(statusMessage)
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .accessibilityIdentifier("scan.status")
+                Button {
+                    coordinator.openReview()
+                } label: {
+                    Label("Review cleanup", systemImage: "arrow.right")
+                        .labelStyle(.titleAndIcon)
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.macDevPrimary)
+                .disabled(model.snapshot == nil)
+                .accessibilityIdentifier("cleanup.reviewFromOverview")
+
+                Button(model.hasScanned ? "Scan again" : "Start scan") {
+                    coordinator.startScan()
+                }
+                .disabled(!coordinator.canScan)
+                .accessibilityIdentifier("scan.start")
+
+                Text(statusMessage)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("scan.status")
             }
         }
     }
@@ -165,7 +132,9 @@ struct OverviewView: View {
         Card {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Text("Cache categories").font(.title3.weight(.semibold))
+                    Text("Cache categories")
+                        .appFont(Typography.title)
+                        .foregroundStyle(Theme.textPrimary)
                     Spacer()
                     Text(
                         LocalizedFormatters.text(
@@ -176,8 +145,8 @@ struct OverviewView: View {
                             LocalizedFormatters.bytes(
                                 model.knownFilesystemBytes, locale: locale))
                     )
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .appFont(Typography.caption)
+                    .foregroundStyle(Theme.textTertiary)
                     .monospacedDigit()
                 }
                 .padding(.bottom, 8)
@@ -192,7 +161,9 @@ struct OverviewView: View {
                     )
                 } else {
                     ForEach(model.filesystemSummaries) { summary in
-                        Divider().opacity(summary.id == model.filesystemSummaries.first?.id ? 0 : 1)
+                        Divider()
+                            .overlay(Theme.separator)
+                            .opacity(summary.id == model.filesystemSummaries.first?.id ? 0 : 1)
                         CategoryRow(summary: summary) {
                             coordinator.scanModel.ecosystemFilter = summary.category
                             coordinator.destination = .caches
@@ -210,7 +181,8 @@ struct OverviewView: View {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
                     Label("Docker resources", systemImage: "shippingbox.fill")
-                        .font(.title3.weight(.semibold))
+                        .appFont(Typography.title)
+                        .foregroundStyle(Theme.textPrimary)
                     Spacer()
                     Text(
                         LocalizedFormatters.text(
@@ -218,8 +190,8 @@ struct OverviewView: View {
                             LocalizedFormatters.bytes(
                                 model.estimatedDockerBytes, locale: locale))
                     )
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
+                    .appFont(Typography.caption)
+                    .foregroundStyle(Theme.textSecondary)
                     .monospacedDigit()
                 }
                 Text(
@@ -229,14 +201,15 @@ struct OverviewView: View {
                     cannot be undone.
                     """
                 )
-                .font(.callout)
-                .foregroundStyle(.secondary)
+                .appFont(Typography.body)
+                .foregroundStyle(Theme.textSecondary)
                 .fixedSize(horizontal: false, vertical: true)
 
                 Button("Show Docker details") {
                     coordinator.scanModel.ecosystemFilter = .docker
                     coordinator.destination = .caches
                 }
+                .buttonStyle(.macDevSecondary)
                 .accessibilityIdentifier("docker.details")
             }
         }
@@ -244,11 +217,12 @@ struct OverviewView: View {
 
     // MARK: - Information
 
+    // The spec always shows these three side by side, never stacked, and the
+    // app's minimum window width (1100pt) comfortably fits them — a fixed
+    // `HStack` is deterministic where `ViewThatFits` was picking the stacked
+    // variant even at widths far above what three compact cards need.
     private var informationCards: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(alignment: .top, spacing: Layout.cardGap) { cards }
-            VStack(spacing: Layout.cardGap) { cards }
-        }
+        HStack(alignment: .top, spacing: Layout.cardGap) { cards }
     }
 
     @ViewBuilder

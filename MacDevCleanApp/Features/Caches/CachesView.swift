@@ -104,38 +104,60 @@ struct CachesView: View {
     @ViewBuilder
     private var filters: some View {
         Group {
-            Picker("Ecosystem", selection: $model.ecosystemFilter) {
-                Text("All ecosystems").tag(CleanupCategory?.none)
-                ForEach(availableCategories, id: \.self) { category in
-                    Text(CategoryNaming.title(category)).tag(CleanupCategory?.some(category))
+            labeledFilter("Ecosystem") {
+                Picker("Ecosystem", selection: $model.ecosystemFilter) {
+                    Text("All ecosystems").tag(CleanupCategory?.none)
+                    ForEach(availableCategories, id: \.self) { category in
+                        Text(CategoryNaming.title(category)).tag(CleanupCategory?.some(category))
+                    }
                 }
+                .labelsHidden()
+                .frame(maxWidth: 260)
+                .accessibilityIdentifier("filter.ecosystem")
             }
-            .frame(maxWidth: 260)
-            .accessibilityIdentifier("filter.ecosystem")
 
-            Picker("Risk", selection: $model.riskFilter) {
-                Text("Any risk").tag(RiskLevel?.none)
-                ForEach(RiskLevel.allCases, id: \.self) { risk in
-                    Text(RiskBadge.title(risk)).tag(RiskLevel?.some(risk))
+            labeledFilter("Risk") {
+                Picker("Risk", selection: $model.riskFilter) {
+                    Text("Any risk").tag(RiskLevel?.none)
+                    ForEach(RiskLevel.allCases, id: \.self) { risk in
+                        Text(RiskBadge.title(risk)).tag(RiskLevel?.some(risk))
+                    }
                 }
+                .labelsHidden()
+                .frame(maxWidth: 180)
+                .accessibilityIdentifier("filter.risk")
             }
-            .frame(maxWidth: 180)
-            .accessibilityIdentifier("filter.risk")
 
-            Picker("Sort", selection: $model.sort) {
-                Text("Largest first").tag(ScanModel.Sort.size)
-                Text("By name").tag(ScanModel.Sort.name)
+            labeledFilter("Sort") {
+                Picker("Sort", selection: $model.sort) {
+                    Text("Largest first").tag(ScanModel.Sort.size)
+                    Text("By name").tag(ScanModel.Sort.name)
+                }
+                .labelsHidden()
+                .frame(maxWidth: 170)
+                .accessibilityIdentifier("filter.sort")
             }
-            .frame(maxWidth: 170)
-            .accessibilityIdentifier("filter.sort")
+        }
+    }
+
+    private func labeledFilter<Content: View>(
+        _ label: LocalizedStringKey, @ViewBuilder content: () -> Content
+    ) -> some View {
+        HStack(spacing: 7) {
+            Text(label)
+                .appFont(Typography.caption)
+                .foregroundStyle(Theme.textSecondary)
+            content()
         }
     }
 
     @ViewBuilder
     private var selectionButtons: some View {
         Button("Select all low and medium risk") { model.selectAllSelectable() }
+            .buttonStyle(.macDevSecondary)
             .accessibilityIdentifier("selection.selectAll")
         Button("Clear selection") { model.clearSelection() }
+            .buttonStyle(.macDevSecondary)
             .disabled(model.selectedIDs.isEmpty)
             .accessibilityIdentifier("selection.clear")
     }
@@ -148,13 +170,16 @@ struct CachesView: View {
             ProgressView()
                 .controlSize(.large)
                 .accessibilityHidden(true)
-            Text("Scanning").font(.headline)
+            Text("Scanning")
+                .appFont(Typography.title)
+                .foregroundStyle(Theme.textPrimary)
             CountText("Looking through your folders. %lld entries so far.", model.visited)
-                .font(.callout)
-                .foregroundStyle(.secondary)
+                .appFont(Typography.caption)
+                .foregroundStyle(Theme.textSecondary)
                 .monospacedDigit()
                 .accessibilityIdentifier("caches.scanProgress")
             Button("Stop scanning") { coordinator.cancelScan() }
+                .buttonStyle(.macDevSecondary)
                 .accessibilityIdentifier("caches.cancelScan")
         }
         .frame(maxWidth: .infinity)
@@ -177,15 +202,15 @@ struct CachesView: View {
 
             if !model.hasScanned {
                 Button("Start scan") { coordinator.startScan() }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.macDevPrimary)
                     .disabled(coordinator.scanUnavailableReason != nil)
                     .accessibilityIdentifier("caches.startScan")
 
                 if let reason = coordinator.scanUnavailableReason {
                     VStack(spacing: 6) {
                         Text(Self.explanation(for: reason))
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
+                            .appFont(Typography.body)
+                            .foregroundStyle(Theme.textSecondary)
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
                             .accessibilityIdentifier("caches.scanUnavailable")
@@ -194,6 +219,7 @@ struct CachesView: View {
                             Button("Add folders in Settings") {
                                 coordinator.destination = .settings
                             }
+                            .buttonStyle(.macDevSecondary)
                             .accessibilityIdentifier("caches.addFolders")
                         }
                     }
@@ -244,10 +270,10 @@ struct CachesView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Label(
                     "High risk — open to review individually",
-                    systemImage: "exclamationmark.octagon"
+                    systemImage: "exclamationmark.circle"
                 )
-                .font(.headline)
-                .foregroundStyle(.red)
+                .appFont(Typography.title)
+                .foregroundStyle(Theme.danger)
 
                 Text(
                     """
@@ -255,8 +281,8 @@ struct CachesView: View {
                     you, and bulk selection never touches it.
                     """
                 )
-                .font(.callout)
-                .foregroundStyle(.secondary)
+                .appFont(Typography.body)
+                .foregroundStyle(Theme.textSecondary)
                 // No fixedSize here: it proposes nil width, the text reports its full
                 // unwrapped ideal width, and in a VStack-rooted screen that ballooned the
                 // split view and emptied the sidebar. See EmptyStateView.
@@ -297,14 +323,17 @@ struct CachesView: View {
                         }
                     } label: {
                         HStack {
-                            Text(CategoryNaming.title(category)).font(.body.weight(.medium))
+                            Text(CategoryNaming.title(category))
+                                .appFont(Typography.body)
+                                .fontWeight(.medium)
+                                .foregroundStyle(Theme.textPrimary)
                             Spacer()
                             CountText(
                                 "%lld item",
                                 highRisk.filter { $0.category == category }.count
                             )
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .appFont(Typography.caption)
+                            .foregroundStyle(Theme.textTertiary)
                         }
                     }
                     .accessibilityIdentifier(Self.disclosureIdentifier(for: category, in: highRisk))
@@ -350,7 +379,9 @@ struct CachesView: View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 2) {
                 CountText("%lld item selected", model.selectedIDs.count)
-                    .font(.body.weight(.medium))
+                    .appFont(Typography.body)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Theme.textPrimary)
                     .monospacedDigit()
                     .accessibilityIdentifier("selection.count")
                 Text(
@@ -362,8 +393,8 @@ struct CachesView: View {
                         locale: locale,
                         LocalizedFormatters.bytes(model.selectedKnownBytes, locale: locale))
                 )
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .appFont(Typography.caption)
+                .foregroundStyle(Theme.textSecondary)
             }
 
             Spacer()
@@ -372,14 +403,13 @@ struct CachesView: View {
                 coordinator.openReview()
             } label: {
                 CountText("Review %lld selected", model.selectedIDs.count)
-                    .padding(.horizontal, 6)
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            .buttonStyle(.macDevPrimary)
             .disabled(model.selectedIDs.isEmpty)
             .accessibilityIdentifier("cleanup.review")
         }
         .padding(.horizontal, Layout.contentInset)
         .padding(.vertical, 14)
+        .background(Theme.sidebarBackground)
     }
 }

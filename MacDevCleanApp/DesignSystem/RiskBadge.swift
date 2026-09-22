@@ -8,21 +8,29 @@ import SwiftUI
 ///
 /// Nothing is ever labelled "guaranteed safe". The lowest level says "Low
 /// risk", because there is no such thing as a guarantee here.
+///
+/// Pill shape and tokens per the redesign spec: 22pt tall, 6pt corner
+/// radius, background tinted to match the foreground token.
 struct RiskBadge: View {
     let risk: RiskLevel
 
     var body: some View {
         Label(Self.title(risk), systemImage: Self.symbol(risk))
-            .font(.caption)
-            .foregroundStyle(Self.color(risk))
+            .labelStyle(.titleAndIcon)
+            .appFont(Typography.caption)
+            .fontWeight(.semibold)
+            .foregroundStyle(Self.foreground(risk))
+            .padding(.horizontal, 9)
+            .frame(height: 22)
+            .background(Self.background(risk), in: .rect(cornerRadius: Layout.badgeRadius))
             .accessibilityLabel(Self.title(risk))
     }
 
-    static func title(_ risk: RiskLevel) -> String {
+    static func title(_ risk: RiskLevel, locale: Locale = .current) -> String {
         switch risk {
-        case .low: return String(localized: "Low risk")
-        case .medium: return String(localized: "Medium risk")
-        case .high: return String(localized: "High risk")
+        case .low: return LocalizedFormatters.text("Low risk", locale: locale)
+        case .medium: return LocalizedFormatters.text("Medium risk", locale: locale)
+        case .high: return LocalizedFormatters.text("High risk", locale: locale)
         }
     }
 
@@ -30,15 +38,23 @@ struct RiskBadge: View {
         switch risk {
         case .low: return "checkmark.shield"
         case .medium: return "exclamationmark.triangle"
-        case .high: return "exclamationmark.octagon"
+        case .high: return "exclamationmark.circle"
         }
     }
 
-    static func color(_ risk: RiskLevel) -> Color {
+    static func foreground(_ risk: RiskLevel) -> Color {
         switch risk {
-        case .low: return .green
-        case .medium: return .orange
-        case .high: return .red
+        case .low: return Theme.success
+        case .medium: return Theme.warning
+        case .high: return Theme.danger
+        }
+    }
+
+    static func background(_ risk: RiskLevel) -> Color {
+        switch risk {
+        case .low: return Theme.successBackground
+        case .medium: return Theme.warningBackground
+        case .high: return Theme.dangerBackground
         }
     }
 }
