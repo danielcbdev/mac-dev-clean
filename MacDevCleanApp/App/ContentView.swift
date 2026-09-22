@@ -57,8 +57,16 @@ struct ContentView: View {
             destination in
             let isActive = destination == coordinator.destination
             Label(destination.title, systemImage: destination.symbol)
-                .foregroundStyle(isActive ? Theme.accentText : Theme.textSecondary)
-                .fontWeight(isActive ? .semibold : .regular)
+                // macOS forces a selected List row's SF Symbol to render
+                // white regardless of `.foregroundStyle`, unless the symbol
+                // is explicitly told not to adopt that automatic tint.
+                .symbolRenderingMode(.monochrome)
+                // The active item reads as bold body text, not a tinted
+                // link: `textPrimary`, not the accent color — black on
+                // light, white on dark, matching how the rest of the
+                // sidebar's own text already resolves per appearance.
+                .foregroundStyle(isActive ? Theme.textPrimary : Theme.textSecondary)
+                .fontWeight(isActive ? .bold : .regular)
                 .accessibilityIdentifier(destination.accessibilityID)
                 .listRowBackground(
                     RoundedRectangle(cornerRadius: Layout.controlRadius)

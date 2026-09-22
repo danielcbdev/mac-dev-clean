@@ -217,11 +217,12 @@ struct OverviewView: View {
 
     // MARK: - Information
 
+    // The spec always shows these three side by side, never stacked, and the
+    // app's minimum window width (1100pt) comfortably fits them — a fixed
+    // `HStack` is deterministic where `ViewThatFits` was picking the stacked
+    // variant even at widths far above what three compact cards need.
     private var informationCards: some View {
-        ViewThatFits(in: .horizontal) {
-            HStack(alignment: .top, spacing: Layout.cardGap) { cards }
-            VStack(spacing: Layout.cardGap) { cards }
-        }
+        HStack(alignment: .top, spacing: Layout.cardGap) { cards }
     }
 
     @ViewBuilder
