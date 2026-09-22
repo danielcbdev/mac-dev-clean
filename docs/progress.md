@@ -7,26 +7,32 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 - **Plan:** 10 defect remediation
   (`docs/superpowers/plans/2026-09-21-10-defect-remediation.md`)
-- **Branch:** `fix/interface-defects`, three commits, not merged
-- **Last completed task:** 10 Task 4 — the manual script and the evidence
-- **Next step:** 10 Task 5 — merge into `develop`, ask for authorization to
-  push, and record the first CI run. **D3 and D5 are still open** and should
-  be weighed before merging.
-- **What plan 10 found:** D1, D2 and D4 are fixed, each with a test that fails
-  without the fix. D3 — the sidebar emptying — is reproduced and narrowed but
-  **not fixed**; the defect report's proposed cause is wrong, because the
-  column is never collapsed, only empty. D5 is D3 seen from the History screen,
-  confirmed by observation. D6 was already done.
-- **A correction to the plan:** Task 4 prescribed verifying with the Release
-  build and `--scenario mixed-results`. The fixture composition is `#if DEBUG`,
-  so that launch runs the real composition against real data. Verification uses
-  `scripts/run-fixture.sh`, which builds Debug.
+- **Branch:** `fix/interface-defects` merged into `develop`; the isolation
+  work continued on `spike/d3-bisect`
+- **Last completed task:** 10 Task 5 — merged, pushed, evidence recorded
+- **Next step:** the owner runs
+  [docs/testing/manual-defect-script.md](testing/manual-defect-script.md) in
+  both languages, and records what they saw
+- **All six reported defects are fixed**, each verified by driving the running
+  application, and D1, D2 and D4 additionally by a test that fails without the
+  fix. D3 — the sidebar emptying — was a long `Text` carrying
+  `fixedSize(horizontal: false, vertical: true)` at the root of the detail
+  column, reporting its full unwrapped width. D5 closed with it.
+- **Two corrections to documents this repository held:** plan 10 states that
+  Brazilian Portuguese puts zero in CLDR's `other` category — it puts it in
+  `one` — and the defect report's proposed cause for D3 was wrong, because
+  the sidebar column is never collapsed, only empty.
+- **A correction to the verification procedure:** Task 4 prescribed the
+  Release build with `--scenario mixed-results`. The fixture composition is
+  `#if DEBUG`, so that launch runs the real composition against real data.
+  Verification uses `scripts/run-fixture.sh`, which builds Debug.
 - **Latest evidence:** `MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh`
   exited 0 on 2026-09-22 with 295 XCTest cases, 0 failures. See
   [docs/verification/10-defects.md](verification/10-defects.md).
 - **Blockers:** the XCUITest gate is still unavailable, now measured as
-  specific to the XCUITest launch rather than to the application. Publication,
-  signing and the tag remain unauthorized and undone.
+  specific to the XCUITest launch rather than to the application. **No CI run
+  has ever happened**: the GitHub Actions API reports zero workflows and zero
+  runs. Publication, signing and the tag remain unauthorized and undone.
 
 ## Repository baseline
 
@@ -68,7 +74,7 @@ authorization and are not done.
 | 07 persistence | feat/history-and-exclusions | merged into develop |
 | 08 quality | feat/localization-accessibility | merged into develop |
 | 09 distribution | chore/release-pipeline | merged into develop |
-| 10 defect remediation | fix/interface-defects | in progress — D1, D2, D4 fixed; D3 and D5 open |
+| 10 defect remediation | fix/interface-defects | merged into develop — all six defects fixed |
 
 ## Test evidence
 
@@ -86,7 +92,7 @@ exact command, its exit status, the toolchain, the date and known omissions.
 | 07 persistence | [07-persistence.md](verification/07-persistence.md) | 271 tests run, 0 failures; **17 UI tests NOT RUN** |
 | 08 quality | [08-quality.md](verification/08-quality.md) | `bash scripts/verify.sh` exit 0, 278 tests run, 0 failures; **21 UI tests NOT RUN** |
 | 09 distribution | [09-distribution.md](verification/09-distribution.md) | `bash scripts/verify.sh` exit 0, 278 tests run, 0 failures, 66 contract assertions; **21 UI tests NOT RUN** |
-| 10 defects | [10-defects.md](verification/10-defects.md) | `bash scripts/verify.sh` exit 0, 295 tests run, 0 failures; **24 UI tests NOT RUN**; D3 and D5 reproduced and open |
+| 10 defects | [10-defects.md](verification/10-defects.md) | `bash scripts/verify.sh` exit 0, 295 tests run, 0 failures; **24 UI tests NOT RUN**; all six defects fixed and confirmed on screen |
 
 ## Known external blockers
 
@@ -98,7 +104,7 @@ is a defect in the code, and none is recorded as done.
 | The XCUITest gate | A logged-in macOS session where an app launched by XCUITest exposes its window to the accessibility interface. Narrowed on 2026-09-22: launched with `open`, the app *is* exposed and inspectable, so the blocker is in the XCUITest launch |
 | Screenshots, VoiceOver, appearance checks | The same, plus screen-recording permission |
 | Live performance measurement | The same |
-| Remote CI | Branches were pushed on 2026-09-22. No workflow run for `fix/interface-defects` has been triggered or observed, so the UI suite still has no result from a real runner |
+| Remote CI | Branches are pushed. The Actions API reports zero workflows and zero runs for the repository; `main`, the default branch, carries no `workflows/` directory. The UI suite has never run on any runner |
 | Signing and notarization | An Apple Developer membership, a Developer ID certificate and an App Store Connect key. None is configured |
 | Homebrew tap | A published release URL and checksum, and authorization to create the tap repository |
 | macOS 14 support | A macOS 14 machine. Only macOS 27.0 was available |

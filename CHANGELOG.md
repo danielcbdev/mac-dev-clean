@@ -27,7 +27,7 @@ published artifact. This section is the state of `develop`.
 - Durable settings, project roots, exclusions and cleanup history in SwiftData.
   A corrupt store is never erased; cleanup is disabled instead and the
   interface says why.
-- A native SwiftUI interface in English and Brazilian Portuguese, 240 catalog
+- A native SwiftUI interface in English and Brazilian Portuguese, 248 catalog
   keys, with keyboard navigation and accessibility labels throughout.
 - An unsigned universal local build, a drag-to-Applications disk image, and an
   artifact verifier that never accepts ad-hoc signing as a Developer ID
@@ -44,10 +44,19 @@ The six reports are in
 
 - Counts reached the screen as raw `^[193 item](inflect: true)` markup. The
   catalog carried that annotation inside 13 values and declared no plural
-  variations at all; four `Text` values were also built by concatenating
-  strings, which selects the verbatim overload and skips the catalog entirely —
-  one of them a whole sentence that stayed English in both languages. Counts
-  are plural variations now, resolved in the locale the interface is showing.
+  variations at all. Counts are plural variations now, resolved in the locale
+  the interface is showing.
+- Nine `Text` values were built by concatenating strings, which selects the
+  verbatim overload and skips the catalog entirely. Two were whole sentences
+  that stayed English in both languages, and one was the VoiceOver summary of
+  the Overview ring, never localized at all. Each is one key now, with
+  placeholders a translation can reorder.
+- **The sidebar emptied on Large Files, History, Exclusions and Caches,
+  leaving the window with no way out.** A long `Text` carrying
+  `fixedSize(horizontal: false, vertical: true)`, in a view used as the root
+  of the detail column, reported its full unwrapped width; the split view
+  sized itself from that and the sidebar column drew no rows. The column was
+  never collapsed, which is why pinning it would not have helped.
 - Large Files showed "not built yet" although plan 06 built the feature in
   full. Routing is data now, and a destination with no screen is not offered.
 - The Caches toolbar could not fit the 1100 pt window minimum and pushed the
@@ -57,17 +66,6 @@ The six reports are in
 - Caches could not tell "nothing was found" from "the filters hide
   everything", and showed a blank area for both.
 - Caches showed no sign that a scan was running.
-
-### Known defects
-
-- **The sidebar empties on some screens, leaving no way to navigate.** The
-  column is not collapsed — it keeps its full width and draws no rows.
-  Reproduced and narrowed by bisection; the cause is inside the detail screens'
-  content and is not yet isolated. Reported for History and Exclusions as well,
-  where the screens themselves are correct. Quitting and relaunching recovers,
-  though AppKit persists the broken split-view geometry, so
-  `defaults delete dev.macdevclean.app` may be needed. See
-  [docs/verification/10-defects.md](docs/verification/10-defects.md).
 
 ### Deliberately not done
 
@@ -83,8 +81,13 @@ The six reports are in
   on the development machine. Measured on 2026-09-22, the blocker is narrower
   than previously recorded: launched normally, the application does expose its
   window to the accessibility interface, so whatever prevents XCUITest from
-  seeing it is specific to the XCUITest launch.
-- The Caches toolbar fix has not been seen on screen at the window minimum.
+  seeing it is specific to the XCUITest launch. Every interface fix above was
+  instead confirmed by driving the running application directly, which proves
+  the screens behave and does not prove the suite passes.
+- No CI run has ever happened. The GitHub Actions API reports zero workflows
+  and zero runs for the repository.
+- The sidebar fix has no automated regression test: it is a layout defect in a
+  NavigationSplitView column, which no model-level test can observe.
 - Never launched on macOS 14, the declared minimum, and never run on Intel
   hardware.
 - No signing, notarization, release, Homebrew tap or independent review.

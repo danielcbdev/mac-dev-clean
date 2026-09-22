@@ -10,6 +10,8 @@ struct CleanupResultsView: View {
     @Bindable var coordinator: RootCoordinator
     @Bindable var review: ReviewModel
 
+    @Environment(\.locale) private var locale
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: Layout.cardGap) {
@@ -19,7 +21,10 @@ struct CleanupResultsView: View {
 
                         if let summary = review.summary {
                             Text(
-                                ByteLabel.format(summary.bytesMovedToTrash) + " moved to the Trash"
+                                LocalizedFormatters.text(
+                                    "%@ moved to the Trash", locale: locale,
+                                    LocalizedFormatters.bytes(
+                                        summary.bytesMovedToTrash, locale: locale))
                             )
                             .font(.title2)
                             .monospacedDigit()

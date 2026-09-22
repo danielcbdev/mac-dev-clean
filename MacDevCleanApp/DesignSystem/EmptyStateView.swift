@@ -16,11 +16,29 @@ struct EmptyStateView: View {
                 .foregroundStyle(.secondary)
                 .accessibilityHidden(true)
             Text(title).font(.headline)
+            // No `fixedSize(horizontal: false, vertical: true)` here, and that
+            // omission is the fix for the defect the owner reported as "the
+            // sidebar disappears".
+            //
+            // `fixedSize(vertical: true)` proposes `nil` width to the text,
+            // which then reports its *ideal* size — for a sentence of this
+            // length, its full unwrapped single-line width, several hundred
+            // points. `frame(maxWidth: 420)` below does not clamp that,
+            // because a maximum only binds a proposal that exists. Used as the
+            // root of a NavigationSplitView detail column, the ideal width of
+            // this view ballooned, the split view sized itself from it, and the
+            // sidebar column kept its width while drawing no rows at all: a
+            // window with no way out.
+            //
+            // Isolated by bisection on 2026-09-22 — restoring the long message
+            // reproduced it, removing this one modifier fixed it, with nothing
+            // else changed. The text still wraps: the frame below bounds it,
+            // and a VStack in a vertically free container lets it grow.
+            // See docs/verification/10-defects.md.
             Text(message)
                 .font(.callout)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
             if let actionTitle, let action {
                 Button(actionTitle, action: action)
                     .buttonStyle(.borderedProminent)

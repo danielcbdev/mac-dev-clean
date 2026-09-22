@@ -163,9 +163,12 @@ struct ReviewView: View {
                 .fixedSize(horizontal: false, vertical: true)
 
                 ForEach(review.validationIssues, id: \.candidateID) { issue in
-                    Text("• " + IssueCopy.text(for: issue.code))
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                    Text(
+                        LocalizedFormatters.text(
+                            "• %@", locale: locale, IssueCopy.text(for: issue.code))
+                    )
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
                 }
 
                 Button("Scan again") {

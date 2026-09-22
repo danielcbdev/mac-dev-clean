@@ -212,10 +212,15 @@ struct OverviewView: View {
                     Label("Docker resources", systemImage: "shippingbox.fill")
                         .font(.title3.weight(.semibold))
                     Spacer()
-                    Text("about " + ByteLabel.format(model.estimatedDockerBytes))
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                        .monospacedDigit()
+                    Text(
+                        LocalizedFormatters.text(
+                            "about %@", locale: locale,
+                            LocalizedFormatters.bytes(
+                                model.estimatedDockerBytes, locale: locale))
+                    )
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .monospacedDigit()
                 }
                 Text(
                     """

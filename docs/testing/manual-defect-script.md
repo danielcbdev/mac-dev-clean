@@ -52,14 +52,11 @@ Drag the bottom-right corner in until the window stops shrinking. It stops at
 **1100 × 720**, which is the minimum the app enforces and the size every layout
 defect appears at. Several of these steps pass at 1470 pt and fail at 1100.
 
-### Known-broken before you begin
+### If something still looks wrong
 
-D3 is **not fixed**. The sidebar still empties on some screens. Steps 3 and 5
-are written to measure how far it goes, not to confirm a fix. If the sidebar
-empties you will have no way to navigate: quit the app and relaunch.
-
-AppKit persists the split view's geometry per app, so a broken layout survives
-a relaunch. To start from clean geometry:
+AppKit persists the split view's geometry per app, so a layout broken by an
+older build survives a relaunch and can make a fixed build look broken. Before
+reporting anything, start from clean geometry:
 
 ```bash
 defaults delete dev.macdevclean.app
@@ -92,9 +89,10 @@ Anything containing `^[` or `](inflect:` is a failure, wherever it appears.
 | 2.2 | Read the screen | It must **not** say "Arquivos grandes ainda não foi construído" or anything like it | |
 | 2.3 | Press "Escolher pastas…" | The fixture picker returns a folder and a scan runs over synthetic files | |
 
-## 3 — Can you leave the screen? (D3, open)
+## 3 — Can you leave the screen? (D3)
 
-This is the defect that traps you. It is **not fixed**; this step measures it.
+This was the defect that trapped you. It is fixed; this step is the check that
+it stays fixed.
 
 | # | Do this | What must happen | What happened |
 |---|---|---|---|
@@ -103,11 +101,12 @@ This is the defect that traps you. It is **not fixed**; this step measures it.
 | 3.3 | Choose "Histórico" | The sidebar still lists all six destinations | |
 | 3.4 | Choose "Exclusões" | The sidebar still lists all six destinations | |
 | 3.5 | Choose "Ajustes" | The sidebar still lists all six destinations | |
-| 3.6 | Whenever the sidebar empties, note **which screen you were on** and whether the column kept its width or collapsed | — | |
-| 3.7 | With the sidebar empty, press the sidebar toggle in the toolbar twice | Note whether the rows come back | |
+| 3.6 | If the sidebar ever empties, note **which screen you were on** and whether the column kept its width or collapsed | — | |
 
-Record 3.6 carefully. The cause is still open and this is the evidence that
-narrows it.
+The cause was a long `Text` carrying `fixedSize(vertical: true)` in a view used
+as the root of the detail column: it reported its full unwrapped width, the
+split view sized itself from that, and the sidebar column drew nothing. If 3.6
+ever happens again, that is the first place to look.
 
 ## 4 — Caches fits and explains itself (D4)
 

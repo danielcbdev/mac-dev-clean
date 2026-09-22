@@ -121,7 +121,9 @@ struct LargeFilesView: View {
                 )
                 .font(.caption)
                 .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
+                // No fixedSize here: it proposes nil width, the text reports its full
+                // unwrapped ideal width, and in a VStack-rooted screen that ballooned the
+                // split view and emptied the sidebar. See EmptyStateView.
                 if model.informationalRowCount > 0 {
                     CountText(
                         "%lld row shown for information only and cannot be selected.",
