@@ -16,6 +16,9 @@ struct OverviewView: View {
                     chooseFolders: { coordinator.destination = .settings }
                 )
                 .padding(Layout.contentInset)
+            } else if model.isScanning {
+                ScanningStateView(visited: model.visited, cancel: { coordinator.cancelScan() })
+                    .padding(Layout.contentInset)
             } else {
                 VStack(alignment: .leading, spacing: Layout.cardGap) {
                     header
@@ -75,44 +78,29 @@ struct OverviewView: View {
                     unknownCount: model.unknownFilesystemCount
                 )
 
-                if model.isScanning {
-                    VStack(spacing: 8) {
-                        ProgressView()
-                            .progressViewStyle(.linear)
-                            .accessibilityIdentifier("scan.progress")
-                            .accessibilityLabel("Scanning")
-                        Text("Looking through your folders. \(model.visited) entries so far.")
-                            .font(.callout)
-                            .foregroundStyle(.secondary)
-                            .monospacedDigit()
-                        Button("Stop scanning") { coordinator.cancelScan() }
-                            .accessibilityIdentifier("scan.cancel")
-                    }
-                } else {
-                    Button {
-                        coordinator.openReview()
-                    } label: {
-                        Label("Review cleanup", systemImage: "arrow.right")
-                            .labelStyle(.titleAndIcon)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .buttonStyle(.macDevPrimary)
-                    .disabled(model.snapshot == nil)
-                    .accessibilityIdentifier("cleanup.reviewFromOverview")
-
-                    Button(model.hasScanned ? "Scan again" : "Start scan") {
-                        coordinator.startScan()
-                    }
-                    .disabled(!coordinator.canScan)
-                    .accessibilityIdentifier("scan.start")
-
-                    Text(statusMessage)
-                        .font(.callout)
-                        .foregroundStyle(.secondary)
-                        .multilineTextAlignment(.center)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .accessibilityIdentifier("scan.status")
+                Button {
+                    coordinator.openReview()
+                } label: {
+                    Label("Review cleanup", systemImage: "arrow.right")
+                        .labelStyle(.titleAndIcon)
+                        .frame(maxWidth: .infinity)
                 }
+                .buttonStyle(.macDevPrimary)
+                .disabled(model.snapshot == nil)
+                .accessibilityIdentifier("cleanup.reviewFromOverview")
+
+                Button(model.hasScanned ? "Scan again" : "Start scan") {
+                    coordinator.startScan()
+                }
+                .disabled(!coordinator.canScan)
+                .accessibilityIdentifier("scan.start")
+
+                Text(statusMessage)
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("scan.status")
             }
         }
     }
