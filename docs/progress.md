@@ -5,27 +5,29 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 ## Current state
 
-- **Plan:** 09 distribution (`docs/superpowers/plans/2026-09-21-09-distribution.md`)
-- **Branch:** chore/release-pipeline
+- **Plan:** 10 defect remediation
+  (`docs/superpowers/plans/2026-09-21-10-defect-remediation.md`)
+- **Branch:** not started — branch `fix/interface-defects` from `develop`
 - **Last completed task:** 09 Task 3 — cask, documentation and release evidence
-- **Next step:** nothing further can be done locally. `release/1.0.0` exists as
-  a release candidate branch, pointing at the same commit as `develop`, and
-  waits there. What remains needs the owner's authorization or hardware that
-  was not available: [docs/release/checklist.md](release/checklist.md).
-  **`v1.0.0` was not created**, because most of that checklist is unchecked.
+- **Next step:** 10 Task 1 — counts that render as words, in both languages
+- **Why plan 10 exists:** the owner ran the 1.0.0 build on 2026-09-21, the
+  first time a person exercised the application, and reported six defects. They
+  are recorded with their causes in
+  [docs/superpowers/specs/2026-09-21-defect-report.md](superpowers/specs/2026-09-21-defect-report.md).
+  Two are confirmed and precise: counts reach the screen as raw
+  `^[…](inflect: true)` markup, because the catalog has 13 keys carrying that
+  markup and no plural variations at all, and because four `Text` values are
+  built by string concatenation, which bypasses localization entirely; and
+  Large Files still routes to the "not built yet" placeholder written in plan
+  05, although plan 06 built the whole feature.
 - **Latest evidence:** `MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh`
   exited 0 on 2026-09-21 with 278 XCTest cases, 0 failures, plus 66 release
-  contract assertions. An unsigned universal app and disk image were built and
-  measured; see [docs/verification/09-distribution.md](verification/09-distribution.md).
-- **Blockers:** the XCUITest gate is unavailable on this machine. Twenty-one UI
-  tests are written and compile but cannot run: the app launches with no window
-  visible to the accessibility interface, and the committed plan 04 baseline
-  fails identically, so this is environmental. See
-  [docs/verification/05-interface.md](verification/05-interface.md). No signing
-  credentials, no remote publication authority, no macOS 14 machine and no
-  Intel hardware. Everything still needing a person, real hardware or
-  credentials is listed in
-  [docs/testing/manual-release-checks.md](testing/manual-release-checks.md).
+  contract assertions. See
+  [docs/verification/09-distribution.md](verification/09-distribution.md).
+- **Blockers:** the XCUITest gate is unavailable on this machine, which is why
+  these defects reached the owner. Plan 10 Task 5 pushes to GitHub, where CI
+  attempts those 21 UI tests on a real runner for the first time. Publication,
+  signing and the tag remain unauthorized and undone.
 
 ## Repository baseline
 
@@ -54,6 +56,7 @@ pushed. Publication requires separate authorization.
 | 07 persistence | feat/history-and-exclusions | merged into develop |
 | 08 quality | feat/localization-accessibility | merged into develop |
 | 09 distribution | chore/release-pipeline | merged into develop |
+| 10 defect remediation | fix/interface-defects | not started |
 
 ## Test evidence
 
