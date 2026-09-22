@@ -452,6 +452,67 @@ if [ -f "$workflow" ]; then
         grep -qE "uses: .*@[0-9a-f]{40}" "$workflow"
 fi
 
+# --- render-cask -------------------------------------------------------------
+
+echo "==> render-cask.sh"
+
+digest="$(printf 'a%.0s' {1..64})"
+cask="$fixture_root/macdevclean.rb"
+
+render_cask() {
+    bash "$root/scripts/render-cask.sh" "$@"
+}
+
+check "a cask renders from valid inputs" \
+    render_cask --owner test-owner --repo test-repo --version 1.0.0 \
+    --sha256 "$digest" --output "$cask"
+
+if [ -f "$cask" ]; then
+    check "it is valid Ruby" ruby -c "$cask"
+    check "the version is interpolated exactly" \
+        grep -qx '  version "1.0.0"' "$cask"
+    check "the checksum is interpolated exactly" \
+        grep -qx "  sha256 \"$digest\"" "$cask"
+    check "the url points at the release asset" \
+        grep -qx '  url "https://github.com/test-owner/test-repo/releases/download/v1.0.0/MacDevClean-1.0.0.dmg"' \
+        "$cask"
+    check "the homepage points at the repository" \
+        grep -qx '  homepage "https://github.com/test-owner/test-repo"' "$cask"
+    check "it installs the application" grep -qx '  app "MacDevClean.app"' "$cask"
+
+    # A cask uninstall must remove MacDevClean, not the machine's caches,
+    # projects, Trash or cleanup history.
+    for forbidden in zap uninstall Trash Caches Library preflight postflight; do
+        refute "it declares no $forbidden stanza" grep -qi "$forbidden" "$cask"
+    done
+fi
+
+refute "an existing output is never overwritten" \
+    render_cask --owner test-owner --repo test-repo --version 1.0.0 \
+    --sha256 "$digest" --output "$cask"
+
+refute "an owner carrying a shell fragment is refused" \
+    render_cask --owner 'test-owner"; system("id")' --repo test-repo --version 1.0.0 \
+    --sha256 "$digest" --output "$fixture_root/injected.rb"
+refute "and nothing is written" test -e "$fixture_root/injected.rb"
+
+refute "a version that is not semantic is refused" \
+    render_cask --owner test-owner --repo test-repo --version latest \
+    --sha256 "$digest" --output "$fixture_root/bad-version.rb"
+
+refute "a checksum that is not 64 hex characters is refused" \
+    render_cask --owner test-owner --repo test-repo --version 1.0.0 \
+    --sha256 deadbeef --output "$fixture_root/bad-digest.rb"
+
+refute "an uppercase checksum is refused" \
+    render_cask --owner test-owner --repo test-repo --version 1.0.0 \
+    --sha256 "$(printf 'A%.0s' {1..64})" --output "$fixture_root/upper-digest.rb"
+
+# The real cask is generated only from a real release. Its absence is the
+# correct state until one exists.
+refute "no production cask is committed with invented inputs" \
+    test -e "$root/Casks/macdevclean.rb"
+
 # --- result ------------------------------------------------------------------
 
 if [ "$failures" -ne 0 ]; then
