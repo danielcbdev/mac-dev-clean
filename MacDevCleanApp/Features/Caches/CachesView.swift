@@ -266,10 +266,10 @@ struct CachesView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Label(
                     "High risk — open to review individually",
-                    systemImage: "exclamationmark.octagon"
+                    systemImage: "exclamationmark.circle"
                 )
-                .font(.headline)
-                .foregroundStyle(.red)
+                .appFont(Typography.title)
+                .foregroundStyle(Theme.danger)
 
                 Text(
                     """
@@ -277,8 +277,8 @@ struct CachesView: View {
                     you, and bulk selection never touches it.
                     """
                 )
-                .font(.callout)
-                .foregroundStyle(.secondary)
+                .appFont(Typography.body)
+                .foregroundStyle(Theme.textSecondary)
                 // No fixedSize here: it proposes nil width, the text reports its full
                 // unwrapped ideal width, and in a VStack-rooted screen that ballooned the
                 // split view and emptied the sidebar. See EmptyStateView.
@@ -319,14 +319,17 @@ struct CachesView: View {
                         }
                     } label: {
                         HStack {
-                            Text(CategoryNaming.title(category)).font(.body.weight(.medium))
+                            Text(CategoryNaming.title(category))
+                                .appFont(Typography.body)
+                                .fontWeight(.medium)
+                                .foregroundStyle(Theme.textPrimary)
                             Spacer()
                             CountText(
                                 "%lld item",
                                 highRisk.filter { $0.category == category }.count
                             )
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+                            .appFont(Typography.caption)
+                            .foregroundStyle(Theme.textTertiary)
                         }
                     }
                     .accessibilityIdentifier(Self.disclosureIdentifier(for: category, in: highRisk))
@@ -372,7 +375,9 @@ struct CachesView: View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 2) {
                 CountText("%lld item selected", model.selectedIDs.count)
-                    .font(.body.weight(.medium))
+                    .appFont(Typography.body)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(Theme.textPrimary)
                     .monospacedDigit()
                     .accessibilityIdentifier("selection.count")
                 Text(
@@ -384,8 +389,8 @@ struct CachesView: View {
                         locale: locale,
                         LocalizedFormatters.bytes(model.selectedKnownBytes, locale: locale))
                 )
-                .font(.caption)
-                .foregroundStyle(.secondary)
+                .appFont(Typography.caption)
+                .foregroundStyle(Theme.textSecondary)
             }
 
             Spacer()
@@ -394,14 +399,13 @@ struct CachesView: View {
                 coordinator.openReview()
             } label: {
                 CountText("Review %lld selected", model.selectedIDs.count)
-                    .padding(.horizontal, 6)
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            .buttonStyle(.macDevPrimary)
             .disabled(model.selectedIDs.isEmpty)
             .accessibilityIdentifier("cleanup.review")
         }
         .padding(.horizontal, Layout.contentInset)
         .padding(.vertical, 14)
+        .background(Theme.sidebarBackground)
     }
 }
