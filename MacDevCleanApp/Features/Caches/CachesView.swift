@@ -104,38 +104,60 @@ struct CachesView: View {
     @ViewBuilder
     private var filters: some View {
         Group {
-            Picker("Ecosystem", selection: $model.ecosystemFilter) {
-                Text("All ecosystems").tag(CleanupCategory?.none)
-                ForEach(availableCategories, id: \.self) { category in
-                    Text(CategoryNaming.title(category)).tag(CleanupCategory?.some(category))
+            labeledFilter("Ecosystem") {
+                Picker("Ecosystem", selection: $model.ecosystemFilter) {
+                    Text("All ecosystems").tag(CleanupCategory?.none)
+                    ForEach(availableCategories, id: \.self) { category in
+                        Text(CategoryNaming.title(category)).tag(CleanupCategory?.some(category))
+                    }
                 }
+                .labelsHidden()
+                .frame(maxWidth: 260)
+                .accessibilityIdentifier("filter.ecosystem")
             }
-            .frame(maxWidth: 260)
-            .accessibilityIdentifier("filter.ecosystem")
 
-            Picker("Risk", selection: $model.riskFilter) {
-                Text("Any risk").tag(RiskLevel?.none)
-                ForEach(RiskLevel.allCases, id: \.self) { risk in
-                    Text(RiskBadge.title(risk)).tag(RiskLevel?.some(risk))
+            labeledFilter("Risk") {
+                Picker("Risk", selection: $model.riskFilter) {
+                    Text("Any risk").tag(RiskLevel?.none)
+                    ForEach(RiskLevel.allCases, id: \.self) { risk in
+                        Text(RiskBadge.title(risk)).tag(RiskLevel?.some(risk))
+                    }
                 }
+                .labelsHidden()
+                .frame(maxWidth: 180)
+                .accessibilityIdentifier("filter.risk")
             }
-            .frame(maxWidth: 180)
-            .accessibilityIdentifier("filter.risk")
 
-            Picker("Sort", selection: $model.sort) {
-                Text("Largest first").tag(ScanModel.Sort.size)
-                Text("By name").tag(ScanModel.Sort.name)
+            labeledFilter("Sort") {
+                Picker("Sort", selection: $model.sort) {
+                    Text("Largest first").tag(ScanModel.Sort.size)
+                    Text("By name").tag(ScanModel.Sort.name)
+                }
+                .labelsHidden()
+                .frame(maxWidth: 170)
+                .accessibilityIdentifier("filter.sort")
             }
-            .frame(maxWidth: 170)
-            .accessibilityIdentifier("filter.sort")
+        }
+    }
+
+    private func labeledFilter<Content: View>(
+        _ label: LocalizedStringKey, @ViewBuilder content: () -> Content
+    ) -> some View {
+        HStack(spacing: 7) {
+            Text(label)
+                .appFont(Typography.caption)
+                .foregroundStyle(Theme.textSecondary)
+            content()
         }
     }
 
     @ViewBuilder
     private var selectionButtons: some View {
         Button("Select all low and medium risk") { model.selectAllSelectable() }
+            .buttonStyle(.macDevSecondary)
             .accessibilityIdentifier("selection.selectAll")
         Button("Clear selection") { model.clearSelection() }
+            .buttonStyle(.macDevSecondary)
             .disabled(model.selectedIDs.isEmpty)
             .accessibilityIdentifier("selection.clear")
     }
