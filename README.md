@@ -167,7 +167,9 @@ notarization produces no artifact — but it **has never run against Apple**.
 - **The UI test suite has never run.** 21 tests compile; none is claimed to
   pass. No screenshots, no VoiceOver pass, no live performance measurement.
 - **Never run on macOS 14, and never on Intel hardware.**
-- **No signing, no notarization, no release, no Homebrew tap, no tag.**
+- **No signing, no notarization, no Homebrew tap.** An unsigned development
+  build is published as a GitHub pre-release,
+  [`v1.0.0-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned).
 - **No independent review.** Nobody else has reviewed this work.
 - **Migration has never been exercised**, because there is only one schema
   version.

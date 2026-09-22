@@ -176,7 +176,9 @@ contra a Apple**.
   é apresentado como aprovado. Sem capturas de tela, sem verificação com
   VoiceOver, sem medição de desempenho em execução real.
 - **Nunca executado em macOS 14 nem em hardware Intel.**
-- **Sem assinatura, sem notarização, sem release, sem tap do Homebrew, sem tag.**
+- **Sem assinatura, sem notarização, sem tap do Homebrew.** Um build de
+  desenvolvimento sem assinatura é publicado como pre-release no GitHub,
+  [`v1.0.0-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned).
 - **Sem revisão independente.** Ninguém mais revisou este trabalho.
 - **A migração de esquema nunca foi exercitada**, porque existe apenas uma
   versão de esquema.
