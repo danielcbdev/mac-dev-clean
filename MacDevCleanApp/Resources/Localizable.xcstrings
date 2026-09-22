@@ -1,6 +1,486 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%1$@ · %2$@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@"
+          }
+        }
+      }
+    },
+    "%1$@, %2$@, %3$@": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, %2$@, %3$@"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, %2$@, %3$@"
+          }
+        }
+      }
+    },
+    "%lld category": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld category"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld categories"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld categories"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld categoria"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld categorias"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld categorias"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld file selected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld file selected"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld files selected"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld files selected"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld arquivo selecionado"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld arquivos selecionados"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld arquivos selecionados"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld item": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld items"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld itens"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld item could not be measured and is not included in this total.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item could not be measured and is not included in this total."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld items could not be measured and are not included in this total."
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Não foi possível medir %lld item, que fica fora deste total."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Não foi possível medir %lld itens, que ficam fora deste total."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld item done": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item done"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld items done"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item concluído"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld itens concluídos"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld item selected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item selected"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld items selected"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld items selected"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item selecionado"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld itens selecionados"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld itens selecionados"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld item skipped or failed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item skipped or failed"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld items skipped or failed"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item ignorado ou com falha"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld itens ignorados ou com falha"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld outcome unknown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld outcome unknown"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld outcomes unknown"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld resultado desconhecido"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld resultados desconhecidos"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld resource reported no size. MacDevClean does not mount volumes to work one out.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld resource reported no size. MacDevClean does not mount volumes to work one out."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld resources reported no size. MacDevClean does not mount volumes to work one out."
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld recurso não informou tamanho. O MacDevClean não monta volumes para descobrir isso."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld recursos não informaram tamanho. O MacDevClean não monta volumes para descobrir isso."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld row shown for information only and cannot be selected.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld row shown for information only and cannot be selected."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld rows shown for information only and cannot be selected."
+                }
+              }
+            }
+          }
+        },
+        "pt-BR": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld linha exibida apenas para informação e não pode ser selecionada."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld linhas exibidas apenas para informação e não podem ser selecionadas."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "30 days": {
       "extractionState": "manual",
       "localizations": {
@@ -35,6 +515,40 @@
         }
       }
     },
+    "A scan found things here. Nothing matches the filters you set, and clearing them brings the results back.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A scan found things here. Nothing matches the filters you set, and clearing them brings the results back."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma verificação encontrou coisas aqui. Nada corresponde aos filtros que você definiu, e limpá-los traz os resultados de volta."
+          }
+        }
+      }
+    },
+    "A scan is already running.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A scan is already running."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uma verificação já está em andamento."
+          }
+        }
+      }
+    },
     "About": {
       "extractionState": "manual",
       "localizations": {
@@ -48,6 +562,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Sobre"
+          }
+        }
+      }
+    },
+    "About %@ will move to the Trash. That frees space only when you empty it.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About %@ will move to the Trash. That frees space only when you empty it."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cerca de %@ vai para a Lixeira. Isso só libera espaço quando você a esvazia."
           }
         }
       }
@@ -82,6 +613,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Adicionar uma pasta…"
+          }
+        }
+      }
+    },
+    "Add folders in Settings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add folders in Settings"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adicionar pastas em Ajustes"
           }
         }
       }
@@ -524,6 +1072,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "A limpeza está indisponível porque o MacDevClean não consegue registrar o que fez. A verificação e as explicações continuam funcionando."
+          }
+        }
+      }
+    },
+    "Clear filters": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear filters"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Limpar filtros"
           }
         }
       }
@@ -1242,19 +1807,19 @@
         }
       }
     },
-    "Found ^[%lld item](inflect: true) across ^[%lld category](inflect: true).": {
+    "Found %1$@ across %2$@.": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Found ^[%lld item](inflect: true) across ^[%lld category](inflect: true)."
+            "value": "Found %1$@ across %2$@."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "^[%lld item](inflect: true) encontrado em ^[%lld categoria](inflect: true)."
+            "value": "O MacDevClean encontrou %1$@ em %2$@."
           }
         }
       }
@@ -1616,23 +2181,6 @@
         }
       }
     },
-    "Large Files is not built yet": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Large Files is not built yet"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arquivos grandes ainda não foi construído"
-          }
-        }
-      }
-    },
     "Large file size": {
       "extractionState": "manual",
       "localizations": {
@@ -1722,15 +2270,39 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Looking through your folders. %lld entries so far."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Looking through your folders. %lld entry so far."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Looking through your folders. %lld entries so far."
+                }
+              }
+            }
           }
         },
         "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Examinando suas pastas. %lld entradas até agora."
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Examinando suas pastas. %lld entrada até agora."
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Examinando suas pastas. %lld entradas até agora."
+                }
+              }
+            }
           }
         }
       }
@@ -1837,6 +2409,23 @@
         }
       }
     },
+    "MacDevClean has no folders to look through yet. Add one and the scan can run.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "MacDevClean has no folders to look through yet. Add one and the scan can run."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "O MacDevClean ainda não tem pastas para examinar. Adicione uma e a verificação poderá rodar."
+          }
+        }
+      }
+    },
     "MacDevClean looks for project artifacts only inside these folders.": {
       "extractionState": "manual",
       "localizations": {
@@ -1922,19 +2511,43 @@
         }
       }
     },
-    "Move ^[%lld item](inflect: true) to the Trash": {
+    "Move %lld item to the Trash": {
       "extractionState": "manual",
       "localizations": {
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Move ^[%lld item](inflect: true) to the Trash"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %lld item to the Trash"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Move %lld items to the Trash"
+                }
+              }
+            }
           }
         },
         "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mover ^[%lld item](inflect: true) para a Lixeira"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %lld item para a Lixeira"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Mover %lld itens para a Lixeira"
+                }
+              }
+            }
           }
         }
       }
@@ -2330,19 +2943,43 @@
         }
       }
     },
-    "Permanently remove ^[%lld item](inflect: true)": {
+    "Permanently remove %lld item": {
       "extractionState": "manual",
       "localizations": {
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Permanently remove ^[%lld item](inflect: true)"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Permanently remove %lld item"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Permanently remove %lld items"
+                }
+              }
+            }
           }
         },
         "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remover permanentemente ^[%lld item](inflect: true)"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Remover permanentemente %lld item"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Remover permanentemente %lld itens"
+                }
+              }
+            }
           }
         }
       }
@@ -2538,32 +3175,92 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review %lld selected"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Review %lld selected"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Review %lld selected"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Review %lld selected"
+                }
+              }
+            }
           }
         },
         "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisar %lld selecionados"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Revisar %lld selecionado"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Revisar %lld selecionados"
+                }
+              },
+              "zero": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Revisar %lld selecionados"
+                }
+              }
+            }
           }
         }
       }
     },
-    "Review ^[%lld selected file](inflect: true)": {
+    "Review %lld selected file": {
       "extractionState": "manual",
       "localizations": {
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review ^[%lld selected file](inflect: true)"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Review %lld selected file"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Review %lld selected files"
+                }
+              }
+            }
           }
         },
         "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisar ^[%lld arquivo selecionado](inflect: true)"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Revisar %lld arquivo selecionado"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Revisar %lld arquivos selecionados"
+                }
+              }
+            }
           }
         }
       }
@@ -3163,6 +3860,23 @@
         }
       }
     },
+    "The filters hide every result": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The filters hide every result"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Os filtros escondem todos os resultados"
+          }
+        }
+      }
+    },
     "The history could not be recorded.": {
       "extractionState": "manual",
       "localizations": {
@@ -3503,23 +4217,6 @@
         }
       }
     },
-    "This will let you pick a folder and look at what is big inside it. It analyses only folders you choose, and nothing is ever preselected.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This will let you pick a folder and look at what is big inside it. It analyses only folders you choose, and nothing is ever preselected."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Isto vai permitir escolher uma pasta e ver o que é grande dentro dela. Analisa apenas as pastas que você escolher, e nada vem pré-selecionado."
-          }
-        }
-      }
-    },
     "Trash first": {
       "extractionState": "manual",
       "localizations": {
@@ -3533,6 +4230,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Lixeira primeiro"
+          }
+        }
+      }
+    },
+    "Unavailable": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unavailable"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Indisponível"
           }
         }
       }
@@ -3584,23 +4298,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Entrada ilegível"
-          }
-        }
-      }
-    },
-    "Unavailable": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unavailable"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Indisponível"
           }
         }
       }
@@ -3754,159 +4451,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Seu próximo build será mais lento enquanto isto é refeito."
-          }
-        }
-      }
-    },
-    "^[%lld file](inflect: true) selected": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld file](inflect: true) selected"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld arquivo selecionado](inflect: true)"
-          }
-        }
-      }
-    },
-    "^[%lld item](inflect: true)": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld item](inflect: true)"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld item](inflect: true)"
-          }
-        }
-      }
-    },
-    "^[%lld item](inflect: true) could not be measured and ^[is](inflect: true) not included in this total.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld item](inflect: true) could not be measured and ^[is](inflect: true) not included in this total."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Não foi possível medir ^[%lld item](inflect: true), que ^[fica](inflect: true) fora deste total."
-          }
-        }
-      }
-    },
-    "^[%lld item](inflect: true) done": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld item](inflect: true) done"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld item concluído](inflect: true)"
-          }
-        }
-      }
-    },
-    "^[%lld item](inflect: true) selected": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld item](inflect: true) selected"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld item selecionado](inflect: true)"
-          }
-        }
-      }
-    },
-    "^[%lld item](inflect: true) skipped or failed": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld item](inflect: true) skipped or failed"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld item ignorado ou com falha](inflect: true)"
-          }
-        }
-      }
-    },
-    "^[%lld outcome](inflect: true) unknown": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld outcome](inflect: true) unknown"
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld resultado desconhecido](inflect: true)"
-          }
-        }
-      }
-    },
-    "^[%lld resource](inflect: true) reported no size. MacDevClean does not mount volumes to work one out.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld resource](inflect: true) reported no size. MacDevClean does not mount volumes to work one out."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld recurso](inflect: true) não informou tamanho. O MacDevClean não monta volumes para descobrir isso."
-          }
-        }
-      }
-    },
-    "^[%lld row](inflect: true) shown for information only and cannot be selected.": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld row](inflect: true) shown for information only and cannot be selected."
-          }
-        },
-        "pt-BR": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "^[%lld linha](inflect: true) exibida apenas para informação e não pode ser selecionada."
           }
         }
       }

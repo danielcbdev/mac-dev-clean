@@ -63,4 +63,39 @@ enum Destination: String, CaseIterable, Identifiable, Hashable {
 
     /// Stable identifier for UI automation. Never a path.
     var accessibilityID: String { "sidebar.\(rawValue)" }
+
+    /// What the detail area shows for this destination.
+    ///
+    /// The routing table is data rather than control flow on purpose. A
+    /// `switch` buried in a view is what let a finished feature keep
+    /// advertising itself as missing: plan 06 built Large Files — the screen,
+    /// the model, the scanner and ten tests — and the one line in `ContentView`
+    /// that returned a placeholder was never changed. Nothing failed, because
+    /// nothing was watching. Now something is.
+    enum ScreenKind: String, Equatable, CaseIterable {
+        case overview, caches, largeFiles, history, exclusions, settings
+        /// No screen exists yet. A destination in this state is never offered.
+        case placeholder
+    }
+
+    var screenKind: ScreenKind {
+        switch self {
+        case .overview: return .overview
+        case .caches: return .caches
+        case .largeFiles: return .largeFiles
+        case .history: return .history
+        case .exclusions: return .exclusions
+        case .settings: return .settings
+        }
+    }
+
+    /// True when choosing this destination opens a screen.
+    var isAvailable: Bool { screenKind != .placeholder }
+
+    /// The destinations the sidebar offers, in order.
+    ///
+    /// A destination with no screen is not offered at all. An entry that leads
+    /// to "this is not built yet" is worse than an absent entry: it spends the
+    /// user's attention and gives nothing back.
+    static var sidebarItems: [Destination] { allCases.filter(\.isAvailable) }
 }

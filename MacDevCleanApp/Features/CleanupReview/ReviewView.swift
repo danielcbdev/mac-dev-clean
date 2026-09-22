@@ -11,6 +11,8 @@ struct ReviewView: View {
     @Bindable var model: ScanModel
     @Bindable var review: ReviewModel
 
+    @Environment(\.locale) private var locale
+
     @State private var showingIrreversibleStep = false
 
     /// Everything under review, wherever it was selected. Caches fills this
@@ -105,9 +107,11 @@ struct ReviewView: View {
                         .foregroundStyle(tint)
                     Spacer()
                     Text(
-                        "^[\(items.count) item](inflect: true) · "
-                            + ByteLabel.format(
-                                items.compactMap(\.size).reduce(0, +))
+                        LocalizedFormatters.text(
+                            "%1$@ · %2$@", locale: locale,
+                            LocalizedFormatters.count("%lld item", items.count, locale: locale),
+                            LocalizedFormatters.bytes(
+                                items.compactMap(\.size).reduce(0, +), locale: locale))
                     )
                     .font(.callout)
                     .foregroundStyle(.secondary)
@@ -211,7 +215,7 @@ struct ReviewView: View {
                 Button {
                     Task { await coordinator.confirmCleanup() }
                 } label: {
-                    Text("Move ^[\(trashItems.count) item](inflect: true) to the Trash")
+                    CountText("Move %lld item to the Trash", trashItems.count)
                         .padding(.horizontal, 6)
                 }
                 .buttonStyle(.borderedProminent)

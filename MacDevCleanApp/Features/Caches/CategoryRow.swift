@@ -4,6 +4,8 @@ import SwiftUI
 /// One category row, matching the reference's symbol tile, two-line label and
 /// trailing size.
 struct CategoryRow: View {
+    @Environment(\.locale) private var locale
+
     let summary: ScanModel.CategorySummary
     var action: (() -> Void)?
 
@@ -51,9 +53,11 @@ struct CategoryRow: View {
         .buttonStyle(.plain)
         .accessibilityIdentifier("category.\(summary.category.rawValue)")
         .accessibilityLabel(
-            "\(CategoryNaming.title(summary.category)), "
-                + ByteLabel.accessibleText(summary.knownBytes) + ", "
-                + RiskBadge.title(summary.highestRisk)
+            LocalizedFormatters.text(
+                "%1$@, %2$@, %3$@", locale: locale,
+                CategoryNaming.title(summary.category),
+                LocalizedFormatters.accessibleBytes(summary.knownBytes, locale: locale),
+                RiskBadge.title(summary.highestRisk))
         )
     }
 }

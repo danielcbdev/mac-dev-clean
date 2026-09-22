@@ -36,7 +36,37 @@ enum LocalizedFormatters {
         )
     }
 
-    private static func localized(_ key: String, locale: Locale) -> String {
+    /// Resolves a catalog key that carries a count.
+    ///
+    /// The count goes through the catalog's plural variations rather than being
+    /// pasted into a sentence, which is what keeps "1 categoria" and "8
+    /// categorias" both grammatical. Xcode's inline `inflect: true` annotation
+    /// is deliberately not used: it is an authoring convenience that resolves
+    /// for only a few languages, and when it does not resolve it reaches the
+    /// screen intact.
+    static func count(_ key: String, _ value: Int, locale: Locale) -> String {
+        String(format: localized(key, locale: locale), locale: locale, value)
+    }
+
+    /// Resolves a plain catalog key in the interface locale.
+    ///
+    /// `String(localized:)` consults the process's preferred localization, not
+    /// the locale the interface is showing, so a string built that way ignores
+    /// the in-app language setting. Everything the user reads goes through
+    /// here instead.
+    static func text(_ key: String, locale: Locale) -> String {
+        localized(key, locale: locale)
+    }
+
+    /// Resolves a catalog key and substitutes already-formatted strings.
+    ///
+    /// The arguments are whole, translated fragments and the key owns the word
+    /// order, so a translation can reorder them. Nothing is concatenated.
+    static func text(_ key: String, locale: Locale, _ arguments: CVarArg...) -> String {
+        String(format: localized(key, locale: locale), locale: locale, arguments: arguments)
+    }
+
+    static func localized(_ key: String, locale: Locale) -> String {
         let identifiers = [
             locale.identifier.replacingOccurrences(of: "_", with: "-"),
             locale.language.languageCode?.identifier,

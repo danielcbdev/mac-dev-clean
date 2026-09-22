@@ -1,0 +1,12 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%lld item selected": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%lld item selected" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "%lld item selecionado" } }
+      }
+    }
+  },
+  "version": "1.0"
+}

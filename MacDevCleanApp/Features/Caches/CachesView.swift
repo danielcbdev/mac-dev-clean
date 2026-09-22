@@ -8,6 +8,8 @@ struct CachesView: View {
     /// binding has to reach the observable object itself.
     @Bindable var model: ScanModel
 
+    @Environment(\.locale) private var locale
+
     private var ordinary: [CleanupCandidate] {
         model.visibleCandidates.filter { $0.risk != .high }
     }
@@ -20,16 +22,26 @@ struct CachesView: View {
             toolbar
             Divider()
 
-            if model.candidates.isEmpty {
+            if model.isScanning {
+                scanningState
+                Spacer()
+            } else if model.hasResultsHiddenByFilters {
+                // A filter that matches nothing is not an empty result. The
+                // screen used to render an empty scroll area with no message
+                // at all, which reads as "you have nothing".
                 EmptyStateView(
-                    symbol: "tray",
-                    title: model.hasScanned ? "Nothing found" : "No results yet",
-                    message: model.hasScanned
-                        ? "MacDevClean found no removable artifacts in the folders you added."
-                        : "Run a scan from the Overview to see what is taking up space.",
-                    actionTitle: model.hasScanned ? nil : "Start scan",
-                    action: model.hasScanned ? nil : { coordinator.startScan() }
+                    symbol: "line.3.horizontal.decrease.circle",
+                    title: "The filters hide every result",
+                    message: """
+                        A scan found things here. Nothing matches the filters you set, \
+                        and clearing them brings the results back.
+                        """,
+                    actionTitle: "Clear filters",
+                    action: { model.clearFilters() }
                 )
+                Spacer()
+            } else if model.candidates.isEmpty {
+                emptyState
                 Spacer()
             } else {
                 ScrollView {
@@ -58,8 +70,40 @@ struct CachesView: View {
 
     // MARK: - Toolbar
 
+    /// Wraps to a second row rather than overflowing.
+    ///
+    /// This was one `HStack` holding three pickers capped at 260, 180 and 170
+    /// points, a bulk-selection button and a clear button, with nothing that
+    /// could break the line. At the 1100 pt window minimum it did not merely
+    /// clip: the row forced the whole screen past the window's height, and the
+    /// controls were laid out 128 points *above* the top edge while the footer
+    /// sat below the bottom one. Brazilian Portuguese labels are longer than
+    /// the English ones, so no fixed width assumption survives either.
     private var toolbar: some View {
-        HStack(spacing: 12) {
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 12) {
+                filters
+                Spacer(minLength: 12)
+                selectionButtons
+            }
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 12) {
+                    filters
+                    Spacer(minLength: 0)
+                }
+                HStack(spacing: 12) {
+                    selectionButtons
+                    Spacer(minLength: 0)
+                }
+            }
+        }
+        .padding(.horizontal, Layout.contentInset)
+        .padding(.vertical, 12)
+    }
+
+    @ViewBuilder
+    private var filters: some View {
+        Group {
             Picker("Ecosystem", selection: $model.ecosystemFilter) {
                 Text("All ecosystems").tag(CleanupCategory?.none)
                 ForEach(availableCategories, id: \.self) { category in
@@ -84,17 +128,88 @@ struct CachesView: View {
             }
             .frame(maxWidth: 170)
             .accessibilityIdentifier("filter.sort")
-
-            Spacer()
-
-            Button("Select all low and medium risk") { model.selectAllSelectable() }
-                .accessibilityIdentifier("selection.selectAll")
-            Button("Clear selection") { model.clearSelection() }
-                .disabled(model.selectedIDs.isEmpty)
-                .accessibilityIdentifier("selection.clear")
         }
-        .padding(.horizontal, Layout.contentInset)
-        .padding(.vertical, 12)
+    }
+
+    @ViewBuilder
+    private var selectionButtons: some View {
+        Button("Select all low and medium risk") { model.selectAllSelectable() }
+            .accessibilityIdentifier("selection.selectAll")
+        Button("Clear selection") { model.clearSelection() }
+            .disabled(model.selectedIDs.isEmpty)
+            .accessibilityIdentifier("selection.clear")
+    }
+
+    // MARK: - States
+
+    /// A user who presses Start must see that something started.
+    private var scanningState: some View {
+        VStack(spacing: 12) {
+            ProgressView()
+                .controlSize(.large)
+                .accessibilityHidden(true)
+            Text("Scanning").font(.headline)
+            CountText("Looking through your folders. %lld entries so far.", model.visited)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .monospacedDigit()
+                .accessibilityIdentifier("caches.scanProgress")
+            Button("Stop scanning") { coordinator.cancelScan() }
+                .accessibilityIdentifier("caches.cancelScan")
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 40)
+    }
+
+    /// Nothing was found, or nothing has been scanned yet. When a scan cannot
+    /// start, the control that would start it is disabled and the reason is
+    /// stated beneath it — an enabled control that does nothing is not honest.
+    @ViewBuilder
+    private var emptyState: some View {
+        VStack(spacing: 10) {
+            EmptyStateView(
+                symbol: "tray",
+                title: model.hasScanned ? "Nothing found" : "No results yet",
+                message: model.hasScanned
+                    ? "MacDevClean found no removable artifacts in the folders you added."
+                    : "Run a scan from the Overview to see what is taking up space."
+            )
+
+            if !model.hasScanned {
+                Button("Start scan") { coordinator.startScan() }
+                    .buttonStyle(.borderedProminent)
+                    .disabled(coordinator.scanUnavailableReason != nil)
+                    .accessibilityIdentifier("caches.startScan")
+
+                if let reason = coordinator.scanUnavailableReason {
+                    VStack(spacing: 6) {
+                        Text(Self.explanation(for: reason))
+                            .font(.callout)
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .accessibilityIdentifier("caches.scanUnavailable")
+
+                        if reason == .noRoots {
+                            Button("Add folders in Settings") {
+                                coordinator.destination = .settings
+                            }
+                            .accessibilityIdentifier("caches.addFolders")
+                        }
+                    }
+                    .frame(maxWidth: 420)
+                }
+            }
+        }
+    }
+
+    private static func explanation(for reason: ScanUnavailableReason) -> LocalizedStringKey {
+        switch reason {
+        case .noRoots:
+            return "MacDevClean has no folders to look through yet. Add one and the scan can run."
+        case .alreadyScanning:
+            return "A scan is already running."
+        }
     }
 
     private var availableCategories: [CleanupCategory] {
@@ -182,11 +297,9 @@ struct CachesView: View {
                         HStack {
                             Text(CategoryNaming.title(category)).font(.body.weight(.medium))
                             Spacer()
-                            Text(
-                                """
-                                ^[\(highRisk.filter { $0.category == category }.count) \
-                                item](inflect: true)
-                                """
+                            CountText(
+                                "%lld item",
+                                highRisk.filter { $0.category == category }.count
                             )
                             .font(.caption)
                             .foregroundStyle(.secondary)
@@ -234,13 +347,18 @@ struct CachesView: View {
     private var footer: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 2) {
-                Text("^[\(model.selectedIDs.count) item](inflect: true) selected")
+                CountText("%lld item selected", model.selectedIDs.count)
                     .font(.body.weight(.medium))
                     .monospacedDigit()
                     .accessibilityIdentifier("selection.count")
                 Text(
-                    "About " + ByteLabel.format(model.selectedKnownBytes)
-                        + " will move to the Trash. That frees space only when you empty it."
+                    LocalizedFormatters.text(
+                        """
+                        About %@ will move to the Trash. That frees space only when you \
+                        empty it.
+                        """,
+                        locale: locale,
+                        LocalizedFormatters.bytes(model.selectedKnownBytes, locale: locale))
                 )
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -251,7 +369,7 @@ struct CachesView: View {
             Button {
                 coordinator.openReview()
             } label: {
-                Text("Review \(model.selectedIDs.count) selected")
+                CountText("Review %lld selected", model.selectedIDs.count)
                     .padding(.horizontal, 6)
             }
             .buttonStyle(.borderedProminent)

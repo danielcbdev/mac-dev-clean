@@ -159,6 +159,13 @@ final class ScanModel {
 
     func clearSelection() { selectedIDs = [] }
 
+    /// Drops every filter, which is what the screen offers when the filters
+    /// hide all of the results.
+    func clearFilters() {
+        ecosystemFilter = nil
+        riskFilter = nil
+    }
+
     /// Drops selections that are no longer in the current snapshot, which is
     /// what happens when a root is removed and the scope shrinks.
     func pruneSelectionToSnapshot() {
@@ -169,6 +176,18 @@ final class ScanModel {
     // MARK: - Derived presentation
 
     var candidates: [CleanupCandidate] { snapshot?.candidates ?? [] }
+
+    /// True when a scan found things and the filters hide all of them.
+    ///
+    /// Caches listed `visibleCandidates` but chose its empty state from
+    /// `candidates`, so a filter that excluded everything produced an empty
+    /// scroll area with no message at all — which happens the moment a
+    /// category is tapped on Overview, because that sets `ecosystemFilter`.
+    /// "Nothing was found" and "nothing matches what you asked for" are
+    /// different answers, and the screen has to be able to tell them apart.
+    var hasResultsHiddenByFilters: Bool {
+        !candidates.isEmpty && visibleCandidates.isEmpty
+    }
 
     var visibleCandidates: [CleanupCandidate] {
         var result = candidates

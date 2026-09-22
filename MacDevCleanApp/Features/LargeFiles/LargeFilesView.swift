@@ -109,7 +109,7 @@ struct LargeFilesView: View {
     private var footer: some View {
         HStack(alignment: .top, spacing: 16) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("^[\(model.selectedIDs.count) file](inflect: true) selected")
+                CountText("%lld file selected", model.selectedIDs.count)
                     .font(.body.weight(.medium))
                     .monospacedDigit()
                     .accessibilityIdentifier("largeFiles.selectionCount")
@@ -123,11 +123,9 @@ struct LargeFilesView: View {
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
                 if model.informationalRowCount > 0 {
-                    Text(
-                        """
-                        ^[\(model.informationalRowCount) row](inflect: true) shown for \
-                        information only and cannot be selected.
-                        """
+                    CountText(
+                        "%lld row shown for information only and cannot be selected.",
+                        model.informationalRowCount
                     )
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -143,7 +141,7 @@ struct LargeFilesView: View {
                         coordinator.review(scanID: snapshot.id, ids: model.selectedIDs)
                     }
                 } label: {
-                    Text("Review ^[\(model.selectedIDs.count) selected file](inflect: true)")
+                    CountText("Review %lld selected file", model.selectedIDs.count)
                         .padding(.horizontal, 6)
                 }
                 .buttonStyle(.borderedProminent)

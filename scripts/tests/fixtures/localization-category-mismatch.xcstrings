@@ -1,0 +1,17 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "%lld item selected": {
+      "localizations": {
+        "en": { "variations": { "plural": {
+          "one": { "stringUnit": { "state": "translated", "value": "%lld item selected" } },
+          "other": { "stringUnit": { "state": "translated", "value": "%lld items selected" } }
+        } } },
+        "pt-BR": { "variations": { "plural": {
+          "other": { "stringUnit": { "state": "translated", "value": "%lld itens selecionados" } }
+        } } }
+      }
+    }
+  },
+  "version": "1.0"
+}

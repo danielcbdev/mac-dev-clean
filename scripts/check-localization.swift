@@ -49,6 +49,26 @@ private func placeholderSignature(in value: String) -> [String] {
     }
 }
 
+/// Every `stringUnit` value under a localization, whatever its state and
+/// whether or not it is empty. `translationValues` deliberately filters those
+/// out; these rules exist to find them.
+private func allValues(in localization: Any) -> [String] {
+    guard let dictionary = localization as? [String: Any] else { return [] }
+    if let unit = dictionary["stringUnit"] as? [String: Any] {
+        return [unit["value"] as? String ?? ""]
+    }
+    return dictionary.values.flatMap(allValues(in:))
+}
+
+/// The plural categories a localization declares, e.g. `["one", "other"]`.
+private func pluralCategories(in localization: Any) -> Set<String> {
+    guard let dictionary = localization as? [String: Any],
+          let variations = dictionary["variations"] as? [String: Any],
+          let plural = variations["plural"] as? [String: Any]
+    else { return [] }
+    return Set(plural.keys)
+}
+
 private func check(_ path: String) throws {
     let data = try Data(contentsOf: URL(fileURLWithPath: path))
     let object = try JSONSerialization.jsonObject(with: data)
@@ -66,6 +86,41 @@ private func check(_ path: String) throws {
         else {
             problems.append("\(key): missing localizations")
             continue
+        }
+
+        // A value carrying Xcode's automatic grammar agreement annotation
+        // reaches the screen intact wherever the annotation does not resolve.
+        // That is the defect this rule exists for: the string was found and
+        // translated, and the user still read the markup.
+        for value in allValues(in: localizations) {
+            if value.contains("^[") || value.contains("](inflect:") {
+                problems.append("\(key): value carries inflection markup: \(value)")
+                break
+            }
+        }
+
+        // A key that carries a count must say how the count changes the words
+        // around it. Without plural variations, "1 itens" is what ships.
+        let englishPlural = pluralCategories(in: localizations["en"] as Any)
+        let portuguesePlural = pluralCategories(in: localizations["pt-BR"] as Any)
+        if key.contains("%lld") || key.contains("%ld") || key.contains("%d") {
+            if englishPlural.isEmpty {
+                problems.append("\(key): counts something but declares no plural variations")
+            }
+        }
+        // Categories declared on one side only silently fall back to the key.
+        if englishPlural != portuguesePlural {
+            problems.append(
+                "\(key): plural categories differ — en \(englishPlural.sorted()), "
+                    + "pt-BR \(portuguesePlural.sorted())")
+        }
+
+        // An empty variation renders as nothing at all, which is worse than an
+        // untranslated string: there is no text to report as wrong.
+        for value in allValues(in: localizations)
+        where value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            problems.append("\(key): has an empty value")
+            break
         }
 
         let english = translationValues(in: localizations["en"] as Any)
@@ -88,6 +143,7 @@ private func check(_ path: String) throws {
                 break
             }
         }
+
     }
 
     if !problems.isEmpty {

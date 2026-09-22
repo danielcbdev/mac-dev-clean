@@ -1,0 +1,18 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "^[%lld item](inflect: true) selected": {
+      "localizations": {
+        "en": { "variations": { "plural": {
+          "one": { "stringUnit": { "state": "translated", "value": "^[%lld item](inflect: true) selected" } },
+          "other": { "stringUnit": { "state": "translated", "value": "^[%lld item](inflect: true) selected" } }
+        } } },
+        "pt-BR": { "variations": { "plural": {
+          "one": { "stringUnit": { "state": "translated", "value": "^[%lld item](inflect: true) selecionado" } },
+          "other": { "stringUnit": { "state": "translated", "value": "^[%lld item](inflect: true) selecionado" } }
+        } } }
+      }
+    }
+  },
+  "version": "1.0"
+}

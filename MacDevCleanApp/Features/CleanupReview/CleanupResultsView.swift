@@ -130,7 +130,7 @@ struct CleanupResultsView: View {
                     HStack {
                         Text(title).font(.headline).foregroundStyle(tint)
                         Spacer()
-                        Text("^[\(records.count) item](inflect: true)")
+                        CountText("%lld item", records.count)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }

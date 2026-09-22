@@ -30,6 +30,7 @@ expect_rejected policy-shell-exec "a shell executable in Docker integration"
 expect_rejected policy-private-path "a hardcoded private home path"
 expect_rejected policy-telemetry "a telemetry SDK import"
 expect_rejected policy-networking "a networking API in production code"
+expect_rejected policy-inflection "inline inflection markup in a user-visible string"
 
 # A tree with no production sources at all is a failure, not a vacuous pass.
 # The directory is created here, stays empty, and is removed non-recursively.
