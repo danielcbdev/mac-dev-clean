@@ -55,6 +55,27 @@ fail_if_found "filesystem cleanup must not call rm, rmdir, unlink, or deleteFile
     '(^|[^A-Za-z0-9_])(rm|rmdir|unlink|deleteFile)[[:space:]]*\('
 fail_if_found "Docker integration must not invoke a shell executable" \
     'fileURLWithPath:[[:space:]]*"/(bin|usr/bin)/(sh|bash|zsh)"'
+# Excludes the app's XCTest group: CatalogRenderingTests names the markup on
+# purpose, because its job is to assert that no resolved string contains it. A
+# rule that forbade the test from naming what it forbids would be unprovable.
+fail_if_found_outside_tests() {
+    local description="$1"
+    local pattern="$2"
+    local matches
+    matches="$(grep -R -E -n --include='*.swift' \
+        --exclude-dir=MacDevCleanAppTests --exclude-dir=MacDevCleanUITests \
+        -- "$pattern" "${sources[@]}" || true)"
+    if [ -n "$matches" ]; then
+        echo "Policy check failed: $description" >&2
+        echo "$matches" >&2
+        exit 1
+    fi
+}
+
+fail_if_found_outside_tests \
+    "user-visible counts must not carry inline inflection markup" \
+    '\^\['
+
 fail_if_found "production code must not contain a private home path" \
     '"/Users/'
 fail_if_found "production code must not import telemetry SDKs" \

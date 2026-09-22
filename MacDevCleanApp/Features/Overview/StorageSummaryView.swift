@@ -72,11 +72,9 @@ struct StorageSummaryView: View {
             .accessibilityIdentifier("overview.ring")
 
             if unknownCount > 0 {
-                Text(
-                    """
-                    ^[\(unknownCount) item](inflect: true) could not be measured and \
-                    ^[is](inflect: true) not included in this total.
-                    """
+                CountText(
+                    "%lld item could not be measured and is not included in this total.",
+                    unknownCount
                 )
                 .font(.caption)
                 .foregroundStyle(.secondary)

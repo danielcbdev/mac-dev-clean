@@ -29,11 +29,12 @@ struct DockerDetailsView: View {
                 .fixedSize(horizontal: false, vertical: true)
 
                 if unknownCount > 0 {
-                    Text(
+                    CountText(
                         """
-                        ^[\(unknownCount) resource](inflect: true) reported no size. \
-                        MacDevClean does not mount volumes to work one out.
-                        """
+                        %lld resource reported no size. MacDevClean does not mount volumes \
+                        to work one out.
+                        """,
+                        unknownCount
                     )
                     .font(.caption)
                     .foregroundStyle(.secondary)

@@ -6,6 +6,7 @@ struct OverviewView: View {
     @Bindable var coordinator: RootCoordinator
     @Bindable var model: ScanModel
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.locale) private var locale
 
     var body: some View {
         ScrollView {
@@ -151,13 +152,11 @@ struct OverviewView: View {
         guard count > 0 else {
             return String(localized: "Nothing to clean up in the folders you added.")
         }
-        return String(
-            localized:
-                """
-                Found ^[\(count) item](inflect: true) across \
-                ^[\(model.filesystemSummaries.count) category](inflect: true).
-                """
-        )
+        return LocalizedFormatters.text(
+            "Found %1$@ across %2$@.", locale: locale,
+            LocalizedFormatters.count("%lld item", count, locale: locale),
+            LocalizedFormatters.count(
+                "%lld category", model.filesystemSummaries.count, locale: locale))
     }
 
     // MARK: - Categories
@@ -169,8 +168,13 @@ struct OverviewView: View {
                     Text("Cache categories").font(.title3.weight(.semibold))
                     Spacer()
                     Text(
-                        "^[\(model.filesystemSummaries.count) category](inflect: true) · "
-                            + ByteLabel.format(model.knownFilesystemBytes)
+                        LocalizedFormatters.text(
+                            "%1$@ · %2$@", locale: locale,
+                            LocalizedFormatters.count(
+                                "%lld category", model.filesystemSummaries.count,
+                                locale: locale),
+                            LocalizedFormatters.bytes(
+                                model.knownFilesystemBytes, locale: locale))
                     )
                     .font(.callout)
                     .foregroundStyle(.secondary)

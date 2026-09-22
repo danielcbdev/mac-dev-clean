@@ -8,6 +8,8 @@ struct CachesView: View {
     /// binding has to reach the observable object itself.
     @Bindable var model: ScanModel
 
+    @Environment(\.locale) private var locale
+
     private var ordinary: [CleanupCandidate] {
         model.visibleCandidates.filter { $0.risk != .high }
     }
@@ -182,11 +184,9 @@ struct CachesView: View {
                         HStack {
                             Text(CategoryNaming.title(category)).font(.body.weight(.medium))
                             Spacer()
-                            Text(
-                                """
-                                ^[\(highRisk.filter { $0.category == category }.count) \
-                                item](inflect: true)
-                                """
+                            CountText(
+                                "%lld item",
+                                highRisk.filter { $0.category == category }.count
                             )
                             .font(.caption)
                             .foregroundStyle(.secondary)
@@ -234,13 +234,18 @@ struct CachesView: View {
     private var footer: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading, spacing: 2) {
-                Text("^[\(model.selectedIDs.count) item](inflect: true) selected")
+                CountText("%lld item selected", model.selectedIDs.count)
                     .font(.body.weight(.medium))
                     .monospacedDigit()
                     .accessibilityIdentifier("selection.count")
                 Text(
-                    "About " + ByteLabel.format(model.selectedKnownBytes)
-                        + " will move to the Trash. That frees space only when you empty it."
+                    LocalizedFormatters.text(
+                        """
+                        About %@ will move to the Trash. That frees space only when you \
+                        empty it.
+                        """,
+                        locale: locale,
+                        LocalizedFormatters.bytes(model.selectedKnownBytes, locale: locale))
                 )
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -251,7 +256,7 @@ struct CachesView: View {
             Button {
                 coordinator.openReview()
             } label: {
-                Text("Review \(model.selectedIDs.count) selected")
+                CountText("Review %lld selected", model.selectedIDs.count)
                     .padding(.horizontal, 6)
             }
             .buttonStyle(.borderedProminent)

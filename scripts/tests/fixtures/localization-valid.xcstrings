@@ -1,10 +1,22 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "Found %lld items": {
+    "%lld item found": {
       "localizations": {
-        "en": { "stringUnit": { "state": "translated", "value": "Found %lld items" } },
-        "pt-BR": { "stringUnit": { "state": "translated", "value": "Encontrados %lld itens" } }
+        "en": { "variations": { "plural": {
+          "one": { "stringUnit": { "state": "translated", "value": "%lld item found" } },
+          "other": { "stringUnit": { "state": "translated", "value": "%lld items found" } }
+        } } },
+        "pt-BR": { "variations": { "plural": {
+          "one": { "stringUnit": { "state": "translated", "value": "%lld item encontrado" } },
+          "other": { "stringUnit": { "state": "translated", "value": "%lld itens encontrados" } }
+        } } }
+      }
+    },
+    "Move to the Trash": {
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Move to the Trash" } },
+        "pt-BR": { "stringUnit": { "state": "translated", "value": "Mover para a Lixeira" } }
       }
     }
   },

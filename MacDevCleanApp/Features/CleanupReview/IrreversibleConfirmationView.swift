@@ -93,11 +93,9 @@ struct IrreversibleConfirmationView: View {
                 Button {
                     Task { await coordinator.confirmCleanup() }
                 } label: {
-                    Text(
-                        """
-                        Permanently remove ^[\(dockerItems.count + highRiskItems.count) \
-                        item](inflect: true)
-                        """
+                    CountText(
+                        "Permanently remove %lld item",
+                        dockerItems.count + highRiskItems.count
                     )
                     .padding(.horizontal, 6)
                 }

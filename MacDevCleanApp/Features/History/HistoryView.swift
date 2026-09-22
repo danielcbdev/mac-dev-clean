@@ -92,21 +92,25 @@ struct HistoryView: View {
                 }
 
                 HStack(spacing: 16) {
-                    Label(
-                        "^[\(model.completedCount(session)) item](inflect: true) done",
-                        systemImage: "checkmark")
+                    Label {
+                        CountText("%lld item done", model.completedCount(session))
+                    } icon: {
+                        Image(systemName: "checkmark")
+                    }
                     if model.problemCount(session) > 0 {
-                        Label(
-                            """
-                            ^[\(model.problemCount(session)) item](inflect: true) skipped or \
-                            failed
-                            """,
-                            systemImage: "exclamationmark.triangle")
+                        Label {
+                            CountText(
+                                "%lld item skipped or failed", model.problemCount(session))
+                        } icon: {
+                            Image(systemName: "exclamationmark.triangle")
+                        }
                     }
                     if model.unknownCount(session) > 0 {
-                        Label(
-                            "^[\(model.unknownCount(session)) outcome](inflect: true) unknown",
-                            systemImage: "questionmark.circle")
+                        Label {
+                            CountText("%lld outcome unknown", model.unknownCount(session))
+                        } icon: {
+                            Image(systemName: "questionmark.circle")
+                        }
                     }
                 }
                 .font(.caption)
