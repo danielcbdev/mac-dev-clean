@@ -5,34 +5,43 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 ## Current state
 
-- **Plan:** 10 defect remediation
-  (`docs/superpowers/plans/2026-09-21-10-defect-remediation.md`)
-- **Branch:** `fix/interface-defects` merged into `develop`; the isolation
-  work continued on `spike/d3-bisect`
-- **Last completed task:** 10 Task 5 — merged, pushed, evidence recorded
-- **Next step:** the owner runs
-  [docs/testing/manual-defect-script.md](testing/manual-defect-script.md) in
-  both languages, and records what they saw
-- **All six reported defects are fixed**, each verified by driving the running
-  application, and D1, D2 and D4 additionally by a test that fails without the
-  fix. D3 — the sidebar emptying — was a long `Text` carrying
-  `fixedSize(horizontal: false, vertical: true)` at the root of the detail
-  column, reporting its full unwrapped width. D5 closed with it.
-- **Two corrections to documents this repository held:** plan 10 states that
-  Brazilian Portuguese puts zero in CLDR's `other` category — it puts it in
-  `one` — and the defect report's proposed cause for D3 was wrong, because
-  the sidebar column is never collapsed, only empty.
-- **A correction to the verification procedure:** Task 4 prescribed the
-  Release build with `--scenario mixed-results`. The fixture composition is
-  `#if DEBUG`, so that launch runs the real composition against real data.
-  Verification uses `scripts/run-fixture.sh`, which builds Debug.
+- **Plan:** redesign foundation
+  (`docs/superpowers/plans/2026-09-22-00-redesign-foundation.md`)
+- **Branch:** `feature/new-design` (the owner authorized reusing this branch
+  directly, rather than cutting a new `feat/*` branch, for this plan)
+- **Last completed task:** redesign-foundation Task 7 — all 6 tasks done,
+  verification recorded
+- **Next step:** per-screen redesign plans (Overview, Caches, History,
+  Settings), each translating one or more of the spec's 13 screens
+  (`docs/references/redesign/design-tokens.md`) into SwiftUI using the tokens
+  this plan added
+- **What this plan added:** `Theme` (22 color tokens, light/dark, from the
+  approved Claude Design spec), `Typography` (5 type styles), a spacing/radius
+  scale on `Layout`, `RiskBadge` restyled as a tinted pill, and
+  `PrimaryButtonStyle`/`SecondaryButtonStyle`/`DestructiveButtonStyle`. Screen
+  layouts (sidebar, cards, rings, tables) are not yet redesigned — this plan
+  was foundation-only.
+- **A locale bug found and fixed along the way:** the new `RiskBadgeTests`
+  exposed that `RiskBadge.title` used `String(localized:)`, which resolves
+  the process's preferred localization rather than an explicit locale — the
+  same bug `LocalizedFormatters.text(_:locale:)` was already written to work
+  around elsewhere in this codebase. `RiskBadge.title` now routes through it.
 - **Latest evidence:** `MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh`
-  exited 0 on 2026-09-22 with 295 XCTest cases, 0 failures. See
-  [docs/verification/10-defects.md](verification/10-defects.md).
-- **Blockers:** the XCUITest gate is still unavailable, now measured as
-  specific to the XCUITest launch rather than to the application. **No CI run
-  has ever happened**: the GitHub Actions API reports zero workflows and zero
-  runs. Publication, signing and the tag remain unauthorized and undone.
+  exited 0 on 2026-09-22, Xcode 27.0 (Build 27A266a), Swift 6.4. Swift package
+  tests: 21 cases, 0 failures. App unit tests: 83 cases, 0 failures (16 of
+  them new: `ColorSupportTests`, `ThemeColorTests`, `TypographyTests`,
+  `LayoutScaleTests`, `RiskBadgeTests`, `ButtonStyleTests`). UI tests: not
+  run (same known blocker as milestone 10, below). Release build (unsigned):
+  succeeded. Lint: no findings.
+- **Two corrections to documents this repository held (from plan 10, still
+  true):** plan 10 states that Brazilian Portuguese puts zero in CLDR's
+  `other` category — it puts it in `one` — and the defect report's proposed
+  cause for D3 was wrong, because the sidebar column is never collapsed, only
+  empty.
+- **Blockers:** the XCUITest gate is still unavailable, measured as specific
+  to the XCUITest launch rather than to the application. **No CI run has ever
+  happened**: the GitHub Actions API reports zero workflows and zero runs.
+  Publication, signing and the tag remain unauthorized and undone.
 
 ## Repository baseline
 
@@ -75,6 +84,7 @@ authorization and are not done.
 | 08 quality | feat/localization-accessibility | merged into develop |
 | 09 distribution | chore/release-pipeline | merged into develop |
 | 10 defect remediation | fix/interface-defects | merged into develop — all six defects fixed |
+| redesign foundation | feature/new-design | in progress — design tokens landed, screens not yet redesigned |
 
 ## Test evidence
 
