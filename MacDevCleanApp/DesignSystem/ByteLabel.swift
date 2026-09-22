@@ -15,7 +15,7 @@ struct ByteLabel: View {
             .font(style)
             .monospacedDigit()
             .foregroundStyle(bytes == nil ? .secondary : .primary)
-            .accessibilityLabel(LocalizedFormatters.bytes(bytes, locale: locale))
+            .accessibilityLabel(LocalizedFormatters.accessibleBytes(bytes, locale: locale))
     }
 
     static func text(_ bytes: UInt64?) -> String {
@@ -23,8 +23,7 @@ struct ByteLabel: View {
     }
 
     static func accessibleText(_ bytes: UInt64?) -> String {
-        guard let bytes else { return String(localized: "Size could not be measured") }
-        return format(bytes)
+        LocalizedFormatters.accessibleBytes(bytes, locale: .autoupdatingCurrent)
     }
 
     /// Locale-aware, via Foundation. Never a hand-rolled divide-by-1024.

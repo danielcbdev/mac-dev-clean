@@ -11,13 +11,28 @@ enum LocalizedFormatters {
         return bytes.formatted(.byteCount(style: .file).locale(locale))
     }
 
-    static func date(_ date: Date, locale: Locale) -> String {
+    /// What assistive technology hears. "Unavailable" is enough beside a
+    /// visible row label; read aloud on its own it says nothing about what is
+    /// unavailable, so an unmeasured size announces itself in full.
+    static func accessibleBytes(_ bytes: UInt64?, locale: Locale) -> String {
+        guard bytes != nil else {
+            return localized("Size could not be measured", locale: locale)
+        }
+        return self.bytes(bytes, locale: locale)
+    }
+
+    /// The time zone is a parameter because a date rendered in the host's zone
+    /// is not reproducible: the same instant is a different day either side of
+    /// midnight, which would make a test pass or fail depending on where it
+    /// runs.
+    static func date(
+        _ date: Date, locale: Locale, timeZone: TimeZone = .current
+    ) -> String {
         date.formatted(
-            .dateTime
+            Date.FormatStyle(locale: locale, timeZone: timeZone)
                 .year()
                 .month(.abbreviated)
                 .day()
-                .locale(locale)
         )
     }
 

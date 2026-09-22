@@ -15,7 +15,7 @@ exit status: 0
 | Check | Result |
 |---|---|
 | `swift test --package-path Packages/MacDevCleanCore` | **Pass** — 232 tests, 0 failures |
-| App unit tests, Debug | **Pass** — 45 tests, 0 failures |
+| App unit tests, Debug | **Pass** — 46 tests, 0 failures |
 | **UI tests** | **NOT RUN** — 21 written, the XCUITest gate is unavailable on this machine |
 | Release build, unsigned | **Pass** |
 | `bash scripts/check-token-access.sh` | **Pass** |
@@ -34,8 +34,8 @@ exit status: 0
 | `ScanningTests` | 70 | 0 |
 | `DockerIntegrationTests` | 76 | 0 |
 | `PersistenceTests` | 19 | 0 |
-| `MacDevCleanAppTests` | 45 | 0 |
-| **Total run** | **277** | **0** |
+| `MacDevCleanAppTests` | 46 | 0 |
+| **Total run** | **278** | **0** |
 | `MacDevCleanUITests` | 21 | **not run** |
 
 ## The static policy check was not checking anything
@@ -73,6 +73,27 @@ After the fix the whole gate exits 0 with the numbers in the table above.
 **The exit-0 run recorded in this file's previous revision covered a policy
 check in that broken state.** Its package, app, build, localization and lint
 results stand; its policy line did not verify anything. This run replaces it.
+
+## An unknown size stopped announcing what it was
+
+Reviewing the branch diff before the merge found a second defect. Task 1 routed
+`ByteLabel`'s accessibility label through the new byte formatter, so a size that
+could not be measured announced itself as "Unavailable". Beside a visible row
+label that reads acceptably; VoiceOver reads the label on its own, where it says
+nothing about *what* is unavailable, and
+[docs/design/layout.md](../design/layout.md) states these are announced as
+"Size could not be measured".
+
+`LocalizedFormatters.accessibleBytes(_:locale:)` restores the full sentence in
+both languages, and `testAnUnknownSizeIsAnnouncedAsUnmeasuredRatherThanAsUnavailable`
+pins it. The visible text is unchanged: still "Unavailable" / "Indisponível",
+never "0 bytes".
+
+The date formatter also took an explicit time zone. Its test asserted a
+calendar day rendered in the host's zone, which is the same instant on two
+different dates either side of midnight — the assertion would have passed or
+failed depending on where it ran. It is now pinned to UTC, with an Auckland
+case as the control.
 
 ## Scan performance
 
