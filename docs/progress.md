@@ -40,8 +40,21 @@ it was preserved rather than reinitialized, as plan 01 Task 1 requires.
 | `7ec895d` | 2026-09-21 | Update binary files (.DS_Store housekeeping) |
 | `30e0ffe` | 2026-09-21 | docs: establish MacDevClean specification and engineering policy |
 
-A remote named `origin` already existed when work started. Nothing has been
-pushed. Publication requires separate authorization.
+A remote named `origin` already existed when work started —
+`git@github.com:danielcbdev/mac-dev-clean.git`, public, default branch `main`.
+
+**Pushed on 2026-09-22, with the owner's explicit authorization in session.**
+Branches only; `git ls-remote --tags origin` is empty and `v1.0.0` does not
+exist.
+
+| Remote branch | Commit |
+|---|---|
+| `main` | `30e0ffe` — fast-forward from `7ec895d` |
+| `develop` | `29e667e` |
+| `release/1.0.0` | `29e667e` |
+
+Publishing a release, signing and tagging still require separate
+authorization and are not done.
 
 ## Plan status
 
