@@ -24,6 +24,18 @@ echo "==> Building modules"
 swift build --package-path "$PACKAGE" >/dev/null
 BIN="$(swift build --package-path "$PACKAGE" --show-bin-path)"
 
+# --show-bin-path names where SwiftPM reports the build landed, but on some
+# toolchains that path is not where a target's .swiftmodule actually sits
+# (observed: Xcode 26.6 on the hosted CI runner, not reproduced with 27.0
+# locally). Fall back to the real location instead of failing on a path that
+# looked right.
+if [ ! -e "$BIN/Cleanup.swiftmodule" ]; then
+    found="$(find "$PACKAGE/.build" -maxdepth 6 -name "Cleanup.swiftmodule" -print -quit)"
+    if [ -n "$found" ]; then
+        BIN="$(dirname "$found")"
+    fi
+fi
+
 # Inside the ignored build directory, so nothing needs deleting afterwards and
 # nothing outside the project is touched.
 SCRATCH="$PACKAGE/.build/token-access"
