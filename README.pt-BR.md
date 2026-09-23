@@ -8,9 +8,59 @@ arquivos para a Lixeira.
 
 [English](README.md)
 
-> **Situação: desenvolvimento concluído, nunca publicado.** Não existe release,
-> build assinado, tap do Homebrew nem tag. Tudo que foi medido diz onde foi
-> medido; tudo que não foi verificado está declarado como não verificado.
+> **Situação: build de desenvolvimento sem assinatura publicado; release
+> assinado ainda não feito.**
+> [`v1.0.0-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned)
+> é um pre-release real, disponível para download no GitHub. Não existe build
+> assinado, notarização nem tap do Homebrew ainda. Tudo que foi medido diz
+> onde foi medido; tudo que não foi verificado está declarado como não
+> verificado.
+
+## Instalar
+
+Baixe a imagem de disco do [último release](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned)
+e rode:
+
+```bash
+curl -L -o MacDevClean.dmg \
+  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.0-unsigned/MacDevClean-1.0.0-unsigned.dmg
+curl -L -o MacDevClean.dmg.sha256 \
+  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.0-unsigned/MacDevClean-1.0.0-unsigned.dmg.sha256
+shasum -a 256 -c MacDevClean.dmg.sha256   # opcional, confirma o download
+open MacDevClean.dmg
+```
+
+Arraste `MacDevClean.app` para `/Applications`. Este build é **sem assinatura e
+não notarizado**, então a primeira abertura é recusada — **Control-clique no
+app → Abrir**, depois confirme. Isso libera só esse aplicativo; não desative o
+Gatekeeper. Detalhes completos, incluindo o que o app grava em disco e como
+removê-lo: [docs/release/manual-install.md](docs/release/manual-install.md)
+(em inglês).
+
+### Compilando você mesmo
+
+O mesmo artefato sem assinatura, compilado a partir do código-fonte em vez de
+baixado:
+
+```bash
+bash scripts/build-local.sh --version 1.0.0 --output dist/local
+bash scripts/verify-artifact.sh --app dist/local/MacDevClean.app --mode unsigned
+bash scripts/package-dmg.sh --app dist/local/MacDevClean.app \
+    --output dist/MacDevClean-1.0.0-unsigned.dmg
+```
+
+| | Sem assinatura, hoje | Assinado, não feito |
+|---|---|---|
+| Como obter | Baixando o release, ou compilando você mesmo | Um DMG publicado e notarizado |
+| Gatekeeper | Recusa a primeira abertura; Control-clique → Abrir | Abre normalmente |
+| Verificado por | `verify-artifact.sh --mode unsigned` | `--mode signed`, que nunca aceita assinatura ad hoc |
+| Existe? | Sim — o pre-release acima | **Não.** Sem certificado, sem notarização |
+
+O pipeline assinado está escrito e seus modos de falha são testados com
+ferramentas falsas — sem credenciais não há assinatura; uma assinatura que falha
+ou uma notarização rejeitada não produz artefato —, mas ele **nunca executou
+contra a Apple**.
+[docs/release/configuration.md](docs/release/configuration.md) (em inglês).
 
 ## O que ele não faz
 
@@ -101,6 +151,80 @@ bash scripts/check-token-access.sh
 As decisões, com as alternativas rejeitadas e suas consequências, estão em
 [docs/adr/](docs/adr/) (em inglês).
 
+## Stack técnica e práticas de engenharia
+
+**Linguagem e concorrência.** Swift 6 em modo de linguagem estrito
+(`.swiftLanguageMode(.v6)` em todos os alvos). Os alvos do core são
+`nonisolated` por padrão — o próprio padrão do Swift 6, mantido explícito em
+vez de herdado — e só a camada de app opta por `@MainActor`, escrito
+explicitamente em vez de assumido.
+
+**Frameworks — zero dependências de terceiros.** `Package.resolved` não tem
+nenhuma entrada. Tudo é nativo da Apple: SwiftUI + `Observation` para a
+interface (sem Combine, sem `ObservableObject` legado), AppKit só onde o
+SwiftUI não tem equivalente, `SwiftData` para persistência local,
+`CryptoKit` para hash de conteúdo, `OSLog` para logging.
+
+**Arquitetura modular.** Um pacote Swift local (`Packages/MacDevCleanCore`)
+dividido em seis alvos — `Domain`, `CleanupRules`, `Scanning`, `Cleanup`,
+`DockerIntegration`, `Persistence` — com dependências apontando só para
+dentro; `Domain` importa apenas Foundation. Isso não é só documentado: a
+autoridade de limpeza é uma fronteira em nível de tipo
+(`ValidatedCleanupItem` tem inicializador interno, então só `Cleanup`
+consegue construir um), e `scripts/check-token-access.sh` compila uma
+falsificação deliberada e falha o build se ela *compilar*.
+
+**Testes.** Dois frameworks por design — XCTest para testes de app e de
+interface, o framework `Testing` (`@Test`) mais novo do Swift para as suítes
+do pacote — escritos test-first, vermelho antes de verde, um caso
+comportamental de cada vez. Todo caminho destrutivo (Lixeira, Docker) é
+exercitado contra fixtures que o próprio teste cria, uma Lixeira falsa e um
+cliente Docker falso, então a suíte nunca toca uma máquina real.
+
+**Análise estática, feita à mão.** `scripts/check-policy.sh` prova que o
+Swift de produção nunca chama `rm`, `rmdir`, `removeItem` ou uma API de rede
+— `grep` POSIX puro, deliberadamente não `ripgrep`, porque uma ferramenta
+opcional ausente que silenciosamente zera um portão é pior que nenhum
+portão. `scripts/check-localization.swift` é um script Swift avulso (sem
+pacote, sem alvo) que verifica se toda chave de string existe nos dois
+idiomas com placeholders de plural correspondentes e sem entradas obsoletas.
+O `.swift-format` (100 colunas, no máximo uma linha em branco) roda a partir
+do próprio toolchain do Xcode fixado — nada baixado, nada flutuante.
+
+**CI/CD — 3 workflows do GitHub Actions, todos fixados, todos com privilégio
+mínimo.**
+- `CI` — portão completo em todo PR e push para `main`/`develop`,
+  `permissions: contents: read`, nenhum segredo ao alcance.
+- `Performance` — só manual (`workflow_dispatch`); mede desempenho de
+  varredura sem afirmar um limite de tempo de parede, porque um número de um
+  runner compartilhado não é comparável ao de um laptop, e um limite
+  irreprodutível só vira um teste instável.
+- `Release` — três estágios (teste → assinar e notarizar → publicar); o
+  estágio de assinatura só roda dentro de um ambiente `release` protegido
+  com revisor obrigatório, e o estágio de publicação é o único job de todo o
+  pipeline com permissão de escrita. Toda Action de terceiros é fixada num
+  commit SHA imutável, nunca uma tag flutuante.
+
+**Engenharia de release.** `scripts/release-preflight.sh` recusa um release
+assinado nomeando exatamente quais segredos estão faltando — nunca um valor,
+um tamanho ou um prefixo. `scripts/sign-notarize.sh` cria um keychain
+descartável por execução e garante sua remoção em qualquer caminho de saída,
+inclusive falha. `scripts/render-cask.rb` gera o Cask do Homebrew a partir
+de cinco argumentos validados — nunca interpolação de string em código Ruby
+— e sua própria suíte de testes de contrato garante que um Cask nunca é
+gerado para um artefato que não está de fato publicado.
+
+**Documentação como engenharia, não um apêndice.** 6 ADRs registram as
+alternativas *rejeitadas* e suas consequências, não só a decisão tomada. Os
+documentos de verificação em `docs/verification/` registram o comando real,
+o código de saída e o toolchain usados — uma verificação que não rodou é
+registrada como não executada, nunca contada silenciosamente como aprovada.
+
+**Fluxo de Git.** Conventional Commits do início ao fim (80 commits,
+`feat:`, `fix:`, `merge:`, `chore:`, `docs:`). O ciclo de vida de branches é
+`main → develop → feat/*`, mesclado de volta com `--no-ff` para preservar o
+histórico de cada feature em vez de esmagá-lo.
+
 ## Requisitos
 
 | | |
@@ -144,31 +268,6 @@ bash scripts/tests/release-contract-tests.sh
 Todo teste destrutivo roda sobre fixtures que ele mesmo criou, com Lixeira falsa
 e Docker falso. Nenhum teste toca seus caches, sua Lixeira ou seus recursos do
 Docker.
-
-## Instalar
-
-Compile você mesmo e abra o artefato sem assinatura:
-[docs/release/manual-install.md](docs/release/manual-install.md).
-
-```bash
-bash scripts/build-local.sh --version 1.0.0 --output dist/local
-bash scripts/verify-artifact.sh --app dist/local/MacDevClean.app --mode unsigned
-bash scripts/package-dmg.sh --app dist/local/MacDevClean.app \
-    --output dist/MacDevClean-1.0.0-unsigned.dmg
-```
-
-| | Sem assinatura, hoje | Assinado, não feito |
-|---|---|---|
-| Como obter | Compilando você mesmo | Um DMG publicado e notarizado |
-| Gatekeeper | Recusa a primeira abertura; Control-clique → Abrir | Abre normalmente |
-| Verificado por | `verify-artifact.sh --mode unsigned` | `--mode signed`, que nunca aceita assinatura ad hoc |
-| Existe? | Sim | **Não.** Sem certificado, sem notarização, sem release |
-
-O pipeline assinado está escrito e seus modos de falha são testados com
-ferramentas falsas — sem credenciais não há assinatura; uma assinatura que falha
-ou uma notarização rejeitada não produz artefato —, mas ele **nunca executou
-contra a Apple**.
-[docs/release/configuration.md](docs/release/configuration.md).
 
 ## Limitações conhecidas
 
