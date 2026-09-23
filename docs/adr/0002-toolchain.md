@@ -76,6 +76,27 @@ The regression guard is the gate itself: `scripts/verify.sh` runs the UI test on
 every invocation, so a future change that breaks runner signing fails the gate
 rather than silently skipping the test.
 
+## Decision: UI tests are skipped on the hosted CI runner too
+
+Once `.github/workflows/ci.yml` existed on `main` and actually ran, on
+2026-09-23, it did what the local machine could not: it built the UI test
+target and executed all 24 `MacDevCleanUITests` cases on the `macos-26`
+hosted runner. Every one failed the same way — `xcodebuild`'s own log shows
+automation connecting, the app launching, and "Wait for ... to idle"
+succeeding, then the specific element each test waited for (down to
+`app.staticTexts["app.title"]` in the single most basic case,
+`LaunchUITests`) never appearing within its timeout. Package tests (all
+suites) and the Debug app-hosted unit tests (`MacDevCleanAppTests`) passed
+with zero failures in that same run.
+
+This is the same class of gap already described above for the local
+machine — a GUI window whose accessibility content a real, logged-in session
+would expose, but a hosted runner's session does not, even though the
+automation *connection* itself succeeds here (it did not, locally). CI now
+runs `scripts/verify.sh` with `MACDEVCLEAN_SKIP_UI_TESTS=1`, so the gate
+reports UI tests as **not run**, not as a pass. This has not been narrowed
+further; it is recorded as an open gap, not a fix.
+
 ## Decision: what CI pins, and what has not been verified
 
 CI runs on the `macos-26` hosted image and pins `/Applications/Xcode_26.6.app`

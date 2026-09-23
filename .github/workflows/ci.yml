@@ -48,7 +48,15 @@ jobs:
           swift --version
 
       - name: Verify
-        run: bash scripts/verify.sh
+        # UI tests are skipped here for a specific, observed reason, not by
+        # default caution: on 2026-09-23 the hosted macos-26 runner ran all 24
+        # XCUITest cases, connected automation, and reported the app idle for
+        # every one of them, but the element each test waited for never
+        # appeared — including the most basic case, a static title on the
+        # very first screen. Package tests and the Debug app-hosted unit
+        # tests passed with zero failures in the same run. See
+        # docs/adr/0002-toolchain.md.
+        run: MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh
 
       - name: Upload test results on failure
         if: failure()
