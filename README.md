@@ -8,21 +8,21 @@ and moves filesystem items to the Trash.
 [Português do Brasil](README.pt-BR.md)
 
 > **Status: unsigned development build published, signed release not done.**
-> [`v1.0.0-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned)
+> [`v1.0.1-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.1-unsigned)
 > is a real, downloadable GitHub pre-release. There is no signed build, no
 > notarization and no Homebrew tap yet. Everything below that is measured says
 > where it was measured; everything that has not been verified says so.
 
 ## Installing
 
-Download the disk image from the [latest release](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned)
+Download the disk image from the [latest release](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.1-unsigned)
 and run:
 
 ```bash
 curl -L -o MacDevClean.dmg \
-  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.0-unsigned/MacDevClean-1.0.0-unsigned.dmg
+  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.1-unsigned/MacDevClean-1.0.1-unsigned.dmg
 curl -L -o MacDevClean.dmg.sha256 \
-  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.0-unsigned/MacDevClean-1.0.0-unsigned.dmg.sha256
+  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.1-unsigned/MacDevClean-1.0.1-unsigned.dmg.sha256
 shasum -a 256 -c MacDevClean.dmg.sha256   # optional, confirms the download
 open MacDevClean.dmg
 ```
@@ -38,10 +38,10 @@ Full detail, including what the app writes to disk and how to remove it:
 Same unsigned artifact, built from source instead of downloaded:
 
 ```bash
-bash scripts/build-local.sh --version 1.0.0 --output dist/local
+bash scripts/build-local.sh --version 1.0.1 --output dist/local
 bash scripts/verify-artifact.sh --app dist/local/MacDevClean.app --mode unsigned
 bash scripts/package-dmg.sh --app dist/local/MacDevClean.app \
-    --output dist/MacDevClean-1.0.0-unsigned.dmg
+    --output dist/MacDevClean-1.0.1-unsigned.dmg
 ```
 
 | | Unsigned, today | Signed, not done |
@@ -262,7 +262,7 @@ fake Docker. No test touches your caches, your Trash or your Docker resources.
 - **Never run on macOS 14, and never on Intel hardware.**
 - **No signing, no notarization, no Homebrew tap.** An unsigned development
   build is published as a GitHub pre-release,
-  [`v1.0.0-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned).
+  [`v1.0.1-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.1-unsigned).
 - **No independent review.** Nobody else has reviewed this work.
 - **Migration has never been exercised**, because there is only one schema
   version.

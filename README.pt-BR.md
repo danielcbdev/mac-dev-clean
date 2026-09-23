@@ -10,7 +10,7 @@ arquivos para a Lixeira.
 
 > **Situação: build de desenvolvimento sem assinatura publicado; release
 > assinado ainda não feito.**
-> [`v1.0.0-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned)
+> [`v1.0.1-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.1-unsigned)
 > é um pre-release real, disponível para download no GitHub. Não existe build
 > assinado, notarização nem tap do Homebrew ainda. Tudo que foi medido diz
 > onde foi medido; tudo que não foi verificado está declarado como não
@@ -18,14 +18,14 @@ arquivos para a Lixeira.
 
 ## Instalar
 
-Baixe a imagem de disco do [último release](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned)
+Baixe a imagem de disco do [último release](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.1-unsigned)
 e rode:
 
 ```bash
 curl -L -o MacDevClean.dmg \
-  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.0-unsigned/MacDevClean-1.0.0-unsigned.dmg
+  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.1-unsigned/MacDevClean-1.0.1-unsigned.dmg
 curl -L -o MacDevClean.dmg.sha256 \
-  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.0-unsigned/MacDevClean-1.0.0-unsigned.dmg.sha256
+  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.1-unsigned/MacDevClean-1.0.1-unsigned.dmg.sha256
 shasum -a 256 -c MacDevClean.dmg.sha256   # opcional, confirma o download
 open MacDevClean.dmg
 ```
@@ -43,10 +43,10 @@ O mesmo artefato sem assinatura, compilado a partir do código-fonte em vez de
 baixado:
 
 ```bash
-bash scripts/build-local.sh --version 1.0.0 --output dist/local
+bash scripts/build-local.sh --version 1.0.1 --output dist/local
 bash scripts/verify-artifact.sh --app dist/local/MacDevClean.app --mode unsigned
 bash scripts/package-dmg.sh --app dist/local/MacDevClean.app \
-    --output dist/MacDevClean-1.0.0-unsigned.dmg
+    --output dist/MacDevClean-1.0.1-unsigned.dmg
 ```
 
 | | Sem assinatura, hoje | Assinado, não feito |
@@ -277,7 +277,7 @@ Docker.
 - **Nunca executado em macOS 14 nem em hardware Intel.**
 - **Sem assinatura, sem notarização, sem tap do Homebrew.** Um build de
   desenvolvimento sem assinatura é publicado como pre-release no GitHub,
-  [`v1.0.0-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned).
+  [`v1.0.1-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.1-unsigned).
 - **Sem revisão independente.** Ninguém mais revisou este trabalho.
 - **A migração de esquema nunca foi exercitada**, porque existe apenas uma
   versão de esquema.
