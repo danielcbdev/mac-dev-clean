@@ -29,7 +29,12 @@ struct ReviewView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            if review.summary != nil {
+            if review.isRunning {
+                CleaningStateView(
+                    completed: review.results.count,
+                    total: review.totalItemsToClean
+                )
+            } else if review.summary != nil {
                 CleanupResultsView(coordinator: coordinator, review: review)
             } else if showingIrreversibleStep {
                 IrreversibleConfirmationView(
@@ -232,6 +237,68 @@ struct ReviewView: View {
         }
         .padding(.horizontal, Layout.contentInset)
         .padding(.vertical, 14)
+    }
+}
+
+/// Shown while items are being moved to the Trash.
+///
+/// The bar is determinate only once the validated plan has reported how many
+/// items it contains. Before that, and if validation never produces a total,
+/// it stays indeterminate rather than inventing a fraction.
+struct CleaningStateView: View {
+    let completed: Int
+    let total: Int?
+
+    @Environment(\.locale) private var locale
+
+    var body: some View {
+        VStack(spacing: Layout.space16) {
+            VStack(alignment: .leading, spacing: Layout.space16) {
+                Text("Moving to the Trash")
+                    .appFont(Typography.title)
+                    .foregroundStyle(Theme.textPrimary)
+
+                progress
+                    .progressViewStyle(.linear)
+                    .accessibilityIdentifier("cleanup.progress")
+                    .accessibilityLabel("Moving to the Trash")
+
+                Text(status)
+                    .appFont(Typography.caption)
+                    .foregroundStyle(Theme.textSecondary)
+                    .monospacedDigit()
+            }
+            .padding(22)
+            .frame(maxWidth: 520)
+            .background(Theme.cardBackground, in: .rect(cornerRadius: Layout.cardRadius))
+            .overlay(
+                RoundedRectangle(cornerRadius: Layout.cardRadius)
+                    .strokeBorder(Theme.cardBorder, lineWidth: 1)
+            )
+        }
+        .frame(maxWidth: .infinity, minHeight: 320)
+        .padding(40)
+    }
+
+    @ViewBuilder
+    private var progress: some View {
+        if let total, total > 0 {
+            ProgressView(value: Double(min(completed, total)), total: Double(total))
+        } else {
+            ProgressView()
+        }
+    }
+
+    private var status: String {
+        guard let total else {
+            return LocalizedFormatters.text("Moving items to the Trash.", locale: locale)
+        }
+        return LocalizedFormatters.text(
+            "%1$@ of %2$@ moved to the Trash",
+            locale: locale,
+            LocalizedFormatters.count("%lld item", completed, locale: locale),
+            LocalizedFormatters.count("%lld item", total, locale: locale)
+        )
     }
 }
 

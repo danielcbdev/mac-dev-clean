@@ -25,7 +25,7 @@ final class ScanModel {
     private(set) var issueCodes: [String] = []
     private(set) var failureCode: String?
     private(set) var wasCancelled = false
-    /// True once at least one scan has run to completion in this launch.
+    /// True once a scan has completed and that result has not been discarded.
     private(set) var hasScanned = false
 
     var selectedIDs: Set<UUID> = []
@@ -57,13 +57,7 @@ final class ScanModel {
     func start(_ request: ScanRequest) {
         guard !isScanning else { return }
 
-        work.cancel()
-        selectedIDs = []
-        snapshot = nil
-        issueCodes = []
-        failureCode = nil
-        wasCancelled = false
-        visited = 0
+        clearPresentedResults()
         isScanning = true
 
         let generation = UUID()
@@ -84,6 +78,28 @@ final class ScanModel {
                     await self?.finishFailure(generation, code: "scan.failed")
                 }
             })
+    }
+
+    /// Drops the current scan so the overview asks for a new one.
+    ///
+    /// Same clearing `start(_:)` does before it runs, including a scan that
+    /// has already finished. Called after a cleanup that moved or removed
+    /// something, because the snapshot would still list those items.
+    func invalidate() {
+        clearPresentedResults()
+        isScanning = false
+    }
+
+    private func clearPresentedResults() {
+        work.cancel()
+        activeGeneration = nil
+        selectedIDs = []
+        snapshot = nil
+        issueCodes = []
+        failureCode = nil
+        wasCancelled = false
+        visited = 0
+        hasScanned = false
     }
 
     func cancel() {

@@ -1,6 +1,23 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%1$@ of %2$@ moved to the Trash": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ of %2$@ moved to the Trash"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ de %2$@ movidos para a Lixeira"
+          }
+        }
+      }
+    },
     "%1$@ · %2$@": {
       "extractionState": "manual",
       "localizations": {
@@ -2742,6 +2759,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Movido, não liberado"
+          }
+        }
+      }
+    },
+    "Moving items to the Trash.": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moving items to the Trash."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Movendo itens para a Lixeira."
+          }
+        }
+      }
+    },
+    "Moving to the Trash": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Moving to the Trash"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Movendo para a Lixeira"
           }
         }
       }

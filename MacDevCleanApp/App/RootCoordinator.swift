@@ -174,7 +174,16 @@ final class RootCoordinator {
         guard let scanID = activeScanID, dependencies.cleanupEnabled else { return }
         state = .cleaning
         await reviewModel.confirm(scanID: scanID, ids: activeSelection)
-        state = .completed
+        let movedSomething =
+            !reviewModel.recoverable.isEmpty || !reviewModel.irreversiblyRemoved.isEmpty
+        if movedSomething {
+            // The snapshot still names items that are already gone. Drop it
+            // now; closing the review then lands on the idle overview.
+            scanModel.invalidate()
+            state = .idle
+        } else {
+            state = .completed
+        }
     }
 
     // MARK: - Exclusions and scope
