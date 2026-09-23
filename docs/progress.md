@@ -8,13 +8,16 @@ Record only what actually happened: real commands, real exit status, real dates.
 - **Plan:** cleanup progress and scan reset (owner request on 2026-09-23;
   there is no numbered plan file). The redesign notes below are prior work.
 - **Branch:** `feat/cleanup-progress-and-scan-reset`, cut from `develop`.
-  Not merged.
+  Merged into `develop` (`eb6903c`) and from there into `main` (`c99e066`)
+  on 2026-09-23, with the owner's explicit authorization in session. Both
+  branches pushed to `origin`.
 - **Last completed task:** show cleanup progress while items move to the
   Trash, and invalidate the scan after a cleanup that moved or removed
   anything. Evidence:
   [cleanup-progress-and-scan-reset.md](verification/cleanup-progress-and-scan-reset.md).
-- **Next step:** this branch is unmerged. The redesign track's next screen
-  is still Caches (spec screens `1c`, `1d`, `1k`, `1l`).
+  Published as the `v1.0.1-unsigned` GitHub pre-release (see below).
+- **Next step:** the redesign track's next screen is still Caches (spec
+  screens `1c`, `1d`, `1k`, `1l`).
 - **What the Overview plan added:** restyled sidebar chrome (background,
   wordmark, footer, selected/unselected item highlight), the Overview header,
   the potential-cleanup ring and its primary button, the categories card and
@@ -51,7 +54,22 @@ Record only what actually happened: real commands, real exit status, real dates.
 - **Blockers:** the XCUITest gate is still unavailable, measured as specific
   to the XCUITest launch rather than to the application. **No CI run has ever
   happened**: the GitHub Actions API reports zero workflows and zero runs.
-  Publication, signing and the tag remain unauthorized and undone.
+  Signing remains unauthorized and undone. Unsigned publication is now done
+  twice (`v1.0.0-unsigned`, `v1.0.1-unsigned`), each with the owner's explicit
+  authorization in session.
+- **v1.0.1-unsigned release, 2026-09-23:** `feat/cleanup-progress-and-scan-reset`
+  merged into `develop` (`eb6903c`), README version references bumped
+  (`3cf5a7c`), `develop` merged into `main` (`c99e066`); both branches pushed
+  to `origin`. Tag `v1.0.1-unsigned` created on `main` and pushed. Artifact
+  built with `bash scripts/build-local.sh --version 1.0.1 --output dist/local`,
+  passed `scripts/verify-artifact.sh --mode unsigned`, packaged with
+  `scripts/package-dmg.sh`. SHA-256:
+  `4152d7d77604e8aec1946e01175d823957794a875064893de95a8e251c581fd8`.
+  Published as a GitHub pre-release:
+  https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.1-unsigned.
+  Still unsigned, still not notarized — the checklist gates in
+  [docs/release/checklist.md](release/checklist.md) beyond "unsigned pre-release
+  authorized" remain unmet.
 
 ## Repository baseline
 
@@ -114,7 +132,7 @@ exact command, its exit status, the toolchain, the date and known omissions.
 | 08 quality | [08-quality.md](verification/08-quality.md) | `bash scripts/verify.sh` exit 0, 278 tests run, 0 failures; **21 UI tests NOT RUN** |
 | 09 distribution | [09-distribution.md](verification/09-distribution.md) | `bash scripts/verify.sh` exit 0, 278 tests run, 0 failures, 66 contract assertions; **21 UI tests NOT RUN** |
 | 10 defects | [10-defects.md](verification/10-defects.md) | `bash scripts/verify.sh` exit 0, 295 tests run, 0 failures; **24 UI tests NOT RUN**; all six defects fixed and confirmed on screen |
-| cleanup progress | [cleanup-progress-and-scan-reset.md](verification/cleanup-progress-and-scan-reset.md) | `bash scripts/verify.sh` exit 65 (24 UI tests failed); skip-UI rerun exit 0, 232 package + 89 app unit tests, 0 failures; **UI tests NOT RUN** on the rerun |
+| cleanup progress | [cleanup-progress-and-scan-reset.md](verification/cleanup-progress-and-scan-reset.md) | `bash scripts/verify.sh` exit 65 (24 UI tests failed); skip-UI rerun exit 0, 232 package + 89 app unit tests, 0 failures; **UI tests NOT RUN** on the rerun. Rerun again immediately before merging, same result, exit 0 |
 
 ## Known external blockers
 
@@ -132,4 +150,4 @@ is a defect in the code, and none is recorded as done.
 | macOS 14 support | A macOS 14 machine. Only macOS 27.0 was available |
 | Intel support | An Intel Mac. Only Apple Silicon was available |
 | A licence | The owner's decision. Deliberately not made on their behalf |
-| `v1.0.0` | Every gate in [docs/release/checklist.md](release/checklist.md). Most are unchecked, so the tag was not created |
+| A **signed** `v1.0.1` (or any signed tag) | Every remaining gate in [docs/release/checklist.md](release/checklist.md) — signing/notarization credentials, a second machine for the download-as-a-stranger check, macOS 14 and Intel hardware. `v1.0.0-unsigned` and `v1.0.1-unsigned` are both real, published, unsigned pre-releases; a signed release has never been built |
