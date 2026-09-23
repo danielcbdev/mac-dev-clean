@@ -7,9 +7,54 @@ and moves filesystem items to the Trash.
 
 [Português do Brasil](README.pt-BR.md)
 
-> **Status: development complete, never published.** There is no release, no
-> signed build, no Homebrew tap and no tag. Everything below that is measured
-> says where it was measured; everything that has not been verified says so.
+> **Status: unsigned development build published, signed release not done.**
+> [`v1.0.0-unsigned`](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned)
+> is a real, downloadable GitHub pre-release. There is no signed build, no
+> notarization and no Homebrew tap yet. Everything below that is measured says
+> where it was measured; everything that has not been verified says so.
+
+## Installing
+
+Download the disk image from the [latest release](https://github.com/danielcbdev/mac-dev-clean/releases/tag/v1.0.0-unsigned)
+and run:
+
+```bash
+curl -L -o MacDevClean.dmg \
+  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.0-unsigned/MacDevClean-1.0.0-unsigned.dmg
+curl -L -o MacDevClean.dmg.sha256 \
+  https://github.com/danielcbdev/mac-dev-clean/releases/download/v1.0.0-unsigned/MacDevClean-1.0.0-unsigned.dmg.sha256
+shasum -a 256 -c MacDevClean.dmg.sha256   # optional, confirms the download
+open MacDevClean.dmg
+```
+
+Drag `MacDevClean.app` into `/Applications`. This build is **unsigned and not
+notarized**, so the first launch is refused — **Control-click the app → Open**,
+then confirm. That approves this one application; do not disable Gatekeeper.
+Full detail, including what the app writes to disk and how to remove it:
+[docs/release/manual-install.md](docs/release/manual-install.md).
+
+### Building it yourself
+
+Same unsigned artifact, built from source instead of downloaded:
+
+```bash
+bash scripts/build-local.sh --version 1.0.0 --output dist/local
+bash scripts/verify-artifact.sh --app dist/local/MacDevClean.app --mode unsigned
+bash scripts/package-dmg.sh --app dist/local/MacDevClean.app \
+    --output dist/MacDevClean-1.0.0-unsigned.dmg
+```
+
+| | Unsigned, today | Signed, not done |
+|---|---|---|
+| How you get it | Download the release, or build it yourself | A published, notarized DMG |
+| Gatekeeper | Refuses the first launch; Control-click → Open | Opens normally |
+| Verified by | `verify-artifact.sh --mode unsigned` | `--mode signed`, which never accepts ad-hoc signing |
+| Exists? | Yes — the pre-release above | **No.** No certificate, no notarization |
+
+The signed pipeline is written and its failure modes are tested with fake
+tools — no credentials means no signing, a failed signature or a rejected
+notarization produces no artifact — but it **has never run against Apple**.
+[docs/release/configuration.md](docs/release/configuration.md).
 
 ## What it will not do
 
@@ -97,6 +142,78 @@ bash scripts/check-token-access.sh
 Decisions, with their rejected alternatives and consequences, are in
 [docs/adr/](docs/adr/).
 
+## Tech stack and engineering practices
+
+**Language and concurrency.** Swift 6 in strict language mode
+(`.swiftLanguageMode(.v6)` on every target). Core targets are
+`nonisolated` by default — Swift 6's own default, kept explicit rather than
+inherited — and only the app layer opts into `@MainActor`, written out rather
+than assumed.
+
+**Frameworks — zero third-party dependencies.** `Package.resolved` has no
+entries. Everything is Apple-native: SwiftUI + `Observation` for the
+interface (no Combine, no legacy `ObservableObject`), AppKit only where
+SwiftUI has no equivalent, `SwiftData` for local persistence,
+`CryptoKit` for content hashing, `OSLog` for logging.
+
+**Modular architecture.** A local Swift package (`Packages/MacDevCleanCore`)
+split into six targets — `Domain`, `CleanupRules`, `Scanning`, `Cleanup`,
+`DockerIntegration`, `Persistence` — with dependencies pointing inward only;
+`Domain` imports nothing but Foundation. This isn't just documented: cleanup
+authority is a type-level boundary (`ValidatedCleanupItem` has an internal
+initializer, so only `Cleanup` can construct one), and
+`scripts/check-token-access.sh` type-checks a deliberate forgery attempt and
+fails the build if it *compiles*.
+
+**Testing.** Dual frameworks by design — XCTest for app-hosted and UI tests,
+Swift's newer `Testing` framework (`@Test`) for package-level suites — written
+test-first, red before green, one behavioural case at a time. Every
+destructive path (Trash, Docker) is exercised against fixtures the test
+itself creates, a fake Trash and a fake Docker client, so the suite never
+touches a real machine.
+
+**Static analysis, hand-built.** `scripts/check-policy.sh` proves production
+Swift never calls `rm`, `rmdir`, `removeItem` or a networking API — plain
+POSIX `grep`, deliberately not `ripgrep`, because a missing optional tool that
+silently no-ops a gate is worse than no gate. `scripts/check-localization.swift`
+is a standalone Swift script (no package, no target) that verifies every
+string key exists in both locales with matching plural placeholders and no
+stale entries. `.swift-format` (100-column, one blank line max) runs from the
+pinned Xcode toolchain itself — nothing downloaded, nothing floating.
+
+**CI/CD — 3 GitHub Actions workflows, all pinned, all least-privilege.**
+- `CI` — full gate on every PR and push to `main`/`develop`, `permissions:
+  contents: read`, no secrets in reach.
+- `Performance` — manual only (`workflow_dispatch`); measures scan
+  performance without asserting a wall-clock threshold, because a number from
+  a shared runner isn't comparable to one from a laptop and an
+  unreproducible threshold just becomes a flaky test.
+- `Release` — three stages (test → sign & notarize → publish); the signing
+  stage runs only inside a protected `release` environment with a required
+  reviewer, and the publish stage is the only job in the whole pipeline
+  allowed to write. Every third-party Action is pinned to an immutable commit
+  SHA, never a floating tag.
+
+**Release engineering.** `scripts/release-preflight.sh` refuses a signed
+release by naming exactly which secrets are missing — never a value, a
+length or a prefix. `scripts/sign-notarize.sh` builds a throwaway keychain per
+run and guarantees its teardown on any exit path, including failure.
+`scripts/render-cask.rb` generates the Homebrew Cask from five validated
+arguments — never string interpolation into Ruby source — and its own
+contract-test suite asserts a Cask is never produced for an artifact that
+isn't actually published.
+
+**Documentation as engineering, not an afterthought.** 6 ADRs record
+*rejected* alternatives and their consequences, not just the decision taken.
+Verification docs under `docs/verification/` record the actual command, exit
+status and toolchain used — a check that didn't run is written down as not
+run, never quietly counted as a pass.
+
+**Git workflow.** Conventional Commits throughout (80 commits, `feat:`,
+`fix:`, `merge:`, `chore:`, `docs:`). Branch lifecycle is
+`main → develop → feat/*`, merged back with `--no-ff` so feature history stays
+intact instead of being squashed away.
+
 ## Requirements
 
 | | |
@@ -137,30 +254,6 @@ bash scripts/tests/release-contract-tests.sh
 
 Every destructive test runs against fixtures it created, with a fake Trash and a
 fake Docker. No test touches your caches, your Trash or your Docker resources.
-
-## Installing
-
-Build it yourself and open the unsigned artifact:
-[docs/release/manual-install.md](docs/release/manual-install.md).
-
-```bash
-bash scripts/build-local.sh --version 1.0.0 --output dist/local
-bash scripts/verify-artifact.sh --app dist/local/MacDevClean.app --mode unsigned
-bash scripts/package-dmg.sh --app dist/local/MacDevClean.app \
-    --output dist/MacDevClean-1.0.0-unsigned.dmg
-```
-
-| | Unsigned, today | Signed, not done |
-|---|---|---|
-| How you get it | Build it yourself | A published, notarized DMG |
-| Gatekeeper | Refuses the first launch; Control-click → Open | Opens normally |
-| Verified by | `verify-artifact.sh --mode unsigned` | `--mode signed`, which never accepts ad-hoc signing |
-| Exists? | Yes | **No.** No certificate, no notarization, no release |
-
-The signed pipeline is written and its failure modes are tested with fake
-tools — no credentials means no signing, a failed signature or a rejected
-notarization produces no artifact — but it **has never run against Apple**.
-[docs/release/configuration.md](docs/release/configuration.md).
 
 ## Known limitations
 
