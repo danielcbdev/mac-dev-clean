@@ -125,6 +125,35 @@ final class ScanModelTests: XCTestCase {
         XCTAssertEqual(runs, 1, "revisiting a screen must not start a second scan")
     }
 
+    func testInvalidateClearsTheSnapshotTheCompletedFlagAndTheSelection() async throws {
+        let candidate = ScanFixtures.candidate()
+        let model = ScanModel(
+            scanner: ReplayScanService(events: [
+                .progress(visited: 40),
+                .issue(code: "issue.docker.unavailable", relativePath: nil),
+                .completed(ScanFixtures.snapshot([candidate])),
+            ]))
+
+        model.start(request)
+        try await Self.settle(model)
+        model.selectedIDs = [candidate.id]
+        model.ecosystemFilter = .node
+
+        model.invalidate()
+
+        XCTAssertNil(model.snapshot)
+        XCTAssertFalse(model.hasScanned)
+        XCTAssertTrue(model.selectedIDs.isEmpty)
+        XCTAssertEqual(model.visited, 0)
+        XCTAssertTrue(model.issueCodes.isEmpty)
+        XCTAssertFalse(model.isScanning)
+        XCTAssertNil(model.failureCode)
+        XCTAssertFalse(model.wasCancelled)
+        XCTAssertEqual(
+            model.ecosystemFilter, .node,
+            "filters are presentation and a new scan does not clear them either")
+    }
+
     // MARK: - Selection
 
     func testHighRiskItemsAreNotSelectableFromTheList() async throws {

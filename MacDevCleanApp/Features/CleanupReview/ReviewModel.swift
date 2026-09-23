@@ -17,6 +17,9 @@ import Observation
 final class ReviewModel {
     private(set) var results: [CleanupRecord] = []
     private(set) var isRunning = false
+    /// How many items the validated plan contains. Nil until validation
+    /// succeeds, so the review can show an indeterminate progress state.
+    private(set) var totalItemsToClean: Int?
     private(set) var summary: CleanupSummary?
     private(set) var validationIssues: [ValidationIssue] = []
     private(set) var failureCode: String?
@@ -54,6 +57,7 @@ final class ReviewModel {
 
     func reset() {
         results = []
+        totalItemsToClean = nil
         summary = nil
         validationIssues = []
         failureCode = nil
@@ -78,6 +82,7 @@ final class ReviewModel {
         guard !isRunning, !ids.isEmpty else { return }
         isRunning = true
         results = []
+        totalItemsToClean = nil
         summary = nil
         validationIssues = []
         failureCode = nil
@@ -91,6 +96,7 @@ final class ReviewModel {
 
         do {
             let plan = try await validator.validate(selection)
+            totalItemsToClean = plan.items.count
             let stream = executor.execute(plan)
             let task = Task { [weak self] in
                 for await event in stream {

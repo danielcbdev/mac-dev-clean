@@ -5,16 +5,16 @@ Record only what actually happened: real commands, real exit status, real dates.
 
 ## Current state
 
-- **Plan:** redesign Overview screen
-  (`docs/superpowers/plans/2026-09-22-01-redesign-overview.md`)
-- **Branch:** `feature/new-design` (the owner authorized reusing this branch
-  directly, rather than cutting a new `feat/*` branch, for this plan)
-- **Last completed task:** redesign-overview Task 8 — all 7 tasks done, plus
-  two corrections the owner found on manual review (below), verification
-  recorded
-- **Next step:** redesign the Caches screen (spec screens `1c`, `1d`, `1k`,
-  `1l`), then History and Settings — same tokens, same per-screen-plan
-  process as this one
+- **Plan:** cleanup progress and scan reset (owner request on 2026-09-23;
+  there is no numbered plan file). The redesign notes below are prior work.
+- **Branch:** `feat/cleanup-progress-and-scan-reset`, cut from `develop`.
+  Not merged.
+- **Last completed task:** show cleanup progress while items move to the
+  Trash, and invalidate the scan after a cleanup that moved or removed
+  anything. Evidence:
+  [cleanup-progress-and-scan-reset.md](verification/cleanup-progress-and-scan-reset.md).
+- **Next step:** this branch is unmerged. The redesign track's next screen
+  is still Caches (spec screens `1c`, `1d`, `1k`, `1l`).
 - **What the Overview plan added:** restyled sidebar chrome (background,
   wordmark, footer, selected/unselected item highlight), the Overview header,
   the potential-cleanup ring and its primary button, the categories card and
@@ -37,14 +37,12 @@ Record only what actually happened: real commands, real exit status, real dates.
   explicit locale — the same bug `LocalizedFormatters.text(_:locale:)` was
   already written to work around elsewhere in this codebase. `RiskBadge.title`
   now routes through it.
-- **Latest evidence:** `MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh`
-  exited 0 on 2026-09-22, Xcode 27.0 (Build 27A266a), Swift 6.4, after the
-  two corrections above. Swift package tests: 21 cases, 0 failures. App unit
-  tests: 83 cases, 0 failures (same 16 added by the foundation plan —
-  `ColorSupportTests`, `ThemeColorTests`, `TypographyTests`,
-  `LayoutScaleTests`, `RiskBadgeTests`, `ButtonStyleTests`). UI tests: not
-  run (same known blocker as milestone 10, below). Release build (unsigned):
-  succeeded. Lint: no findings.
+- **Latest evidence:** on 2026-09-23, `bash scripts/verify.sh` exited 65
+  (package tests 232, 0 failures; app unit tests 89, 0 failures; UI tests
+  24 run, 24 failed; later checks not run). The same day
+  `MACDEVCLEAN_SKIP_UI_TESTS=1 bash scripts/verify.sh` exited 0. UI tests
+  in that second command were not run. Details in
+  [cleanup-progress-and-scan-reset.md](verification/cleanup-progress-and-scan-reset.md).
 - **Two corrections to documents this repository held (from plan 10, still
   true):** plan 10 states that Brazilian Portuguese puts zero in CLDR's
   `other` category — it puts it in `one` — and the defect report's proposed
@@ -116,6 +114,7 @@ exact command, its exit status, the toolchain, the date and known omissions.
 | 08 quality | [08-quality.md](verification/08-quality.md) | `bash scripts/verify.sh` exit 0, 278 tests run, 0 failures; **21 UI tests NOT RUN** |
 | 09 distribution | [09-distribution.md](verification/09-distribution.md) | `bash scripts/verify.sh` exit 0, 278 tests run, 0 failures, 66 contract assertions; **21 UI tests NOT RUN** |
 | 10 defects | [10-defects.md](verification/10-defects.md) | `bash scripts/verify.sh` exit 0, 295 tests run, 0 failures; **24 UI tests NOT RUN**; all six defects fixed and confirmed on screen |
+| cleanup progress | [cleanup-progress-and-scan-reset.md](verification/cleanup-progress-and-scan-reset.md) | `bash scripts/verify.sh` exit 65 (24 UI tests failed); skip-UI rerun exit 0, 232 package + 89 app unit tests, 0 failures; **UI tests NOT RUN** on the rerun |
 
 ## Known external blockers
 

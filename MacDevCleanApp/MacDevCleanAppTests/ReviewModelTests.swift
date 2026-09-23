@@ -124,6 +124,37 @@ final class ReviewModelTests: XCTestCase {
         XCTAssertEqual(calls.count, 1, "a double click must schedule one cleanup")
     }
 
+    func testCleanupProgressFollowsItemsAsTheyAreReported() async throws {
+        let harness = try await CleanupHarness()
+        let model = Self.model(harness)
+        let first = try await harness.candidate(file: "alpha/node_modules")
+        let second = try await harness.candidate(file: "beta/node_modules")
+        model.contentChanged(to: [first.id, second.id])
+
+        XCTAssertNil(model.totalItemsToClean, "the total exists only once a plan does")
+
+        // Hold the executor after the first item so the count can be read
+        // before the run finishes and replaces it with the summary.
+        await harness.trash.pause(after: 1)
+        let run = Task {
+            await model.confirm(scanID: harness.scanID, ids: [first.id, second.id])
+        }
+        for _ in 0..<50 where model.results.count != 1 || model.totalItemsToClean != 2 {
+            try await Task.sleep(nanoseconds: 20_000_000)
+        }
+
+        XCTAssertEqual(model.totalItemsToClean, 2)
+        XCTAssertEqual(model.results.count, 1, "progress follows each item event")
+        XCTAssertTrue(model.isRunning)
+
+        await harness.trash.release()
+        await run.value
+
+        XCTAssertEqual(model.results.count, 2)
+        XCTAssertEqual(model.totalItemsToClean, 2)
+        XCTAssertFalse(model.isRunning)
+    }
+
     func testTheDiagnosticReportCarriesNoPathsOrResourceNames() async throws {
         let harness = try await CleanupHarness()
         let model = Self.model(harness)
