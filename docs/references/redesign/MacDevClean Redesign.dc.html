@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<style>
+  html, body { margin: 0; padding: 0; background: #E6E6EA; }
+  * { box-sizing: border-box; }
+  a { color: #0F5FD6; text-decoration: none; }
+  a:hover { color: #1565E0; text-decoration: underline; }
+</style>
+</helmet>
+
+<section style="display:flex;flex-direction:column;gap:72px;padding:56px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Helvetica Neue',sans-serif;color:#1D1D1F">
+
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:900px">
+    <div style="font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#76767C">MacDevClean · Redesign</div>
+    <div style="font-size:40px;font-weight:700;letter-spacing:-.02em;line-height:1.1">Quadro de especificação</div>
+    <div style="font-size:16px;line-height:1.5;color:#5F5F66;text-wrap:pretty">Sistema visual derivado da logo, seguido das telas prioritárias em modo claro e escuro. As telas densas aparecem também em 1100×720 e em inglês. Cada bloco tem um identificador para referência em comentários.</div>
+  </div>
+
+  <div id="sys" style="display:flex;flex-direction:column;gap:24px">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700;letter-spacing:.04em">sys</span>
+      <span style="font-size:22px;font-weight:650;letter-spacing:-.01em">Sistema visual</span>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:20px;max-width:1500px">
+
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px">
+        <div style="font-size:15px;font-weight:650">Paleta — modo claro</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:12px">
+          <sc-for list="{{ lightSwatches }}" as="s" hint-placeholder-count="8">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="height:48px;border-radius:9px;border:1px solid rgba(0,0,0,.10);background:{{ s.hex }}"></div>
+              <div style="font-size:11px;font-weight:650;line-height:1.25">{{ s.token }}</div>
+              <div style="font-size:11px;color:#76767C;font-variant-numeric:tabular-nums">{{ s.hex }}</div>
+              <div style="font-size:11px;color:#76767C;line-height:1.3">{{ s.use }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="background:#1C1C1E;border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:18px">
+        <div style="font-size:15px;font-weight:650;color:#F2F2F5">Paleta — modo escuro</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:12px">
+          <sc-for list="{{ darkSwatches }}" as="s" hint-placeholder-count="8">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="height:48px;border-radius:9px;border:1px solid rgba(255,255,255,.16);background:{{ s.hex }}"></div>
+              <div style="font-size:11px;font-weight:650;color:#F2F2F5;line-height:1.25">{{ s.token }}</div>
+              <div style="font-size:11px;color:#98989E;font-variant-numeric:tabular-nums">{{ s.hex }}</div>
+              <div style="font-size:11px;color:#98989E;line-height:1.3">{{ s.use }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px">
+        <div style="font-size:15px;font-weight:650">Escala tipográfica</div>
+        <div style="font-size:12px;color:#5F5F66;line-height:1.45">SF Pro Text / Display, pilha do sistema. Números sempre com <code style="font-family:'SF Mono',ui-monospace,monospace;font-size:11px">tabular-nums</code>.</div>
+        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid rgba(0,0,0,.08);padding-top:14px">
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="width:104px;flex:none;font-size:11px;color:#76767C">Herói · 34/700</span><span style="font-size:34px;font-weight:700;letter-spacing:-.02em">Limpe com confiança</span></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="width:104px;flex:none;font-size:11px;color:#76767C">Número · 42/700</span><span style="font-size:42px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em">91,05 GB</span></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="width:104px;flex:none;font-size:11px;color:#76767C">Título · 17/650</span><span style="font-size:17px;font-weight:650">Categorias de cache</span></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="width:104px;flex:none;font-size:11px;color:#76767C">Corpo · 13/400</span><span style="font-size:13px">Seu próximo build será mais lento enquanto isto é refeito.</span></div>
+          <div style="display:flex;align-items:baseline;gap:16px"><span style="width:104px;flex:none;font-size:11px;color:#76767C">Legenda · 11/500</span><span style="font-size:11px;font-weight:500;color:#5F5F66">Movido, não liberado</span></div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:16px">
+        <div style="font-size:15px;font-weight:650">Selos de risco, botões e espaçamento</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <span style="display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:6px;background:#E4F3E9;color:#16733A;font-size:11px;font-weight:650"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 1.5 13.5 3.5v4c0 3.2-2.2 6.2-5.5 7-3.3-.8-5.5-3.8-5.5-7v-4L8 1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path><path d="m5.6 8 1.7 1.7 3.1-3.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>Risco baixo</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:6px;background:#FBEFDC;color:#8A5300;font-size:11px;font-weight:650"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="M8 2.2 14.6 13H1.4L8 2.2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path><path d="M8 6.3v2.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><circle cx="8" cy="10.9" r=".85" fill="currentColor"></circle></svg>Risco médio</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:6px;background:#FBE9E7;color:#B02419;font-size:11px;font-weight:650"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.3" stroke="currentColor" stroke-width="1.5"></circle><path d="M8 4.6v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path><circle cx="8" cy="11.2" r=".85" fill="currentColor"></circle></svg>Risco alto</span>
+          <span style="display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 9px;border-radius:6px;background:#EFEFF2;color:#5F5F66;font-size:11px;font-weight:650">Tamanho indisponível</span>
+        </div>
+        <div style="font-size:12px;color:#5F5F66;line-height:1.45">O tom nunca carrega o significado sozinho: cada selo traz forma de ícone e rótulo escrito.</div>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;border-top:1px solid rgba(0,0,0,.08);padding-top:16px">
+          <button style="height:32px;padding:0 18px;border:none;border-radius:8px;background:#1565E0;color:#fff;font-size:13px;font-weight:600;font-family:inherit">Primário</button>
+          <button style="height:32px;padding:0 16px;border:1px solid rgba(0,0,0,.14);border-radius:8px;background:#fff;color:#1D1D1F;font-size:13px;font-weight:500;font-family:inherit">Secundário</button>
+          <button style="height:32px;padding:0 16px;border:1px solid rgba(176,36,25,.35);border-radius:8px;background:#fff;color:#B02419;font-size:13px;font-weight:600;font-family:inherit">Destrutivo</button>
+          <span style="display:inline-flex;align-items:center;gap:8px"><button style="height:32px;padding:0 16px;border:1px solid rgba(0,0,0,.10);border-radius:8px;background:#F2F2F4;color:#A0A0A6;font-size:13px;font-weight:500;font-family:inherit">Desabilitado</button><span style="font-size:11px;color:#5F5F66;max-width:190px;line-height:1.3">Sempre com o motivo ao lado e a ação que resolve.</span></span>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:18px;border-top:1px solid rgba(0,0,0,.08);padding-top:16px;font-size:11px;color:#5F5F66">
+          <span>Espaçamento 4 · 8 · 12 · 16 · 20 · 24 · 32</span>
+          <span>Raio card 12 · controle 8 · selo 6</span>
+          <span>Card: 1px separador + fundo agrupado, sem sombra</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+    <div id="1a" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1a</span>
+        <span style="font-size:15px;font-weight:600">Visão geral — com resultados · claro · 1440×900</span>
+      </div>
+      <div style="--bg:#FFFFFF;--side:#EDEDF0;--card:#F7F7F9;--bd:rgba(0,0,0,.09);--sep:#E3E3E7;--tx:#1D1D1F;--tx2:#5F5F66;--tx3:#76767C;--acFill:#1565E0;--acOn:#FFFFFF;--acTxt:#0F5FD6;--acSoft:#E8F0FE;--ok:#16733A;--okBg:#E4F3E9;--warn:#8A5300;--warnBg:#FBEFDC;--dan:#B02419;--danBg:#FBE9E7;--ctl:#FFFFFF;--ctlBd:rgba(0,0,0,.14);--ctl2:#F2F2F4;--neu:#EFEFF2;width:1440px;height:900px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.22);border:1px solid var(--bd)">
+
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#E9F0FA"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#C8D6E8" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navOverview }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Visão geral</span>
+            <span style="font-size:11px;color:var(--tx3)">Última verificação hoje, 09:41</span>
+            <button style="margin-left:auto;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Verificar de novo</button>
+          </div>
+
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.05">Limpe com confiança</div>
+              <div style="font-size:15px;color:var(--tx2);max-width:620px;line-height:1.4;text-wrap:pretty">Encontre caches de desenvolvimento e artefatos de build, entenda o que remover cada um custa a você e então decida.</div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 520px;gap:20px;align-items:start">
+
+              <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:24px;display:flex;gap:24px;align-items:center">
+                <div style="position:relative;width:188px;height:188px;flex:none" role="img" aria-label="Potencial de limpeza: 91,05 GB em 193 itens e 8 categorias. Dados do Xcode 40,22 GB, Flutter e Dart 30,17 GB, Gradle 9,19 GB, Node.js 7,49 GB, outros 4,0 GB.">
+                  <svg width="188" height="188" viewBox="0 0 188 188" style="transform:rotate(-90deg)">
+                    <circle cx="94" cy="94" r="80" fill="none" stroke="var(--neu)" stroke-width="18"></circle>
+                    <circle cx="94" cy="94" r="80" fill="none" stroke="#1565E0" stroke-width="18" stroke-dasharray="219 283" stroke-dashoffset="0" stroke-linecap="butt"></circle>
+                    <circle cx="94" cy="94" r="80" fill="none" stroke="#3D8CF5" stroke-width="18" stroke-dasharray="163 339" stroke-dashoffset="-222"></circle>
+                    <circle cx="94" cy="94" r="80" fill="none" stroke="#7DB8FF" stroke-width="18" stroke-dasharray="48 454" stroke-dashoffset="-388"></circle>
+                    <circle cx="94" cy="94" r="80" fill="none" stroke="#A9D0FF" stroke-width="18" stroke-dasharray="39 463" stroke-dashoffset="-439"></circle>
+                  </svg>
+                  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px">
+                    <div style="font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em">91,05 GB</div>
+                    <div style="font-size:11px;color:var(--tx2);font-weight:500">Potencial de limpeza</div>
+                  </div>
+                </div>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:14px">
+                  <div style="display:flex;flex-direction:column;gap:7px">
+                    <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:9px;height:9px;border-radius:2px;background:#1565E0;flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dados do Xcode</span><span style="font-variant-numeric:tabular-nums;color:var(--tx2)">40,22 GB</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:9px;height:9px;border-radius:2px;background:#3D8CF5;flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Flutter e Dart</span><span style="font-variant-numeric:tabular-nums;color:var(--tx2)">30,17 GB</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:9px;height:9px;border-radius:2px;background:#7DB8FF;flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Gradle</span><span style="font-variant-numeric:tabular-nums;color:var(--tx2)">9,19 GB</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:9px;height:9px;border-radius:2px;background:#A9D0FF;flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Node.js e outros</span><span style="font-variant-numeric:tabular-nums;color:var(--tx2)">11,47 GB</span></div>
+                  </div>
+                  <div style="font-size:11px;color:var(--tx3);line-height:1.4">193 itens em 8 categorias. Nada está selecionado.</div>
+                  <button style="height:34px;padding:0 18px;border:none;border-radius:8px;background:var(--acFill);color:var(--acOn);font-size:14px;font-weight:600;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;gap:8px">Revisar limpeza<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h9.5m-3.6-3.6L12.5 8l-3.6 3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+                </div>
+              </div>
+
+              <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
+                <div style="display:flex;align-items:baseline;gap:10px;padding:16px 18px 12px">
+                  <span style="font-size:15px;font-weight:650">Categorias de cache</span>
+                  <span style="margin-left:auto;font-size:11px;color:var(--tx3);font-variant-numeric:tabular-nums">8 categorias · 91,05 GB</span>
+                </div>
+                <sc-for list="{{ cats }}" as="c" hint-placeholder-count="8">
+                  <div style="display:flex;align-items:center;gap:12px;padding:9px 18px;border-top:1px solid var(--sep)">
+                    <span style="width:26px;height:26px;flex:none;border-radius:7px;display:flex;align-items:center;justify-content:center;background:{{ c.tint }}"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4.2c0-1 2.2-1.8 5-1.8s5 .8 5 1.8v7.6c0 1-2.2 1.8-5 1.8s-5-.8-5-1.8V4.2Z" stroke="#fff" stroke-width="1.35" stroke-linejoin="round"></path></svg></span>
+                    <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                      <span style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.n }}</span>
+                      <span style="font-size:11px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.d }}</span>
+                    </span>
+                    <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+                      <sc-if value="{{ c.unk }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;padding:1px 7px;border-radius:5px;background:var(--neu);color:var(--tx2)">Indisponível</span></sc-if>
+                      <sc-if value="{{ c.known }}" hint-placeholder-val="{{ true }}"><span style="font-size:14px;font-weight:650;font-variant-numeric:tabular-nums">{{ c.s }}</span></sc-if>
+                      <span style="display:inline-flex;align-items:center;gap:4px;height:18px;padding:0 6px;border-radius:5px;font-size:10px;font-weight:650;background:{{ c.riskBg }};color:{{ c.riskFg }}"><svg width="9" height="9" viewBox="0 0 16 16" fill="none"><path d="{{ c.riskD }}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"></path></svg>{{ c.risk }}</span>
+                    </span>
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="m6 3.5 4.5 4.5L6 12.5" stroke="var(--tx3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="display:flex;gap:16px">
+                <div style="flex:1;min-width:0;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px">
+                  <span style="width:28px;height:28px;border-radius:8px;background:var(--acSoft);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3.4 5.2h9.2l-.7 8a1.2 1.2 0 0 1-1.2 1.1H5.3a1.2 1.2 0 0 1-1.2-1.1l-.7-8Zm2.2 0V3.4h4.8v1.8" stroke="var(--acTxt)" stroke-width="1.35" stroke-linejoin="round"></path></svg></span>
+                  <span style="font-size:13px;font-weight:650">Lixeira primeiro</span>
+                  <span style="font-size:11px;color:var(--tx2);line-height:1.45">Os arquivos vão para a Lixeira. O espaço só volta quando você esvazia a Lixeira no Finder.</span>
+                </div>
+                <div style="flex:1;min-width:0;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px">
+                  <span style="width:28px;height:28px;border-radius:8px;background:var(--neu);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8.6 1.8 3.4 9.1h3.5l-1.5 5.1 5.4-7.6H7.4l1.2-4.8Z" stroke="var(--tx2)" stroke-width="1.3" stroke-linejoin="round"></path></svg></span>
+                  <span style="font-size:13px;font-weight:650">Conheça o impacto</span>
+                  <span style="font-size:11px;color:var(--tx2);line-height:1.45">Remover um cache faz o próximo build ser mais lento, não o Mac mais rápido.</span>
+                </div>
+                <div style="flex:1;min-width:0;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px">
+                  <span style="width:28px;height:28px;border-radius:8px;background:var(--neu);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="var(--tx2)" stroke-width="1.3"></circle><path d="M4.8 11.2 11.2 4.8" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+                  <span style="font-size:13px;font-weight:650">Você continua no controle</span>
+                  <span style="font-size:11px;color:var(--tx2);line-height:1.45">Nada vem pré-selecionado. Itens de alto risco exigem um reconhecimento à parte.</span>
+                </div>
+              </div>
+
+              <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="width:26px;height:26px;border-radius:7px;background:var(--acSoft);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 9.4h12c-.5 2.8-2.7 4.3-6 4.3s-5.5-1.5-6-4.3Z" stroke="var(--acTxt)" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4.6 7.4V5.2h2.2v2.2M7.4 7.4V5.2h2.2v2.2M7.4 4.6V2.4h2.2v2.2" stroke="var(--acTxt)" stroke-width="1.2"></path></svg></span>
+                  <span style="font-size:14px;font-weight:650">Docker</span>
+                  <span style="margin-left:auto;font-size:11px;color:var(--tx3)">Número separado</span>
+                </div>
+                <div style="display:flex;align-items:baseline;gap:8px">
+                  <span style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums">18,40 GB</span>
+                  <span style="font-size:12px;color:var(--tx2)">reclaim estimado pelo Docker</span>
+                </div>
+                <div style="font-size:11px;color:var(--tx2);line-height:1.45">Este número vem do próprio Docker, é uma estimativa e não entra no potencial de limpeza acima. O MacDevClean não apaga imagens nem volumes.</div>
+                <button style="align-self:flex-start;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Abrir no Docker Desktop</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div id="1b" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1b</span>
+        <span style="font-size:15px;font-weight:600">Visão geral — com resultados · escuro · 1440×900</span>
+      </div>
+      <div style="--bg:#1C1C1E;--side:#252528;--card:#232326;--bd:rgba(255,255,255,.12);--sep:#3A3A3E;--tx:#F2F2F5;--tx2:#A6A6AC;--tx3:#98989E;--acFill:#3D8CF5;--acOn:#08182C;--acTxt:#7DB8FF;--acSoft:#16263D;--ok:#5BD08A;--okBg:#123324;--warn:#F2B04A;--warnBg:#3A2A10;--dan:#FF7B6E;--danBg:#3B1C18;--ctl:#3A3A3E;--ctlBd:rgba(255,255,255,.16);--ctl2:#2E2E32;--neu:#303034;width:1440px;height:900px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.45);border:1px solid var(--bd)">
+
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#2C3A4E"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#7F8EA3" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navOverview }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Visão geral</span>
+            <span style="font-size:11px;color:var(--tx3)">Última verificação hoje, 09:41</span>
+            <button style="margin-left:auto;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Verificar de novo</button>
+          </div>
+
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:20px">
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.05">Limpe com confiança</div>
+              <div style="font-size:15px;color:var(--tx2);max-width:620px;line-height:1.4;text-wrap:pretty">Encontre caches de desenvolvimento e artefatos de build, entenda o que remover cada um custa a você e então decida.</div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 520px;gap:20px;align-items:start">
+
+              <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:24px;display:flex;gap:24px;align-items:center">
+                <div style="position:relative;width:188px;height:188px;flex:none" role="img" aria-label="Potencial de limpeza: 91,05 GB em 193 itens e 8 categorias. Dados do Xcode 40,22 GB, Flutter e Dart 30,17 GB, Gradle 9,19 GB, Node.js 7,49 GB, outros 4,0 GB.">
+                  <svg width="188" height="188" viewBox="0 0 188 188" style="transform:rotate(-90deg)">
+                    <circle cx="94" cy="94" r="80" fill="none" stroke="var(--neu)" stroke-width="18"></circle>
+                    <circle cx="94" cy="94" r="80" fill="none" stroke="#1565E0" stroke-width="18" stroke-dasharray="219 283" stroke-dashoffset="0" stroke-linecap="butt"></circle>
+                    <circle cx="94" cy="94" r="80" fill="none" stroke="#3D8CF5" stroke-width="18" stroke-dasharray="163 339" stroke-dashoffset="-222"></circle>
+                    <circle cx="94" cy="94" r="80" fill="none" stroke="#7DB8FF" stroke-width="18" stroke-dasharray="48 454" stroke-dashoffset="-388"></circle>
+                    <circle cx="94" cy="94" r="80" fill="none" stroke="#A9D0FF" stroke-width="18" stroke-dasharray="39 463" stroke-dashoffset="-439"></circle>
+                  </svg>
+                  <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px">
+                    <div style="font-size:30px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.02em">91,05 GB</div>
+                    <div style="font-size:11px;color:var(--tx2);font-weight:500">Potencial de limpeza</div>
+                  </div>
+                </div>
+                <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:14px">
+                  <div style="display:flex;flex-direction:column;gap:7px">
+                    <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:9px;height:9px;border-radius:2px;background:#1565E0;flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Dados do Xcode</span><span style="font-variant-numeric:tabular-nums;color:var(--tx2)">40,22 GB</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:9px;height:9px;border-radius:2px;background:#3D8CF5;flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Flutter e Dart</span><span style="font-variant-numeric:tabular-nums;color:var(--tx2)">30,17 GB</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:9px;height:9px;border-radius:2px;background:#7DB8FF;flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Gradle</span><span style="font-variant-numeric:tabular-nums;color:var(--tx2)">9,19 GB</span></div>
+                    <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="width:9px;height:9px;border-radius:2px;background:#A9D0FF;flex:none"></span><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Node.js e outros</span><span style="font-variant-numeric:tabular-nums;color:var(--tx2)">11,47 GB</span></div>
+                  </div>
+                  <div style="font-size:11px;color:var(--tx3);line-height:1.4">193 itens em 8 categorias. Nada está selecionado.</div>
+                  <button style="height:34px;padding:0 18px;border:none;border-radius:8px;background:var(--acFill);color:var(--acOn);font-size:14px;font-weight:600;font-family:inherit;display:inline-flex;align-items:center;justify-content:center;gap:8px">Revisar limpeza<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h9.5m-3.6-3.6L12.5 8l-3.6 3.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+                </div>
+              </div>
+
+              <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden">
+                <div style="display:flex;align-items:baseline;gap:10px;padding:16px 18px 12px">
+                  <span style="font-size:15px;font-weight:650">Categorias de cache</span>
+                  <span style="margin-left:auto;font-size:11px;color:var(--tx3);font-variant-numeric:tabular-nums">8 categorias · 91,05 GB</span>
+                </div>
+                <sc-for list="{{ cats }}" as="c" hint-placeholder-count="8">
+                  <div style="display:flex;align-items:center;gap:12px;padding:9px 18px;border-top:1px solid var(--sep)">
+                    <span style="width:26px;height:26px;flex:none;border-radius:7px;display:flex;align-items:center;justify-content:center;background:{{ c.tint }}"><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 4.2c0-1 2.2-1.8 5-1.8s5 .8 5 1.8v7.6c0 1-2.2 1.8-5 1.8s-5-.8-5-1.8V4.2Z" stroke="#fff" stroke-width="1.35" stroke-linejoin="round"></path></svg></span>
+                    <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                      <span style="font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.n }}</span>
+                      <span style="font-size:11px;color:var(--tx3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.d }}</span>
+                    </span>
+                    <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:3px">
+                      <sc-if value="{{ c.unk }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;font-weight:600;padding:1px 7px;border-radius:5px;background:var(--neu);color:var(--tx2)">Indisponível</span></sc-if>
+                      <sc-if value="{{ c.known }}" hint-placeholder-val="{{ true }}"><span style="font-size:14px;font-weight:650;font-variant-numeric:tabular-nums">{{ c.s }}</span></sc-if>
+                      <span style="display:inline-flex;align-items:center;gap:4px;height:18px;padding:0 6px;border-radius:5px;font-size:10px;font-weight:650;background:{{ c.riskBg }};color:{{ c.riskFg }}"><svg width="9" height="9" viewBox="0 0 16 16" fill="none"><path d="{{ c.riskD }}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"></path></svg>{{ c.risk }}</span>
+                    </span>
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="m6 3.5 4.5 4.5L6 12.5" stroke="var(--tx3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div style="display:flex;gap:16px">
+                <div style="flex:1;min-width:0;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px">
+                  <span style="width:28px;height:28px;border-radius:8px;background:var(--acSoft);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3.4 5.2h9.2l-.7 8a1.2 1.2 0 0 1-1.2 1.1H5.3a1.2 1.2 0 0 1-1.2-1.1l-.7-8Zm2.2 0V3.4h4.8v1.8" stroke="var(--acTxt)" stroke-width="1.35" stroke-linejoin="round"></path></svg></span>
+                  <span style="font-size:13px;font-weight:650">Lixeira primeiro</span>
+                  <span style="font-size:11px;color:var(--tx2);line-height:1.45">Os arquivos vão para a Lixeira. O espaço só volta quando você esvazia a Lixeira no Finder.</span>
+                </div>
+                <div style="flex:1;min-width:0;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px">
+                  <span style="width:28px;height:28px;border-radius:8px;background:var(--neu);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8.6 1.8 3.4 9.1h3.5l-1.5 5.1 5.4-7.6H7.4l1.2-4.8Z" stroke="var(--tx2)" stroke-width="1.3" stroke-linejoin="round"></path></svg></span>
+                  <span style="font-size:13px;font-weight:650">Conheça o impacto</span>
+                  <span style="font-size:11px;color:var(--tx2);line-height:1.45">Remover um cache faz o próximo build ser mais lento, não o Mac mais rápido.</span>
+                </div>
+                <div style="flex:1;min-width:0;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px">
+                  <span style="width:28px;height:28px;border-radius:8px;background:var(--neu);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="var(--tx2)" stroke-width="1.3"></circle><path d="M4.8 11.2 11.2 4.8" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+                  <span style="font-size:13px;font-weight:650">Você continua no controle</span>
+                  <span style="font-size:11px;color:var(--tx2);line-height:1.45">Nada vem pré-selecionado. Itens de alto risco exigem um reconhecimento à parte.</span>
+                </div>
+              </div>
+
+              <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <span style="width:26px;height:26px;border-radius:7px;background:var(--acSoft);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 9.4h12c-.5 2.8-2.7 4.3-6 4.3s-5.5-1.5-6-4.3Z" stroke="var(--acTxt)" stroke-width="1.3" stroke-linejoin="round"></path><path d="M4.6 7.4V5.2h2.2v2.2M7.4 7.4V5.2h2.2v2.2M7.4 4.6V2.4h2.2v2.2" stroke="var(--acTxt)" stroke-width="1.2"></path></svg></span>
+                  <span style="font-size:14px;font-weight:650">Docker</span>
+                  <span style="margin-left:auto;font-size:11px;color:var(--tx3)">Número separado</span>
+                </div>
+                <div style="display:flex;align-items:baseline;gap:8px">
+                  <span style="font-size:20px;font-weight:700;font-variant-numeric:tabular-nums">18,40 GB</span>
+                  <span style="font-size:12px;color:var(--tx2)">reclaim estimado pelo Docker</span>
+                </div>
+                <div style="font-size:11px;color:var(--tx2);line-height:1.45">Este número vem do próprio Docker, é uma estimativa e não entra no potencial de limpeza acima. O MacDevClean não apaga imagens nem volumes.</div>
+                <button style="align-self:flex-start;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Abrir no Docker Desktop</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1c" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1c</span>
+        <span style="font-size:15px;font-weight:600">Caches — seleção em andamento · claro · 1440×900</span>
+      </div>
+      <div style="--bg:#FFFFFF;--side:#EDEDF0;--card:#F7F7F9;--bd:rgba(0,0,0,.09);--sep:#E3E3E7;--tx:#1D1D1F;--tx2:#5F5F66;--tx3:#76767C;--acFill:#1565E0;--acOn:#FFFFFF;--acTxt:#0F5FD6;--acSoft:#E8F0FE;--ok:#16733A;--okBg:#E4F3E9;--warn:#8A5300;--warnBg:#FBEFDC;--dan:#B02419;--danBg:#FBE9E7;--ctl:#FFFFFF;--ctlBd:rgba(0,0,0,.14);--ctl2:#F2F2F4;--neu:#EFEFF2;width:1440px;height:900px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.22);border:1px solid var(--bd)">
+
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#E9F0FA"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#C8D6E8" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navCaches }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Caches</span>
+            <span style="font-size:11px;color:var(--tx3);font-variant-numeric:tabular-nums">193 candidatos · 91,05 GB</span>
+            <button style="margin-left:auto;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Verificar de novo</button>
+          </div>
+
+          <div style="flex:none;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:12px 24px;border-bottom:1px solid var(--sep)">
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Ecossistema</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Todos os ecossistemas<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Risco</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Qualquer risco<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Ordenar</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Maiores primeiro<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="margin-left:auto;display:inline-flex;flex-wrap:wrap;gap:8px">
+              <button style="height:26px;padding:0 12px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Selecionar tudo de risco baixo e médio</button>
+              <button style="height:26px;padding:0 12px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Limpar seleção</button>
+            </span>
+          </div>
+
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:16px 24px;display:flex;flex-direction:column;gap:14px">
+            <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden;flex:none">
+              <sc-for list="{{ cachesPt }}" as="c" hint-placeholder-count="10">
+                <div style="display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--sep);background:{{ c.rowBg }}">
+                  <span style="width:16px;height:16px;flex:none;border-radius:4px;border:1.5px solid {{ c.cbBd }};background:{{ c.cbBg }};display:flex;align-items:center;justify-content:center">
+                    <sc-if value="{{ c.sel }}" hint-placeholder-val="{{ false }}"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="m3.6 8.4 2.8 2.8 6-6.4" stroke="var(--acOn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                  </span>
+                  <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <span style="font-size:13px;font-weight:500;font-family:'SF Mono',ui-monospace,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.n }}</span>
+                    <span style="font-size:11px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.c }}</span>
+                  </span>
+                  <span style="flex:none;width:110px;text-align:right">
+                    <sc-if value="{{ c.known }}" hint-placeholder-val="{{ true }}"><span style="font-size:14px;font-weight:650;font-variant-numeric:tabular-nums">{{ c.s }}</span></sc-if>
+                    <sc-if value="{{ c.unk }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;font-weight:650;padding:2px 7px;border-radius:5px;background:var(--neu);color:var(--tx2)">Indisponível</span></sc-if>
+                  </span>
+                  <span style="flex:none;width:120px;display:flex;justify-content:flex-end"><span style="display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:5px;font-size:11px;font-weight:650;background:{{ c.riskBg }};color:{{ c.riskFg }}"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="{{ c.riskD }}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"></path></svg>{{ c.risk }}</span></span>
+                </div>
+              </sc-for>
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 16px">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="m6 3.5 4.5 4.5L6 12.5" stroke="var(--tx2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span style="display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:5px;font-size:11px;font-weight:650;background:var(--danBg);color:var(--dan)"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M8 1.7a6.3 6.3 0 1 1 0 12.6A6.3 6.3 0 0 1 8 1.7Zm0 2.9v4m0 2.6h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>Risco alto</span>
+                <span style="font-size:13px;font-weight:600;font-variant-numeric:tabular-nums">3 itens · 20,50 GB</span>
+                <span style="font-size:11px;color:var(--tx2);flex:1;min-width:0">Fechado de propósito. A seleção em massa nunca toca nestes itens e eles só podem ser marcados aqui dentro.</span>
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);line-height:1.4;flex:none">Mostrando 10 de 193 candidatos. Tamanhos são medidos em disco; “Indisponível” significa que o MacDevClean não conseguiu ler o tamanho, não que o item esteja vazio.</div>
+          </div>
+
+          <div style="flex:none;min-height:64px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 24px;border-top:1px solid var(--sep);background:var(--side)">
+            <span style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1">
+              <span style="font-size:13px;font-weight:650;font-variant-numeric:tabular-nums">3 itens selecionados · 55,51 GB</span>
+              <span style="font-size:11px;color:var(--tx2);line-height:1.4">Vão para a Lixeira. Isso não libera espaço até você esvaziar a Lixeira no Finder.</span>
+            </span>
+            <button style="height:32px;padding:0 18px;border:none;border-radius:8px;background:var(--acFill);color:var(--acOn);font-size:13px;font-weight:600;font-family:inherit">Revisar 3 itens selecionados</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div id="1d" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1d</span>
+        <span style="font-size:15px;font-weight:600">Caches — nothing selected · dark · 1100×720 · EN</span>
+      </div>
+      <div style="--bg:#1C1C1E;--side:#252528;--card:#232326;--bd:rgba(255,255,255,.12);--sep:#3A3A3E;--tx:#F2F2F5;--tx2:#A6A6AC;--tx3:#98989E;--acFill:#3D8CF5;--acOn:#08182C;--acTxt:#7DB8FF;--acSoft:#16263D;--ok:#5BD08A;--okBg:#123324;--warn:#F2B04A;--warnBg:#3A2A10;--dan:#FF7B6E;--danBg:#3B1C18;--ctl:#3A3A3E;--ctlBd:rgba(255,255,255,.16);--ctl2:#2E2E32;--neu:#303034;width:1100px;height:720px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.45);border:1px solid var(--bd)">
+
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#2C3A4E"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#7F8EA3" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Understand it before you remove it.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navCachesEn }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nothing is removed until you confirm.</span>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Caches</span>
+            <span style="font-size:11px;color:var(--tx3);font-variant-numeric:tabular-nums">193 candidates · 91.05 GB</span>
+            <button style="margin-left:auto;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Rescan</button>
+          </div>
+
+          <div style="flex:none;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:12px 24px;border-bottom:1px solid var(--sep)">
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Ecosystem</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">All ecosystems<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Risk</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Any risk<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Sort</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Largest first<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="margin-left:auto;display:inline-flex;flex-wrap:wrap;gap:8px">
+              <button style="height:26px;padding:0 12px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Select all low and medium risk</button>
+              <button style="height:26px;padding:0 12px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Clear selection</button>
+            </span>
+          </div>
+
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:16px 24px;display:flex;flex-direction:column;gap:14px">
+            <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden;flex:none">
+              <sc-for list="{{ cachesEn }}" as="c" hint-placeholder-count="8">
+                <div style="display:flex;align-items:center;gap:14px;padding:10px 16px;border-bottom:1px solid var(--sep);background:{{ c.rowBg }}">
+                  <span style="width:16px;height:16px;flex:none;border-radius:4px;border:1.5px solid {{ c.cbBd }};background:{{ c.cbBg }};display:flex;align-items:center;justify-content:center">
+                    <sc-if value="{{ c.sel }}" hint-placeholder-val="{{ false }}"><svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="m3.6 8.4 2.8 2.8 6-6.4" stroke="var(--acOn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if>
+                  </span>
+                  <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <span style="font-size:13px;font-weight:500;font-family:'SF Mono',ui-monospace,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.n }}</span>
+                    <span style="font-size:11px;color:var(--tx2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ c.c }}</span>
+                  </span>
+                  <span style="flex:none;width:110px;text-align:right">
+                    <sc-if value="{{ c.known }}" hint-placeholder-val="{{ true }}"><span style="font-size:14px;font-weight:650;font-variant-numeric:tabular-nums">{{ c.s }}</span></sc-if>
+                    <sc-if value="{{ c.unk }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;font-weight:650;padding:2px 7px;border-radius:5px;background:var(--neu);color:var(--tx2)">Unavailable</span></sc-if>
+                  </span>
+                  <span style="flex:none;width:120px;display:flex;justify-content:flex-end"><span style="display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:5px;font-size:11px;font-weight:650;background:{{ c.riskBg }};color:{{ c.riskFg }}"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="{{ c.riskD }}" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"></path></svg>{{ c.risk }}</span></span>
+                </div>
+              </sc-for>
+              <div style="display:flex;align-items:center;gap:12px;padding:12px 16px">
+                <svg width="12" height="12" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="m6 3.5 4.5 4.5L6 12.5" stroke="var(--tx2)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                <span style="display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:5px;font-size:11px;font-weight:650;background:var(--danBg);color:var(--dan)"><svg width="10" height="10" viewBox="0 0 16 16" fill="none"><path d="M8 1.7a6.3 6.3 0 1 1 0 12.6A6.3 6.3 0 0 1 8 1.7Zm0 2.9v4m0 2.6h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path></svg>High risk</span>
+                <span style="font-size:13px;font-weight:600;font-variant-numeric:tabular-nums">3 items · 20.50 GB</span>
+                <span style="font-size:11px;color:var(--tx2);flex:1;min-width:0">Closed on purpose. Bulk selection never touches these, and they can only be checked inside this section.</span>
+              </div>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);line-height:1.4;flex:none">Showing 8 of 193 candidates. Sizes are measured on disk; “Unavailable” means MacDevClean could not read the size, not that the item is empty.</div>
+          </div>
+
+          <div style="flex:none;min-height:64px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 24px;border-top:1px solid var(--sep);background:var(--side)">
+            <span style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1">
+              <span style="font-size:13px;font-weight:650;font-variant-numeric:tabular-nums">0 items selected</span>
+              <span style="font-size:11px;color:var(--tx2);line-height:1.4">A scan never selects anything. Items you pick move to the Trash, which does not free space until you empty it in Finder.</span>
+            </span>
+            <span style="display:inline-flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--tx2);max-width:210px;line-height:1.35;text-align:right">Nothing is selected yet. Tick an item, or use “Select all low and medium risk”.</span><button style="height:32px;padding:0 18px;border:1px solid var(--bd);border-radius:8px;background:var(--ctl2);color:var(--tx3);font-size:13px;font-weight:600;font-family:inherit">Review 0 selected items</button></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1e" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1e</span>
+        <span style="font-size:15px;font-weight:600">Histórico · claro · 1440×900</span>
+      </div>
+      <div style="--bg:#FFFFFF;--side:#EDEDF0;--card:#F7F7F9;--bd:rgba(0,0,0,.09);--sep:#E3E3E7;--tx:#1D1D1F;--tx2:#5F5F66;--tx3:#76767C;--acFill:#1565E0;--acOn:#FFFFFF;--acTxt:#0F5FD6;--acSoft:#E8F0FE;--ok:#16733A;--okBg:#E4F3E9;--warn:#8A5300;--warnBg:#FBEFDC;--dan:#B02419;--danBg:#FBE9E7;--ctl:#FFFFFF;--ctlBd:rgba(0,0,0,.14);--ctl2:#F2F2F4;--neu:#EFEFF2;width:1440px;height:900px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.22);border:1px solid var(--bd)">
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#E9F0FA"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#C8D6E8" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navHistory }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Histórico</span>
+            <span style="margin-left:auto;display:inline-flex;gap:8px">
+              <button style="height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Abrir Lixeira</button>
+              <button style="height:28px;padding:0 14px;border:1px solid rgba(176,36,25,.35);border-radius:7px;background:var(--ctl);color:var(--dan);font-size:12px;font-weight:600;font-family:inherit">Apagar histórico…</button>
+            </span>
+          </div>
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:16px;max-width:1000px">
+            <div style="display:flex;gap:10px;align-items:flex-start;background:var(--acSoft);border-radius:10px;padding:12px 14px">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><circle cx="8" cy="8" r="6.3" stroke="var(--acTxt)" stroke-width="1.35"></circle><path d="M8 7.2v4m0-6.4h.01" stroke="var(--acTxt)" stroke-width="1.5" stroke-linecap="round"></path></svg>
+              <span style="font-size:12px;color:var(--tx);line-height:1.45">Os tamanhos abaixo são <strong style="font-weight:650">bytes movidos para a Lixeira</strong>. Eles não representam espaço liberado — o espaço volta quando você esvazia a Lixeira no Finder.</span>
+            </div>
+            <sc-for list="{{ sessions }}" as="s" hint-placeholder-count="2">
+              <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:flex-start;gap:16px">
+                  <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px">
+                    <span style="font-size:15px;font-weight:650;font-variant-numeric:tabular-nums">{{ s.date }}</span>
+                    <span style="display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--tx2)">
+                      <svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="m3.4 8.6 3 3 6.2-7" stroke="var(--ok)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                      {{ s.items }}
+                    </span>
+                    <span style="font-size:12px;color:var(--tx2)">{{ s.extra }}</span>
+                  </span>
+                  <span style="flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+                    <span style="font-size:15px;font-weight:650;font-variant-numeric:tabular-nums">{{ s.size }}</span>
+                    <span style="display:inline-flex;align-items:center;height:20px;padding:0 8px;border-radius:5px;background:var(--neu);color:var(--tx2);font-size:11px;font-weight:650">Movido, não liberado</span>
+                  </span>
+                </div>
+                <div style="display:flex;align-items:center;gap:7px;border-top:1px solid var(--sep);padding-top:10px">
+                  <svg width="11" height="11" viewBox="0 0 16 16" fill="none"><path d="m6 3.5 4.5 4.5L6 12.5" stroke="var(--tx2)" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                  <span style="font-size:12px;font-weight:500;color:var(--acTxt)">Detalhes por item</span>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="1g" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1g</span>
+        <span style="font-size:15px;font-weight:600">Ajustes · claro · 1440×900</span>
+      </div>
+      <div style="--bg:#FFFFFF;--side:#EDEDF0;--card:#F7F7F9;--bd:rgba(0,0,0,.09);--sep:#E3E3E7;--tx:#1D1D1F;--tx2:#5F5F66;--tx3:#76767C;--acFill:#1565E0;--acOn:#FFFFFF;--acTxt:#0F5FD6;--acSoft:#E8F0FE;--ok:#16733A;--okBg:#E4F3E9;--warn:#8A5300;--warnBg:#FBEFDC;--dan:#B02419;--danBg:#FBE9E7;--ctl:#FFFFFF;--ctlBd:rgba(0,0,0,.14);--ctl2:#F2F2F4;--neu:#EFEFF2;width:1440px;height:900px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.22);border:1px solid var(--bd)">
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#E9F0FA"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#C8D6E8" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navSettings }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Ajustes</span>
+          </div>
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:16px;max-width:820px">
+
+            <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:15px;font-weight:650">Pastas de projetos</span>
+                <span style="font-size:12px;color:var(--tx2);line-height:1.45">O MacDevClean procura artefatos de projeto somente dentro destas pastas. Fora delas, nada é escaneado.</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;border-top:1px solid var(--sep);padding-top:12px">
+                <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                  <span style="font-size:13px;font-weight:500">Projetos</span>
+                  <span style="font-size:11px;color:var(--tx3);font-family:'SF Mono',ui-monospace,monospace">~/daniel/Projetos</span>
+                </span>
+                <button style="height:26px;padding:0 12px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Remover</button>
+              </div>
+              <button style="align-self:flex-start;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Adicionar uma pasta…</button>
+            </div>
+
+            <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px">
+              <span style="font-size:15px;font-weight:650">Comportamento</span>
+              <div style="display:flex;align-items:center;gap:16px;border-top:1px solid var(--sep);padding-top:12px">
+                <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:13px;font-weight:500">Verificar ao abrir o MacDevClean</span>
+                  <span style="font-size:11px;color:var(--tx2);line-height:1.4">Desativado por padrão. Mesmo ativado, verificar nunca remove nem seleciona nada.</span>
+                </span>
+                <span style="flex:none;width:40px;height:24px;border-radius:12px;background:var(--neu);border:1px solid var(--bd);display:flex;align-items:center;padding:2px"><span style="width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)"></span></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px"><span style="flex:1;min-width:0;font-size:13px">Tamanho de arquivo grande</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px;font-variant-numeric:tabular-nums">1 GB<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></div>
+              <div style="display:flex;align-items:center;gap:16px"><span style="flex:1;min-width:0;font-size:13px">Manter histórico</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Para sempre<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></div>
+            </div>
+
+            <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px">
+              <span style="font-size:15px;font-weight:650">Aparência e idioma</span>
+              <div style="display:flex;align-items:center;gap:16px;border-top:1px solid var(--sep);padding-top:12px"><span style="flex:1;min-width:0;font-size:13px">Idioma</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Sistema<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></div>
+              <div style="display:flex;align-items:center;gap:16px"><span style="flex:1;min-width:0;font-size:13px">Aparência</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Sistema<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></div>
+            </div>
+
+            <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:15px;font-weight:650">Sobre</span>
+              <div style="display:flex;gap:10px;border-top:1px solid var(--sep);padding-top:12px;font-size:13px"><span style="color:var(--tx2)">Versão</span><span style="font-variant-numeric:tabular-nums">1.0.0</span></div>
+              <span style="font-size:12px;color:var(--tx2);line-height:1.45">Tudo permanece neste Mac. O MacDevClean não tem contas, não tem análises de uso e não tem servidor, e não precisa de acesso à rede para verificar ou limpar.</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div id="1f" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1f</span>
+        <span style="font-size:15px;font-weight:600">Histórico — nada registrado ainda · escuro · 1100×720</span>
+      </div>
+      <div style="--bg:#1C1C1E;--side:#252528;--card:#232326;--bd:rgba(255,255,255,.12);--sep:#3A3A3E;--tx:#F2F2F5;--tx2:#A6A6AC;--tx3:#98989E;--acFill:#3D8CF5;--acOn:#08182C;--acTxt:#7DB8FF;--acSoft:#16263D;--ok:#5BD08A;--okBg:#123324;--warn:#F2B04A;--warnBg:#3A2A10;--dan:#FF7B6E;--danBg:#3B1C18;--ctl:#3A3A3E;--ctlBd:rgba(255,255,255,.16);--ctl2:#2E2E32;--neu:#303034;width:1100px;height:720px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.45);border:1px solid var(--bd)">
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#2C3A4E"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#7F8EA3" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navHistory }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Histórico</span>
+            <span style="margin-left:auto;display:inline-flex;gap:8px">
+              <button style="height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Abrir Lixeira</button>
+              <span style="display:inline-flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--tx2)">Não há histórico para apagar.</span><button style="height:28px;padding:0 14px;border:1px solid var(--bd);border-radius:7px;background:var(--ctl2);color:var(--tx3);font-size:12px;font-weight:600;font-family:inherit">Apagar histórico…</button></span>
+            </span>
+          </div>
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:16px">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:40px">
+              <svg width="40" height="40" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="var(--tx3)" stroke-width="1.1"></circle><path d="M8 5.1V8l2.2 1.4" stroke="var(--tx3)" stroke-width="1.1" stroke-linecap="round"></path></svg>
+              <span style="font-size:17px;font-weight:650">Nenhuma limpeza registrada</span>
+              <span style="font-size:12px;color:var(--tx2);line-height:1.5;max-width:400px;text-wrap:pretty">Quando você mover itens para a Lixeira, cada sessão aparece aqui com a data, os bytes movidos e o resultado de cada item. O histórico fica somente neste Mac.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div id="1h" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1h</span>
+        <span style="font-size:15px;font-weight:600">Ajustes · escuro · 1100×720</span>
+      </div>
+      <div style="--bg:#1C1C1E;--side:#252528;--card:#232326;--bd:rgba(255,255,255,.12);--sep:#3A3A3E;--tx:#F2F2F5;--tx2:#A6A6AC;--tx3:#98989E;--acFill:#3D8CF5;--acOn:#08182C;--acTxt:#7DB8FF;--acSoft:#16263D;--ok:#5BD08A;--okBg:#123324;--warn:#F2B04A;--warnBg:#3A2A10;--dan:#FF7B6E;--danBg:#3B1C18;--ctl:#3A3A3E;--ctlBd:rgba(255,255,255,.16);--ctl2:#2E2E32;--neu:#303034;width:1100px;height:720px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.45);border:1px solid var(--bd)">
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#2C3A4E"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#7F8EA3" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navSettings }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Ajustes</span>
+          </div>
+          <div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:16px;max-width:820px">
+
+            <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:15px;font-weight:650">Pastas de projetos</span>
+                <span style="font-size:12px;color:var(--tx2);line-height:1.45">O MacDevClean procura artefatos de projeto somente dentro destas pastas. Fora delas, nada é escaneado.</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;border-top:1px solid var(--sep);padding-top:12px">
+                <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+                  <span style="font-size:13px;font-weight:500">Projetos</span>
+                  <span style="font-size:11px;color:var(--tx3);font-family:'SF Mono',ui-monospace,monospace">~/daniel/Projetos</span>
+                </span>
+                <button style="height:26px;padding:0 12px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Remover</button>
+              </div>
+              <button style="align-self:flex-start;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Adicionar uma pasta…</button>
+            </div>
+
+            <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px">
+              <span style="font-size:15px;font-weight:650">Comportamento</span>
+              <div style="display:flex;align-items:center;gap:16px;border-top:1px solid var(--sep);padding-top:12px">
+                <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+                  <span style="font-size:13px;font-weight:500">Verificar ao abrir o MacDevClean</span>
+                  <span style="font-size:11px;color:var(--tx2);line-height:1.4">Desativado por padrão. Mesmo ativado, verificar nunca remove nem seleciona nada.</span>
+                </span>
+                <span style="flex:none;width:40px;height:24px;border-radius:12px;background:var(--neu);border:1px solid var(--bd);display:flex;align-items:center;padding:2px"><span style="width:18px;height:18px;border-radius:50%;background:#D8D8DC;box-shadow:0 1px 2px rgba(0,0,0,.5)"></span></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px"><span style="flex:1;min-width:0;font-size:13px">Tamanho de arquivo grande</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px;font-variant-numeric:tabular-nums">1 GB<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></div>
+              <div style="display:flex;align-items:center;gap:16px"><span style="flex:1;min-width:0;font-size:13px">Manter histórico</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Para sempre<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></div>
+            </div>
+
+            <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:14px">
+              <span style="font-size:15px;font-weight:650">Aparência e idioma</span>
+              <div style="display:flex;align-items:center;gap:16px;border-top:1px solid var(--sep);padding-top:12px"><span style="flex:1;min-width:0;font-size:13px">Idioma</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Escuro<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></div>
+              <div style="display:flex;align-items:center;gap:16px"><span style="flex:1;min-width:0;font-size:13px">Aparência</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Escuro<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></div>
+            </div>
+
+            <div style="background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;display:flex;flex-direction:column;gap:8px">
+              <span style="font-size:15px;font-weight:650">Sobre</span>
+              <div style="display:flex;gap:10px;border-top:1px solid var(--sep);padding-top:12px;font-size:13px"><span style="color:var(--tx2)">Versão</span><span style="font-variant-numeric:tabular-nums">1.0.0</span></div>
+              <span style="font-size:12px;color:var(--tx2);line-height:1.45">Tudo permanece neste Mac. O MacDevClean não tem contas, não tem análises de uso e não tem servidor, e não precisa de acesso à rede para verificar ou limpar.</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<div id="1i" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1i</span>
+        <span style="font-size:15px;font-weight:600">Visão geral — nunca verificado · claro · 1100×720</span>
+      </div>
+      <div style="--bg:#FFFFFF;--side:#EDEDF0;--card:#F7F7F9;--bd:rgba(0,0,0,.09);--sep:#E3E3E7;--tx:#1D1D1F;--tx2:#5F5F66;--tx3:#76767C;--acFill:#1565E0;--acOn:#FFFFFF;--acTxt:#0F5FD6;--acSoft:#E8F0FE;--ok:#16733A;--okBg:#E4F3E9;--warn:#8A5300;--warnBg:#FBEFDC;--dan:#B02419;--danBg:#FBE9E7;--ctl:#FFFFFF;--ctlBd:rgba(0,0,0,.14);--ctl2:#F2F2F4;--neu:#EFEFF2;width:1100px;height:720px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.22);border:1px solid var(--bd)">
+
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#E9F0FA"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#C8D6E8" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navOverview }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Visão geral</span>
+            <span style="font-size:11px;color:var(--tx3)">Nunca verificado</span>
+            <button style="margin-left:auto;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Verificar de novo</button>
+          </div>
+
+          
+          <div style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:40px">
+            <svg width="34" height="34" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.6" stroke="var(--tx3)" stroke-width="1.1"></circle><path d="m10.5 10.5 3 3" stroke="var(--tx3)" stroke-width="1.1" stroke-linecap="round"></path></svg>
+            <span style="font-size:22px;font-weight:650;letter-spacing:-.01em">Nada foi verificado ainda</span>
+            <span style="font-size:13px;color:var(--tx2);line-height:1.5;max-width:460px;text-wrap:pretty">O MacDevClean lê apenas as pastas de projetos que você escolheu em Ajustes. Uma verificação mede tamanhos e explica o que cada item custa.</span>
+            <span style="display:inline-flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:2px"><button style="height:32px;padding:0 18px;border:none;border-radius:8px;background:var(--acFill);color:var(--acOn);font-size:13px;font-weight:600;font-family:inherit">Verificar agora</button><button style="height:32px;padding:0 16px;border:1px solid var(--ctlBd);border-radius:8px;background:var(--ctl);color:var(--tx);font-size:13px;font-weight:500;font-family:inherit">Escolher pastas…</button></span>
+            <span style="font-size:11px;color:var(--tx3);line-height:1.45;max-width:420px;text-wrap:pretty">Verificar não seleciona nem remove nada. Uma pasta: ~/daniel/Projetos.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div id="1j" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1j</span>
+        <span style="font-size:15px;font-weight:600">Visão geral — verificando · escuro · 1100×720</span>
+      </div>
+      <div style="--bg:#1C1C1E;--side:#252528;--card:#232326;--bd:rgba(255,255,255,.12);--sep:#3A3A3E;--tx:#F2F2F5;--tx2:#A6A6AC;--tx3:#98989E;--acFill:#3D8CF5;--acOn:#08182C;--acTxt:#7DB8FF;--acSoft:#16263D;--ok:#5BD08A;--okBg:#123324;--warn:#F2B04A;--warnBg:#3A2A10;--dan:#FF7B6E;--danBg:#3B1C18;--ctl:#3A3A3E;--ctlBd:rgba(255,255,255,.16);--ctl2:#2E2E32;--neu:#303034;width:1100px;height:720px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.45);border:1px solid var(--bd)">
+
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#2C3A4E"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#7F8EA3" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navOverview }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Visão geral</span>
+            <span style="font-size:11px;color:var(--tx3)">Verificando…</span>
+            <button style="margin-left:auto;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Verificar de novo</button>
+          </div>
+
+          
+          <div style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px">
+            <div style="width:100%;max-width:520px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:baseline;gap:10px"><span style="font-size:17px;font-weight:650">Verificando pastas de projetos</span><span style="margin-left:auto;font-size:13px;font-weight:650;font-variant-numeric:tabular-nums">62 / 193</span></div>
+              <div role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="193" aria-label="Verificando: 62 de 193 candidatos" style="height:6px;border-radius:3px;background:var(--neu);overflow:hidden"><span style="display:block;width:32%;height:100%;border-radius:3px;background:var(--acFill)"></span></div>
+              <div style="font-size:11px;color:var(--tx2);font-family:'SF Mono',ui-monospace,monospace;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">~/daniel/Projetos/feature-insights-mobile-parity/build</div>
+              <div style="font-size:12px;color:var(--tx2);line-height:1.45">Parcial até aqui: 48,30 GB de potencial de limpeza. O total só é confiável no fim da verificação.</div>
+              <div style="display:flex;gap:10px;border-top:1px solid var(--sep);padding-top:14px"><button style="height:32px;padding:0 16px;border:1px solid var(--ctlBd);border-radius:8px;background:var(--ctl);color:var(--tx);font-size:13px;font-weight:500;font-family:inherit">Parar verificação</button><span style="font-size:11px;color:var(--tx3);line-height:1.35;align-self:center;flex:1">Parar mantém o que já foi medido e não remove nada.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div id="1k" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1k</span>
+        <span style="font-size:15px;font-weight:600">Caches — filtros escondem tudo · claro · 1100×720</span>
+      </div>
+      <div style="--bg:#FFFFFF;--side:#EDEDF0;--card:#F7F7F9;--bd:rgba(0,0,0,.09);--sep:#E3E3E7;--tx:#1D1D1F;--tx2:#5F5F66;--tx3:#76767C;--acFill:#1565E0;--acOn:#FFFFFF;--acTxt:#0F5FD6;--acSoft:#E8F0FE;--ok:#16733A;--okBg:#E4F3E9;--warn:#8A5300;--warnBg:#FBEFDC;--dan:#B02419;--danBg:#FBE9E7;--ctl:#FFFFFF;--ctlBd:rgba(0,0,0,.14);--ctl2:#F2F2F4;--neu:#EFEFF2;width:1100px;height:720px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.22);border:1px solid var(--bd)">
+
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#E9F0FA"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#C8D6E8" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navCaches }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Caches</span>
+            <span style="font-size:11px;color:var(--tx3);font-variant-numeric:tabular-nums">193 candidatos · 91,05 GB</span>
+            <button style="margin-left:auto;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Verificar de novo</button>
+          </div>
+
+          <div style="flex:none;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:12px 24px;border-bottom:1px solid var(--sep)">
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Ecossistema</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Todos os ecossistemas<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Risco</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Qualquer risco<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Ordenar</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Maiores primeiro<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="margin-left:auto;display:inline-flex;flex-wrap:wrap;gap:8px">
+              <button style="height:26px;padding:0 12px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Selecionar tudo de risco baixo e médio</button>
+              <button style="height:26px;padding:0 12px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Limpar seleção</button>
+            </span>
+          </div>
+
+          
+          <div style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:40px">
+            <svg width="34" height="34" viewBox="0 0 16 16" fill="none"><path d="M2.4 3.6h11.2L9.4 8.4v4.2L6.6 11V8.4L2.4 3.6Z" stroke="var(--tx3)" stroke-width="1.1" stroke-linejoin="round"></path></svg>
+            <span style="font-size:22px;font-weight:650;letter-spacing:-.01em">Os filtros escondem todos os candidatos</span>
+            <span style="font-size:13px;color:var(--tx2);line-height:1.5;max-width:460px;text-wrap:pretty">A verificação encontrou 193 candidatos, mas nenhum passa por “Ecossistema: Rust” com “Risco: apenas baixo”.</span>
+            <span style="display:inline-flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:2px"><button style="height:32px;padding:0 18px;border:none;border-radius:8px;background:var(--acFill);color:var(--acOn);font-size:13px;font-weight:600;font-family:inherit">Limpar filtros</button><button style="height:32px;padding:0 16px;border:1px solid var(--ctlBd);border-radius:8px;background:var(--ctl);color:var(--tx);font-size:13px;font-weight:500;font-family:inherit">Ajustar risco</button></span>
+            <span style="font-size:11px;color:var(--tx3);line-height:1.45;max-width:420px;text-wrap:pretty">Isto é diferente de não ter encontrado nada: os itens continuam lá, apenas fora do filtro.</span>
+          </div>
+          <div style="flex:none;min-height:64px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 24px;border-top:1px solid var(--sep);background:var(--side)">
+            <span style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1"><span style="font-size:13px;font-weight:650;font-variant-numeric:tabular-nums">0 itens selecionados</span><span style="font-size:11px;color:var(--tx2);line-height:1.4">Nenhum item está visível para selecionar com os filtros atuais.</span></span>
+            <span style="display:inline-flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--tx2);max-width:230px;line-height:1.35;text-align:right">Limpe os filtros para ver candidatos.</span><button style="height:32px;padding:0 18px;border:1px solid var(--bd);border-radius:8px;background:var(--ctl2);color:var(--tx3);font-size:13px;font-weight:600;font-family:inherit">Revisar 0 itens selecionados</button></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div id="1l" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1l</span>
+        <span style="font-size:15px;font-weight:600">Caches — verificação não pode começar · escuro · 1100×720</span>
+      </div>
+      <div style="--bg:#1C1C1E;--side:#252528;--card:#232326;--bd:rgba(255,255,255,.12);--sep:#3A3A3E;--tx:#F2F2F5;--tx2:#A6A6AC;--tx3:#98989E;--acFill:#3D8CF5;--acOn:#08182C;--acTxt:#7DB8FF;--acSoft:#16263D;--ok:#5BD08A;--okBg:#123324;--warn:#F2B04A;--warnBg:#3A2A10;--dan:#FF7B6E;--danBg:#3B1C18;--ctl:#3A3A3E;--ctlBd:rgba(255,255,255,.16);--ctl2:#2E2E32;--neu:#303034;width:1100px;height:720px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.45);border:1px solid var(--bd)">
+
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#2C3A4E"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#7F8EA3" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navCaches }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Caches</span>
+            <span style="font-size:11px;color:var(--tx3)">Nenhuma pasta de projetos</span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--tx2)">Escolha uma pasta para poder verificar.</span><button style="height:28px;padding:0 14px;border:1px solid var(--bd);border-radius:7px;background:var(--ctl2);color:var(--tx3);font-size:12px;font-weight:500;font-family:inherit">Verificar de novo</button></span>
+          </div>
+
+          <div style="flex:none;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:12px 24px;border-bottom:1px solid var(--sep)">
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Ecossistema</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Todos os ecossistemas<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Risco</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Qualquer risco<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="display:inline-flex;align-items:center;gap:7px"><span style="font-size:12px;color:var(--tx2)">Ordenar</span><span style="display:inline-flex;flex:none;white-space:nowrap;align-items:center;gap:8px;height:26px;padding:0 9px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);font-size:12px">Maiores primeiro<svg width="10" height="12" viewBox="0 0 10 12" fill="none"><path d="m2 5 3-3 3 3M2 7l3 3 3-3" stroke="var(--tx2)" stroke-width="1.4" stroke-linecap="round"></path></svg></span></span>
+            <span style="margin-left:auto;display:inline-flex;flex-wrap:wrap;gap:8px">
+              <button style="height:26px;padding:0 12px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Selecionar tudo de risco baixo e médio</button>
+              <button style="height:26px;padding:0 12px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Limpar seleção</button>
+            </span>
+          </div>
+
+          
+          <div style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:40px">
+            <svg width="34" height="34" viewBox="0 0 16 16" fill="none"><path d="M8 2.4 14.4 13H1.6L8 2.4Z" stroke="var(--warn)" stroke-width="1.1" stroke-linejoin="round"></path><path d="M8 6.4v2.8" stroke="var(--warn)" stroke-width="1.2" stroke-linecap="round"></path><circle cx="8" cy="11.2" r=".7" fill="var(--warn)"></circle></svg>
+            <span style="font-size:22px;font-weight:650;letter-spacing:-.01em">A verificação não pode começar</span>
+            <span style="font-size:13px;color:var(--tx2);line-height:1.5;max-width:460px;text-wrap:pretty">Nenhuma pasta de projetos está configurada. O MacDevClean nunca varre o disco inteiro — ele lê só as pastas que você aponta.</span>
+            <span style="display:inline-flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:2px"><button style="height:32px;padding:0 18px;border:none;border-radius:8px;background:var(--acFill);color:var(--acOn);font-size:13px;font-weight:600;font-family:inherit">Escolher pasta de projetos…</button><button style="height:32px;padding:0 16px;border:1px solid var(--ctlBd);border-radius:8px;background:var(--ctl);color:var(--tx);font-size:13px;font-weight:500;font-family:inherit">Abrir Ajustes</button></span>
+            <span style="font-size:11px;color:var(--tx3);line-height:1.45;max-width:420px;text-wrap:pretty">Os filtros acima ficam desabilitados enquanto não houver nada para filtrar.</span>
+          </div>
+          <div style="flex:none;min-height:64px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding:12px 24px;border-top:1px solid var(--sep);background:var(--side)">
+            <span style="display:flex;flex-direction:column;gap:2px;min-width:0;flex:1"><span style="font-size:13px;font-weight:650;font-variant-numeric:tabular-nums">0 itens selecionados</span><span style="font-size:11px;color:var(--tx2);line-height:1.4">Sem verificação, não há candidatos.</span></span>
+            <span style="display:inline-flex;align-items:center;gap:10px"><span style="font-size:11px;color:var(--tx2);max-width:230px;line-height:1.35;text-align:right">Escolha uma pasta de projetos primeiro.</span><button style="height:32px;padding:0 18px;border:1px solid var(--bd);border-radius:8px;background:var(--ctl2);color:var(--tx3);font-size:13px;font-weight:600;font-family:inherit">Revisar 0 itens selecionados</button></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div id="1m" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:11px;background:#1D1D1F;color:#fff;font-size:12px;font-weight:700">1m</span>
+        <span style="font-size:15px;font-weight:600">Falha do registro durável — verifica, explica, não age · claro · 1100×720</span>
+      </div>
+      <div style="--bg:#FFFFFF;--side:#EDEDF0;--card:#F7F7F9;--bd:rgba(0,0,0,.09);--sep:#E3E3E7;--tx:#1D1D1F;--tx2:#5F5F66;--tx3:#76767C;--acFill:#1565E0;--acOn:#FFFFFF;--acTxt:#0F5FD6;--acSoft:#E8F0FE;--ok:#16733A;--okBg:#E4F3E9;--warn:#8A5300;--warnBg:#FBEFDC;--dan:#B02419;--danBg:#FBE9E7;--ctl:#FFFFFF;--ctlBd:rgba(0,0,0,.14);--ctl2:#F2F2F4;--neu:#EFEFF2;width:1100px;height:720px;display:flex;border-radius:12px;overflow:hidden;background:var(--bg);color:var(--tx);box-shadow:0 26px 70px rgba(0,0,0,.22);border:1px solid var(--bd)">
+
+        <div style="width:240px;flex:none;background:var(--side);border-right:1px solid var(--sep);display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:8px;padding:0 18px">
+            <span style="width:12px;height:12px;border-radius:50%;background:#FF5F57"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#FEBC2E"></span>
+            <span style="width:12px;height:12px;border-radius:50%;background:#28C840"></span>
+            <span style="margin-left:auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:22px;border-radius:6px;border:1px solid var(--ctlBd);background:var(--ctl)"><svg width="13" height="13" viewBox="0 0 16 16" fill="none"><rect x="2.2" y="3.2" width="11.6" height="9.6" rx="2" stroke="var(--tx2)" stroke-width="1.3"></rect><path d="M6.4 3.2v9.6" stroke="var(--tx2)" stroke-width="1.3"></path></svg></span>
+          </div>
+          <div style="padding:6px 18px 14px;display:flex;flex-direction:column;gap:3px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="1.5" y="1.5" width="21" height="21" rx="6" fill="#E9F0FA"></rect><path d="M5 8.3c0-.7.6-1.3 1.3-1.3h3.2l1.1 1.4h6.1c.7 0 1.3.6 1.3 1.3v7.1c0 .7-.6 1.3-1.3 1.3H6.3c-.7 0-1.3-.6-1.3-1.3V8.3Z" fill="#1565E0"></path><path d="M5 10.6h13.9" stroke="#fff" stroke-opacity=".5" stroke-width="1.1"></path><path d="m14.6 17.9 4.3-6.1 2.1 1.5-4.3 6.1-2.1-1.5Z" fill="#fff" stroke="#C8D6E8" stroke-width=".8"></path></svg>
+              <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">MacDevClean</span>
+            </div>
+            <div style="font-size:11px;color:var(--tx3);padding-left:31px">Entenda antes de remover.</div>
+          </div>
+          <div style="padding:0 10px;display:flex;flex-direction:column;gap:2px">
+            <sc-for list="{{ navOverview }}" as="n" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:10px;height:32px;padding:0 10px;border-radius:7px;background:{{ n.bg }};color:{{ n.fg }};font-weight:{{ n.fw }};font-size:13px">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="flex:none"><path d="{{ n.d }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path><path d="{{ n.d2 }}" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round"></path></svg>
+                <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ n.label }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="margin-top:auto;padding:16px 18px;display:flex;gap:8px;align-items:flex-start;border-top:1px solid var(--sep)">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" style="flex:none;margin-top:1px"><path d="M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Z" stroke="var(--tx3)" stroke-width="1.3" stroke-linejoin="round"></path></svg>
+            <span style="font-size:11px;line-height:1.35;color:var(--tx3)">Nada é removido até você confirmar.</span>
+          </div>
+        </div>
+
+        <div style="flex:1;min-width:0;display:flex;flex-direction:column">
+          <div style="height:52px;flex:none;display:flex;align-items:center;gap:12px;padding:0 24px;border-bottom:1px solid var(--sep)">
+            <span style="font-size:13px;font-weight:600">Visão geral</span>
+            <span style="font-size:11px;color:var(--dan);font-weight:600">Registro indisponível</span>
+            <button style="margin-left:auto;height:28px;padding:0 14px;border:1px solid var(--ctlBd);border-radius:7px;background:var(--ctl);color:var(--tx);font-size:12px;font-weight:500;font-family:inherit;white-space:nowrap;flex:none">Verificar de novo</button>
+          </div>
+
+          
+          <div style="flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px">
+            <div style="width:100%;max-width:560px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:22px;display:flex;flex-direction:column;gap:12px">
+              <div style="display:flex;align-items:center;gap:10px"><svg width="34" height="34" viewBox="0 0 16 16" fill="none"><path d="M3 4.2c0-1 2.2-1.8 5-1.8s5 .8 5 1.8v7.6c0 1-2.2 1.8-5 1.8s-5-.8-5-1.8V4.2Z" stroke="var(--dan)" stroke-width="1.1" stroke-linejoin="round"></path><path d="M4.6 11.4 11.4 4.6" stroke="var(--dan)" stroke-width="1.1"></path></svg><span style="font-size:20px;font-weight:650;letter-spacing:-.01em">O registro de limpezas não abriu</span></div>
+              <div style="font-size:13px;color:var(--tx2);line-height:1.5;text-wrap:pretty">O MacDevClean continua verificando e explicando o que encontrou, mas não vai mover nada enquanto não conseguir registrar o que fez. Sem registro, você não teria como saber depois o que saiu daqui.</div>
+              <div style="background:var(--danBg);border-radius:9px;padding:12px;display:flex;flex-direction:column;gap:4px">
+                <span style="font-size:11px;font-weight:650;color:var(--dan)">Motivo</span>
+                <span style="font-size:12px;color:var(--tx);line-height:1.45">Permissão negada ao abrir <span style="font-family:'SF Mono',ui-monospace,monospace">~/Library/Application Support/MacDevClean/history.sqlite</span>.</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:10px;border-top:1px solid var(--sep);padding-top:14px"><button style="height:32px;padding:0 18px;border:none;border-radius:8px;background:var(--acFill);color:var(--acOn);font-size:13px;font-weight:600;font-family:inherit">Tentar de novo</button><button style="height:32px;padding:0 16px;border:1px solid var(--ctlBd);border-radius:8px;background:var(--ctl);color:var(--tx);font-size:13px;font-weight:500;font-family:inherit">Mostrar no Finder</button><button style="height:32px;padding:0 16px;border:1px solid var(--ctlBd);border-radius:8px;background:var(--ctl);color:var(--tx);font-size:13px;font-weight:500;font-family:inherit">Verificar sem registrar</button></div>
+              <span style="font-size:11px;color:var(--tx3);line-height:1.45">Verificar continua liberado porque verificar não altera nada. Mover para a Lixeira fica desabilitado até o registro voltar.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const NAV = [
+  { pt: "Visão geral", en: "Overview", d: "M2.5 7.2 8 2.6l5.5 4.6V13a.7.7 0 0 1-.7.7H9.6v-3.4H6.4v3.4H3.2A.7.7 0 0 1 2.5 13V7.2Z" },
+  { pt: "Caches", en: "Caches", d: "M3 4.2c0-1 2.2-1.8 5-1.8s5 .8 5 1.8v7.6c0 1-2.2 1.8-5 1.8s-5-.8-5-1.8V4.2Z", d2: "M3 6.6c0 1 2.2 1.8 5 1.8s5-.8 5-1.8" },
+  { pt: "Arquivos grandes", en: "Large Files", d: "M2.6 5.2c0-.8.6-1.4 1.4-1.4h2.3l1.2 1.4h4.5c.8 0 1.4.6 1.4 1.4v5.2c0 .8-.6 1.4-1.4 1.4H4c-.8 0-1.4-.6-1.4-1.4V5.2Z" },
+  { pt: "Histórico", en: "History", d: "M8 2.4a5.6 5.6 0 1 1 0 11.2 5.6 5.6 0 0 1 0-11.2Z", d2: "M8 5.2V8l2.1 1.3" },
+  { pt: "Exclusões", en: "Exclusions", d: "M8 2.4a5.6 5.6 0 1 1 0 11.2 5.6 5.6 0 0 1 0-11.2Z", d2: "M4.6 11.4 11.4 4.6" },
+  { pt: "Ajustes", en: "Settings", d: "M8 1.8l1.1 1.5 1.8-.5.6 1.8 1.8.6-.5 1.8L14.2 8l-1.4 1.1.5 1.8-1.8.6-.6 1.8-1.8-.5L8 14.2l-1.1-1.4-1.8.5-.6-1.8-1.8-.6.5-1.8L1.8 8l1.4-1.1-.5-1.8 1.8-.6.6-1.8 1.8.5L8 1.8Z", d2: "M8 5.9a2.1 2.1 0 1 1 0 4.2 2.1 2.1 0 0 1 0-4.2Z" }
+];
+const RISK = {
+  low:  { bg: "var(--okBg)",   fg: "var(--ok)",   d: "M8 1.6 13.4 3.5v3.9c0 3.1-2.2 6-5.4 6.9-3.2-.9-5.4-3.8-5.4-6.9V3.5L8 1.6Zm-2.4 6.3 1.7 1.7 3.1-3.4" },
+  med:  { bg: "var(--warnBg)", fg: "var(--warn)", d: "M8 2.2 14.6 13H1.4L8 2.2Zm0 4.1v2.6m0 2.1h.01" },
+  high: { bg: "var(--danBg)",  fg: "var(--dan)",  d: "M8 1.7a6.3 6.3 0 1 1 0 12.6A6.3 6.3 0 0 1 8 1.7Zm0 2.9v4m0 2.6h.01" }
+};
+const nav = (active, lang) => NAV.map(i => ({
+  label: lang === "en" ? i.en : i.pt,
+  d: i.d, d2: i.d2,
+  bg: i.pt === active ? "var(--acFill)" : "transparent",
+  fg: i.pt === active ? "var(--acOn)" : "var(--tx)",
+  fw: i.pt === active ? 600 : 450
+}));
+const row = (o) => Object.assign({}, o, { riskBg: RISK[o.r].bg, riskFg: RISK[o.r].fg, riskD: RISK[o.r].d, unk: !!o.unk, known: !o.unk,
+  sel: !!o.sel,
+  rowBg: o.sel ? "var(--acSoft)" : "transparent",
+  cbBg: o.sel ? "var(--acFill)" : "transparent",
+  cbBd: o.sel ? "var(--acFill)" : "var(--ctlBd)" });
+
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      navOverview: nav("Visão geral"),
+      navCaches: nav("Caches"),
+      navCachesEn: nav("Caches", "en"),
+      navHistory: nav("Histórico"),
+      navSettings: nav("Ajustes"),
+      cats: [
+        row({ n: "Dados do Xcode", d: "Dados derivados, arquivos e suporte a dispositivos", s: "40,22 GB", r: "med", risk: "Risco médio", tint: "#1565E0" }),
+        row({ n: "Builds de Flutter e Dart", d: "Saídas de build e metadados de ferramentas", s: "30,17 GB", r: "low", risk: "Risco baixo", tint: "#3D8CF5" }),
+        row({ n: "Caches do Gradle", d: "Caches de dependências e de build", s: "9,19 GB", r: "low", risk: "Risco baixo", tint: "#5CA3F7" }),
+        row({ n: "Dependências do Node.js", d: "Pacotes instalados e caches de gerenciadores", s: "7,49 GB", r: "low", risk: "Risco baixo", tint: "#7DB8FF" }),
+        row({ n: "Cache do Bun", d: "Cache de pacotes baixados", s: "3,87 GB", r: "low", risk: "Risco baixo", tint: "#A9D0FF" }),
+        row({ n: "Saída de build web", d: "Saída de site gerada", s: "71,2 MB", r: "med", risk: "Risco médio", tint: "#1565E0" }),
+        row({ n: "Cache do Homebrew", d: "Fórmulas e bottles baixadas", s: "36,1 MB", r: "low", risk: "Risco baixo", tint: "#3D8CF5" }),
+        row({ n: "Caches do simulador", d: "Caches de suporte do simulador", s: "Indisponível", unk: true, r: "low", risk: "Risco baixo", tint: "#8E8E93" })
+      ],
+      cachesPt: [
+        row({ n: "Xcode/DerivedData", c: "Seu próximo build será mais lento enquanto isto é refeito.", s: "40,22 GB", r: "low", risk: "Risco baixo", sel: true }),
+        row({ n: "iOS DeviceSupport", c: "Recriado quando você conectar o dispositivo de novo.", s: "6,10 GB", r: "med", risk: "Risco médio", sel: true }),
+        row({ n: ".gradle/caches", c: "Seu próximo build será mais lento enquanto isto é refeito.", s: "9,19 GB", r: "low", risk: "Risco baixo", sel: true }),
+        row({ n: ".pub-cache/hosted", c: "Os pacotes serão baixados de novo da próxima vez.", s: "4,44 GB", r: "low", risk: "Risco baixo" }),
+        row({ n: "install/cache", c: "Os pacotes serão baixados de novo da próxima vez.", s: "3,87 GB", r: "low", risk: "Risco baixo" }),
+        row({ n: "staff-home-dashboard/build", c: "Refeito no próximo build.", s: "2,54 GB", r: "low", risk: "Risco baixo" }),
+        row({ n: "feature-insights-mobile-parity/build", c: "Refeito no próximo build.", s: "2,22 GB", r: "low", risk: "Risco baixo" }),
+        row({ n: "sggp-app/build", c: "Refeito no próximo build.", s: "2,01 GB", r: "low", risk: "Risco baixo" }),
+        row({ n: "yogademia/build", c: "Refeito no próximo build.", s: "1,58 GB", r: "low", risk: "Risco baixo" }),
+        row({ n: "poliru-app/build", c: "Refeito no próximo build.", s: "Indisponível", unk: true, r: "low", risk: "Risco baixo" })
+      ],
+      cachesEn: [
+        row({ n: "Xcode/DerivedData", c: "Your next build will be slower while this is rebuilt.", s: "40.22 GB", r: "low", risk: "Low risk" }),
+        row({ n: "iOS DeviceSupport", c: "Recreated when you connect the device again.", s: "6.10 GB", r: "med", risk: "Medium risk" }),
+        row({ n: ".gradle/caches", c: "Your next build will be slower while this is rebuilt.", s: "9.19 GB", r: "low", risk: "Low risk" }),
+        row({ n: ".pub-cache/hosted", c: "Packages will be downloaded again next time.", s: "4.44 GB", r: "low", risk: "Low risk" }),
+        row({ n: "install/cache", c: "Packages will be downloaded again next time.", s: "3.87 GB", r: "low", risk: "Low risk" }),
+        row({ n: "staff-home-dashboard/build", c: "Rebuilt on the next build.", s: "2.54 GB", r: "low", risk: "Low risk" }),
+        row({ n: "feature-insights-mobile-parity/build", c: "Rebuilt on the next build.", s: "2.22 GB", r: "low", risk: "Low risk" }),
+        row({ n: "poliru-app/build", c: "Rebuilt on the next build.", s: "Unavailable", unk: true, r: "low", risk: "Low risk" })
+      ],
+      highRisk: [
+        row({ n: "~/Library/Developer/CoreSimulator/Devices", c: "Apaga simuladores instalados e os dados dentro deles.", s: "12,80 GB", r: "high", risk: "Risco alto" }),
+        row({ n: "~/.docker/volumes", c: "Volumes podem conter bancos de dados de desenvolvimento.", s: "4,20 GB", r: "high", risk: "Risco alto" }),
+        row({ n: "Vapt Vupt Zion-MARÇO-2026.zip", c: "Arquivo pessoal em Downloads, não é artefato de build.", s: "3,50 GB", r: "high", risk: "Risco alto" })
+      ],
+      sessions: [
+        { date: "21 de set. de 2026, 23:22", size: "42 kB movidos", items: "1 item concluído", extra: "" },
+        { date: "18 de set. de 2026, 09:04", size: "38,91 GB movidos", items: "24 itens concluídos", extra: "2 ignorados · 1 falhou" }
+      ],
+      lightSwatches: [
+        { token: "accent / acFill", hex: "#1565E0", use: "Ação primária" },
+        { token: "accentText", hex: "#0F5FD6", use: "Texto e links" },
+        { token: "accentSoft", hex: "#E8F0FE", use: "Seleção, tinta" },
+        { token: "label", hex: "#1D1D1F", use: "Texto principal" },
+        { token: "secondaryLabel", hex: "#5F5F66", use: "Apoio" },
+        { token: "tertiaryLabel", hex: "#76767C", use: "Legenda AA" },
+        { token: "groupedBg", hex: "#F5F5F7", use: "Fundo de card" },
+        { token: "sidebar", hex: "#EDEDF0", use: "Barra lateral" },
+        { token: "separator", hex: "#E3E3E7", use: "Divisor" },
+        { token: "risk.low", hex: "#16733A", use: "Somente risco baixo" },
+        { token: "risk.medium", hex: "#8A5300", use: "Risco médio" },
+        { token: "risk.high", hex: "#B02419", use: "Risco alto" }
+      ],
+      darkSwatches: [
+        { token: "accent / acFill", hex: "#3D8CF5", use: "Ação primária" },
+        { token: "accentText", hex: "#7DB8FF", use: "Texto e links" },
+        { token: "accentSoft", hex: "#16263D", use: "Seleção, tinta" },
+        { token: "label", hex: "#F2F2F5", use: "Texto principal" },
+        { token: "secondaryLabel", hex: "#A6A6AC", use: "Apoio" },
+        { token: "tertiaryLabel", hex: "#98989E", use: "Legenda AA" },
+        { token: "groupedBg", hex: "#232326", use: "Fundo de card" },
+        { token: "sidebar", hex: "#252528", use: "Barra lateral" },
+        { token: "separator", hex: "#3A3A3E", use: "Divisor" },
+        { token: "risk.low", hex: "#5BD08A", use: "Somente risco baixo" },
+        { token: "risk.medium", hex: "#F2B04A", use: "Risco médio" },
+        { token: "risk.high", hex: "#FF7B6E", use: "Risco alto" }
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+name: Performance
+
+# Manually triggered, never on push. The scan benchmarks build large synthetic
+# trees, and running them on every commit would slow the ordinary gate down for
+# no benefit: the regressions they guard are already covered by the assertions
+# inside them, which the normal test run executes.
+#
+# It measures and records. It asserts no wall-clock threshold, because a number
+# from a shared runner is not comparable with a number from a developer's
+# machine, and a threshold nobody can reproduce becomes a flaky test.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    name: Scan performance
+    runs-on: macos-26
+    timeout-minutes: 45
+    steps:
+      # actions/checkout v7.0.1, pinned to its immutable commit SHA, the same
+      # revision ci.yml uses.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+
+      - name: Record what this ran on
+        run: |
+          set -euo pipefail
+          {
+            echo "date: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "commit: $GITHUB_SHA"
+            echo "runner image: $ImageOS"
+            echo "cpu: $(sysctl -n machdep.cpu.brand_string)"
+            echo "cores: $(sysctl -n hw.ncpu)"
+            echo "memory bytes: $(sysctl -n hw.memsize)"
+            echo "xcode: $(xcodebuild -version | tr '\n' ' ')"
+            echo "swift: $(swift --version 2>&1 | head -1)"
+          } | tee performance-environment.txt
+
+      - name: Measure
+        run: |
+          set -euo pipefail
+          swift test --package-path Packages/MacDevCleanCore \
+            --filter ScanPerformanceTests 2>&1 | tee performance-results.txt
+
+      # actions/upload-artifact v5.0.0, pinned, the same revision ci.yml uses.
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        if: always()
+        with:
+          name: performance
+          path: |
+            performance-environment.txt
+            performance-results.txt
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Say what this is not
+        run: |
+          echo "::notice::These are measurements from one hosted runner, not a"\
+               "throughput promise and not a comparison with any other machine."\
+               "Live UI responsiveness during a scan is not measured here: it"\
+               "needs a logged-in session, and is listed in"\
+               "docs/testing/manual-release-checks.md."
